@@ -1,37 +1,61 @@
 #include <Arduino.h>
-#include <SPI.h>
-#include <TFT_eSPI.h> // das ist die konfoigurierte Display-Bib
-TFT_eSPI tft = TFT_eSPI();
+#include <FS.h>
+#include <LittleFS.h>
+
+void dateinSystemAnzeigen()
+{
+  Serial.println("Lese Dateisystem...");
+  File ordner = LittleFS.open("/"); // damit der Esp32 den Hauptordner öffnet
+
+  if (!ordner || !ordner.isDirectory())
+  {
+    Serial.println("Fehler beim Öffnen des Hauptverzeichnisses!");
+    return;
+  }
+
+  File datei = ordner.openNextFile(); // damit wird die erste datei au dem orner geholt
+
+  int dateiAnzahl = 0; // Anzahl der gefundenen Dateien
+
+  while (datei) // die schleife geht so lange weiter, so lange es noch datein gibt
+  {
+    String name = datei.name();
+
+    size_t groesse = datei.size(); // so wird es als Byte gespeichert
+    Serial.printf(
+        "Datei gefunden: %s (%d Bytes)\n",
+        name.c_str(),
+        groesse);
+
+    dateiAnzahl++;
+
+    datei = ordner.openNextFile(); // zur nächsten Datei
+  }
+  if (dateiAnzahl == 0)
+  {
+    Serial.println("Keine Dateien im LittleFS gefunden.");
+  }
+  else
+  {
+    Serial.printf(
+        "Insgesamt %d Dateien gefunden.\n",
+        dateiAnzahl);
+  }
+}
+
 void setup()
 {
   Serial.begin(115200);
-  delay(1000);
-  Serial.println("Fahrrad-Computer startet...");
-  pinMode(4, OUTPUT);
-  digitalWrite(4, HIGH);
 
-  Serial.println("Initialisiere TFT...");
-  tft.init();
-  tft.setRotation(3);
-  tft.fillScreen(TFT_BLACK);
-  Serial.println("Initialisierung abgeschlossen!");
+  if (!LittleFS.begin(true)) // startet LittleFS
+  {
+    Serial.println("LittleFS konnte nicht gestartet werden");
+    return;
+  }
 
-  tft.setTextColor(TFT_BLUE);
-  tft.setTextSize(2);
-  tft.setCursor(60, 10);
-  tft.print("My Stickman");
+  Serial.println("ESP32 und LittleFS gestartet");
 
-  tft.drawLine(0, 35, 320, 35, TFT_WHITE);
-
-  tft.drawCircle(160, 75, 20, TFT_YELLOW);
-
-  tft.drawLine(160, 95, 160, 155, TFT_WHITE);
-
-  tft.drawLine(120, 115, 200, 115, TFT_WHITE);
-
-  tft.drawLine(160, 155, 130, 210, TFT_WHITE);
-
-  tft.drawLine(160, 155, 190, 210, TFT_WHITE);
+  dateinSystemAnzeigen();
 }
 
 void loop()
