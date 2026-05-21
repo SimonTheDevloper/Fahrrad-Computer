@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "author": "Anonymous maker",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": -201.6, "left": 72.04, "attrs": {} },
+    {
+      "type": "wokwi-ili9341",
+      "id": "lcd1",
+      "top": -160.9,
+      "left": -282.8,
+      "rotate": 270,
+      "attrs": { "mode": "spi" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:3V3", "lcd1:VCC", "green", [ "h-67.05", "v220.8" ] ],
+    [ "esp:GND.2", "lcd1:GND", "black", [ "v-38.4", "h-192", "v230.4" ] ],
+    [ "lcd1:CS", "esp:5", "violet", [ "h272.8", "v-31.4" ] ],
+    [ "esp:18", "lcd1:SCK", "magenta", [ "h67.2", "v144", "h-220.8", "v-76.81" ] ],
+    [ "lcd1:RST", "esp:4", "cyan", [ "v38.4", "h288", "v-96" ] ],
+    [ "lcd1:LED", "esp:3V3", "green", [ "h48", "v-163.19", "h86.25" ] ],
+    [ "lcd1:D/C", "esp:2", "orange", [ "h28.8", "v28.8", "h249.6", "v-57.6" ] ],
+    [ "lcd1:MOSI", "esp:23", "purple", [ "h28.8", "v-201.59", "h211.2", "v57.6" ] ]
+  ],
+  "dependencies": {}
+}
