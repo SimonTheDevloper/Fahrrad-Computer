@@ -4,12 +4,12 @@
 
 void dateinSystemAnzeigen()
 {
-  Serial.println("Lese Dateisystem...");
+  Serial.println("Reading file system...");
   File ordner = LittleFS.open("/"); // damit der Esp32 den Hauptordner öffnet
 
   if (!ordner || !ordner.isDirectory())
   {
-    Serial.println("Fehler beim Öffnen des Hauptverzeichnisses!");
+    Serial.println("Error opening the root directory!");
     return;
   }
 
@@ -23,7 +23,7 @@ void dateinSystemAnzeigen()
 
     size_t groesse = datei.size(); // so wird es als Byte gespeichert
     Serial.printf(
-        "Datei gefunden: %s (%d Bytes)\n",
+        "File found: %s (%d bytes)\n",
         name.c_str(),
         groesse);
 
@@ -33,14 +33,30 @@ void dateinSystemAnzeigen()
   }
   if (dateiAnzahl == 0)
   {
-    Serial.println("Keine Dateien im LittleFS gefunden.");
+    Serial.println("No files found in LittleFS.");
   }
   else
   {
     Serial.printf(
-        "Insgesamt %d Dateien gefunden.\n",
+        "A total of %d files were found.\n",
         dateiAnzahl);
   }
+}
+
+void zeigeInhaltDatei(String(dateinName))
+{
+  File datei = LittleFS.open(dateinName, "r"); // damit sage ich das es read also lesen soll
+  if (!datei)
+  {
+    Serial.println("Datei konnte nicht geöffnet werden");
+    return;
+  }
+  while (datei.available())
+  {
+    String zeile = datei.readStringUntil('\n');
+    Serial.println(zeile);
+  }
+  datei.close(); // es muss geschlossen werden, damit nicht unnötig Arbeitsspeicher verschwendet wird
 }
 
 void setup()
@@ -49,13 +65,14 @@ void setup()
 
   if (!LittleFS.begin(true)) // startet LittleFS
   {
-    Serial.println("LittleFS konnte nicht gestartet werden");
+    Serial.println("LittleFS could not be started");
     return;
   }
 
-  Serial.println("ESP32 und LittleFS gestartet");
+  Serial.println("ESP32 and LittleFS started");
 
   dateinSystemAnzeigen();
+  zeigeInhaltDatei("/secretText.txt");
 }
 
 void loop()
