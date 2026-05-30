@@ -1,78 +1,49 @@
 #include <Arduino.h>
-#include <FS.h>
-#include <LittleFS.h>
+#include <SPI.h>
+#include <TFT_eSPI.h>
 
-void dateinSystemAnzeigen()
+TFT_eSPI tft = TFT_eSPI();
+
+float speedVal = 12.5;
+float heightVal = 532.0;
+float longVal = 11.576;
+float latVal = 48.137;
+
+void zeigeBildschirm()
 {
-  Serial.println("Reading file system...");
-  File ordner = LittleFS.open("/"); // damit der Esp32 den Hauptordner öffnet
+  tft.fillScreen(TFT_BLACK);
 
-  if (!ordner || !ordner.isDirectory())
-  {
-    Serial.println("Error opening the root directory!");
-    return;
-  }
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextSize(2);
 
-  File datei = ordner.openNextFile(); // damit wird die erste datei au dem orner geholt
+  tft.setCursor(10, 20);
+  tft.println("SPEED:");
+  tft.setCursor(120, 20);
+  tft.println(speedVal);
 
-  int dateiAnzahl = 0; // Anzahl der gefundenen Dateien
+  tft.setCursor(10, 60);
+  tft.println("HEIGHT:");
+  tft.setCursor(120, 60);
+  tft.println(heightVal);
 
-  while (datei) // die schleife geht so lange weiter, so lange es noch datein gibt
-  {
-    String name = datei.name();
+  tft.setCursor(10, 100);
+  tft.println("LONG:");
+  tft.setCursor(120, 100);
+  tft.println(longVal, 6);
 
-    size_t groesse = datei.size(); // so wird es als Byte gespeichert
-    Serial.printf(
-        "File found: %s (%d bytes)\n",
-        name.c_str(),
-        groesse);
-
-    dateiAnzahl++;
-
-    datei = ordner.openNextFile(); // zur nächsten Datei
-  }
-  if (dateiAnzahl == 0)
-  {
-    Serial.println("No files found in LittleFS.");
-  }
-  else
-  {
-    Serial.printf(
-        "A total of %d files were found.\n",
-        dateiAnzahl);
-  }
-}
-
-void zeigeInhaltDatei(String(dateinName))
-{
-  File datei = LittleFS.open(dateinName, "r"); // damit sage ich das es read also lesen soll
-  if (!datei)
-  {
-    Serial.println("Datei konnte nicht geöffnet werden");
-    return;
-  }
-  while (datei.available())
-  {
-    String zeile = datei.readStringUntil('\n');
-    Serial.println(zeile);
-  }
-  datei.close(); // es muss geschlossen werden, damit nicht unnötig Arbeitsspeicher verschwendet wird
+  tft.setCursor(10, 140);
+  tft.println("LAT:");
+  tft.setCursor(120, 140);
+  tft.println(latVal, 6);
 }
 
 void setup()
 {
-  Serial.begin(115200);
+  tft.init();
+  tft.setRotation(3);
+  tft.fillScreen(TFT_BLACK);
 
-  if (!LittleFS.begin(true)) // startet LittleFS
-  {
-    Serial.println("LittleFS could not be started");
-    return;
-  }
-
-  Serial.println("ESP32 and LittleFS started");
-
-  dateinSystemAnzeigen();
-  zeigeInhaltDatei("/secretText.txt");
+  zeigeBildschirm();
 }
 
 void loop()
