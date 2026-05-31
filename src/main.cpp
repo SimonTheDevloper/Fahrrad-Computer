@@ -20,44 +20,60 @@ int day = 0;
 int month = 0;
 int year = 0;
 
-void drawLabelValue(int y, const char *label, String value);
-void zeigeBildschirm(); // hier schon definieren, dasmit ich funktionen auch weiter unter wo sie aufgerufen werden benutzen kann
-void verarbeiteGPS();
-void printGpsData();
-
-void drawLabelValue(int y, const char *label, String value)
+void drawLabel(int x, int y, const char *label, uint16_t color)
 {
-  tft.setTextColor(TFT_DARKGREY, TFT_BLACK);
-  tft.setCursor(10, y);
+  tft.setTextColor(color, TFT_BLACK);
+  tft.setCursor(x, y);
   tft.print(label);
+}
 
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.setCursor(140, y);
+void drawValue(int x, int y, String value, uint16_t color)
+{
+  tft.setTextColor(color, TFT_BLACK);
+  tft.setCursor(x, y);
   tft.print(value);
 }
 
-void zeigeBildschirm()
+uint16_t gpsColor() // uint16_t ist dafür da, da es einen 16 bit output also für farben zurück gibt
+{
+  if (satellites >= 6)
+    return TFT_GREEN;
+  if (satellites >= 3)
+    return TFT_ORANGE;
+  return TFT_RED;
+}
+
+void drawUI()
 {
   tft.fillScreen(TFT_BLACK);
+
   tft.setTextSize(2);
 
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.setCursor(10, 5);
-  tft.print("Bike Computer");
+  drawLabel(10, 5, "BIKE COMPUTER", TFT_WHITE);
 
-  tft.drawFastHLine(0, 25, 320, TFT_DARKGREY);
-  drawLabelValue(40, "Speed", String(speed, 1) + " km/h");
-  drawLabelValue(75, "Height", String(altitude, 0) + " m");
-  drawLabelValue(110, "Long", String(longitude, 6));
-  drawLabelValue(145, "Lat", String(latitude, 6));
+  String satText = "Sats: " + String(satellites);
+  drawValue(220, 5, satText, gpsColor());
+  tft.drawFastHLine(0, 30, 320, TFT_DARKGREY);
 
-  tft.drawFastHLine(0, 180, 320, TFT_DARKGREY);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextSize(4);
+  drawLabel(10, 45, "SPEED", TFT_DARKGREY);
+
+  drawValue(10, 85, String(speed, 1) + " km/h", TFT_CYAN);
+  tft.setTextSize(2);
+
+  drawLabel(10, 150, "ALT", TFT_DARKGREY);
+  drawValue(80, 150, String(altitude, 0) + " m", TFT_WHITE);
+
+  drawLabel(10, 175, "LAT", TFT_DARKGREY);
+  drawValue(80, 175, String(latitude, 5), TFT_WHITE);
+
+  drawLabel(10, 200, "LON", TFT_DARKGREY);
+  drawValue(80, 200, String(longitude, 5), TFT_WHITE);
 
   tft.setTextSize(1);
-  tft.setCursor(291, 227);
-  tft.print("v0.2");
+  drawValue(270, 225, "v0.3", TFT_DARKGREY);
 }
+
 void verarbeiteGPS()
 {
   while (gpsSerial.available() > 0)
@@ -75,56 +91,22 @@ void verarbeiteGPS()
     day = gps.date.day();
     month = gps.date.month();
     year = gps.date.year();
-    printGpsData();
-    zeigeBildschirm();
-  }
-}
 
-void printGpsData()
-{
-  Serial.println("<------ GPS Daten ------>");
-  Serial.print("Satelliten: ");
-  Serial.println(satellites);
-  Serial.print("Lat: ");
-  Serial.println(latitude, 6);
-  Serial.print("Lng: ");
-  Serial.println(longitude, 6);
-  Serial.print("Hoehe: ");
-  Serial.print(altitude);
-  Serial.println(" m");
-  Serial.print("Datum: ");
-  Serial.print(day);
-  Serial.print(".");
-  Serial.print(month);
-  Serial.print(".");
-  Serial.println(year);
-  Serial.print("Tempo: ");
-  Serial.print(speed);
-  Serial.println(" km/h");
-
-  if (satellites >= 4)
-  {
-    Serial.println("GPS Signal good");
-  }
-  else
-  {
-    Serial.println("GPS Signal weak");
+    Serial.println("GPS Update");
+    drawUI();
   }
 }
 
 void setup()
 {
   Serial.begin(115200);
-  delay(1000);
-  Serial.println("Fahrrad-Computer startet...");
 
   gpsSerial.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
+
   tft.init();
   tft.setRotation(3);
-  tft.fillScreen(TFT_BLACK);
 
-  zeigeBildschirm();
-  Serial.println("Initialisierung abgeschlossen!");
+  drawUI();
 }
 
 void loop()
