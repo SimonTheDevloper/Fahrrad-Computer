@@ -97,6 +97,30 @@ void verarbeiteGPS()
   }
 }
 
+void aendereTestGPSDaten()
+{
+  static float fakeSpeed = 0;
+  fakeSpeed += 0.5;
+
+  if (fakeSpeed > 30)
+  {
+    fakeSpeed = 0;
+  }
+  speed = fakeSpeed;
+  altitude = 500 + fakeSpeed;
+  int testSatellitesVal = 0;
+  testSatellitesVal + 1;
+
+  if (testSatellitesVal > 16)
+  {
+    testSatellitesVal = 0;
+  }
+  satellites = testSatellitesVal;
+
+  latitude = 48.137154 + fakeSpeed * 0.00001;
+  longitude = 11.576124 + fakeSpeed * 0.00001;
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -111,5 +135,7 @@ void setup()
 
 void loop()
 {
-  verarbeiteGPS();
+  aendereTestGPSDaten();
+  drawUI();
+  delay(200);
 }
