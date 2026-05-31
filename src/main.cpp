@@ -71,9 +71,32 @@ void drawUI()
   drawValue(80, 200, String(longitude, 5), TFT_WHITE);
 
   tft.setTextSize(1);
-  drawValue(270, 225, "v0.3", TFT_DARKGREY);
+  drawValue(285, 225, "v0.3", TFT_DARKGREY);
 }
+void rendereGrundLayout()
+{
+  tft.fillScreen(TFT_BLACK);
 
+  tft.setTextSize(2);
+
+  drawLabel(10, 5, "BIKE COMPUTER", TFT_WHITE);
+
+  tft.drawFastHLine(0, 30, 320, TFT_DARKGREY);
+
+  tft.setTextSize(4);
+  drawLabel(10, 45, "SPEED", TFT_DARKGREY);
+
+  tft.setTextSize(2);
+
+  drawLabel(10, 150, "ALT", TFT_DARKGREY);
+
+  drawLabel(10, 175, "LAT", TFT_DARKGREY);
+
+  drawLabel(10, 200, "LON", TFT_DARKGREY);
+
+  tft.setTextSize(1);
+  drawValue(285, 225, "v0.3", TFT_DARKGREY);
+}
 void verarbeiteGPS()
 {
   while (gpsSerial.available() > 0)
@@ -99,7 +122,7 @@ void verarbeiteGPS()
 
 void aendereTestGPSDaten()
 {
-  static float fakeSpeed = 0;
+  static float fakeSpeed = 0; // mit static bleibt die variable erhalten
   fakeSpeed += 0.5;
 
   if (fakeSpeed > 30)
@@ -108,8 +131,8 @@ void aendereTestGPSDaten()
   }
   speed = fakeSpeed;
   altitude = 500 + fakeSpeed;
-  int testSatellitesVal = 0;
-  testSatellitesVal + 1;
+  static int testSatellitesVal = 0;
+  testSatellitesVal += 1;
 
   if (testSatellitesVal > 16)
   {
@@ -130,12 +153,10 @@ void setup()
   tft.init();
   tft.setRotation(3);
 
-  drawUI();
+  rendereGrundLayout();
 }
 
 void loop()
 {
-  aendereTestGPSDaten();
-  drawUI();
-  delay(200);
+  verarbeiteGPS();
 }
