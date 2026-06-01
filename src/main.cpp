@@ -7,7 +7,7 @@ HardwareSerial gpsSerial(2);
 TinyGPSPlus gps;
 TFT_eSPI tft = TFT_eSPI();
 
-#define TEST_MODE false
+#define TEST_MODE true
 
 #define GPS_RX 32
 #define GPS_TX 33
@@ -58,8 +58,14 @@ void zeichneGrundLayout()
   tft.fillScreen(TFT_BLACK);
 
   tft.setTextSize(2);
-  drawLabel(10, 5, "BIKE COMPUTER", TFT_WHITE);
-  tft.drawFastHLine(0, 30, 320, TFT_DARKGREY);
+  if (TEST_MODE)
+  {
+    drawLabel(10, 5, "TEST MODE", TFT_ORANGE);
+  }
+  else
+  {
+    drawLabel(10, 5, "BIKE COMPUTER", TFT_WHITE);
+  }
 
   tft.setTextSize(4);
   drawLabel(10, 45, "SPEED", TFT_DARKGREY);
@@ -132,6 +138,7 @@ void aendereTestGPSDaten()
   latitude = 48.137154 + fakeSpeed * 0.00001;
   longitude = 11.576124 + fakeSpeed * 0.00001;
 }
+
 void updateData()
 {
   if (TEST_MODE)
