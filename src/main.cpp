@@ -16,6 +16,7 @@ double latitude = 0.0;
 double longitude = 0.0;
 double altitude = 0.0;
 double speed = 0.0;
+double maxSpeed = 0.0;
 
 int satellites = 0;
 int day = 0;
@@ -71,6 +72,7 @@ void zeichneGrundLayout()
   drawLabel(10, 45, "SPEED", TFT_DARKGREY);
 
   tft.setTextSize(2);
+  drawValue(10, 115, "MAX " + String(maxSpeed, 1) + " km/h   ", TFT_YELLOW);
   drawLabel(10, 150, "ALT", TFT_DARKGREY);
   drawLabel(10, 175, "LAT", TFT_DARKGREY);
   drawLabel(10, 200, "LON", TFT_DARKGREY);
@@ -89,6 +91,7 @@ void aktualisiereWerte()
   drawValue(10, 85, String(speed, 1) + " km/h   ", TFT_CYAN);
 
   tft.setTextSize(2);
+  drawValue(10, 115, "MAX " + String(maxSpeed, 1) + " km/h   ", TFT_YELLOW);
   drawValue(80, 150, String(altitude, 0) + " m    ", TFT_WHITE);
   drawValue(80, 175, String(latitude, 5) + "    ", TFT_WHITE);
   drawValue(80, 200, String(longitude, 5) + "    ", TFT_WHITE);
@@ -107,6 +110,10 @@ void verarbeiteGPS()
     longitude = gps.location.lng();
     altitude = gps.altitude.meters();
     speed = gps.speed.kmph();
+
+    if (speed > maxSpeed)
+      maxSpeed = speed;
+
     satellites = gps.satellites.value();
     day = gps.date.day();
     month = gps.date.month();
@@ -126,6 +133,8 @@ void aendereTestGPSDaten()
     fakeSpeed = 0;
 
   speed = fakeSpeed;
+  if (speed > maxSpeed)
+    maxSpeed = speed;
   altitude = 500 + fakeSpeed;
 
   static int testSatellitesVal = 0;
