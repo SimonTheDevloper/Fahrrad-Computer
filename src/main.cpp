@@ -66,7 +66,7 @@ void zeichneGrundLayout()
   {
     drawLabel(10, 5, "BIKE COMPUTER", TFT_WHITE);
   }
-
+  tft.drawFastHLine(0, 30, 320, TFT_DARKGREY);
   tft.setTextSize(4);
   drawLabel(10, 45, "SPEED", TFT_DARKGREY);
 
