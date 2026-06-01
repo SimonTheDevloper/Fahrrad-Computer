@@ -7,6 +7,8 @@ HardwareSerial gpsSerial(2);
 TinyGPSPlus gps;
 TFT_eSPI tft = TFT_eSPI();
 
+#define TEST_MODE false
+
 #define GPS_RX 32
 #define GPS_TX 33
 
@@ -130,7 +132,17 @@ void aendereTestGPSDaten()
   latitude = 48.137154 + fakeSpeed * 0.00001;
   longitude = 11.576124 + fakeSpeed * 0.00001;
 }
-
+void updateData()
+{
+  if (TEST_MODE)
+  {
+    aendereTestGPSDaten();
+  }
+  else
+  {
+    verarbeiteGPS();
+  }
+}
 void setup()
 {
   Serial.begin(115200);
@@ -144,9 +156,10 @@ void setup()
 
 void loop()
 {
-  aendereTestGPSDaten();
-  aktualisiereWerte();
-  delay(200);
-
-  // verarbeiteGPS();
+  updateData();
+  if (TEST_MODE)
+  {
+    aktualisiereWerte();
+    delay(200);
+  }
 }
