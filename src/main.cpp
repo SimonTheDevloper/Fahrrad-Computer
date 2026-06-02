@@ -7,7 +7,7 @@ HardwareSerial gpsSerial(2);
 TinyGPSPlus gps;
 TFT_eSPI tft = TFT_eSPI();
 
-#define TEST_MODE true
+#define TEST_MODE false
 
 #define GPS_RX 32
 #define GPS_TX 33
@@ -22,6 +22,11 @@ int satellites = 0;
 int day = 0;
 int month = 0;
 int year = 0;
+int hour = 0;
+int minute = 0;
+int second = 0;
+
+char uhrzeit[16];
 
 void drawLabel(int x, int y, const char *label, uint16_t color);
 void drawValue(int x, int y, String value, uint16_t color);
@@ -67,6 +72,7 @@ void zeichneGrundLayout()
   {
     drawLabel(10, 5, "BIKE COMPUTER", TFT_WHITE);
   }
+  drawLabel(10, 225, "TIME", TFT_DARKGREY);
   tft.drawFastHLine(0, 30, 320, TFT_DARKGREY);
   tft.setTextSize(4);
   drawLabel(10, 45, "SPEED", TFT_DARKGREY);
@@ -81,6 +87,15 @@ void zeichneGrundLayout()
   drawLabel(270, 225, "v0.3", TFT_DARKGREY);
 }
 
+void bekommeUhrzeit()
+{
+  char uhrzeit[16];
+  sprintf(uhrzeit,          // sprintf() baut aus Variablen einen Text zusammen.
+          "%02d:%02d:%02d", // das macht das es auch 04 statt einfach 4 sein kann und ist natührlich ein platzhalter
+          hour,
+          minute,
+          second);
+}
 void aktualisiereWerte()
 {
   tft.setTextSize(2);
@@ -95,6 +110,8 @@ void aktualisiereWerte()
   drawValue(80, 150, String(altitude, 0) + " m    ", TFT_WHITE);
   drawValue(80, 175, String(latitude, 5) + "    ", TFT_WHITE);
   drawValue(80, 200, String(longitude, 5) + "    ", TFT_WHITE);
+
+  drawValue(120, 225, uhrzeit, TFT_GREEN);
 }
 
 void verarbeiteGPS()
@@ -118,6 +135,10 @@ void verarbeiteGPS()
     day = gps.date.day();
     month = gps.date.month();
     year = gps.date.year();
+
+    hour = gps.time.hour();
+    minute = gps.time.minute();
+    second = gps.time.second();
 
     Serial.println("GPS Update");
     aktualisiereWerte();
