@@ -32,6 +32,9 @@ int second = 0;
 
 char uhrzeit[16];
 
+unsigned long gesamtFahrtZeit = 0;
+unsigned long letztesSekunde = 0;
+
 void drawLabel(int x, int y, const char *label, uint16_t color);
 void drawValue(int x, int y, String value, uint16_t color);
 uint16_t gpsColor();
@@ -126,10 +129,18 @@ void berechneDurschnittsSpeed(float currentspeed)
   if (speedCount > 1)
   {
     durchschnittSpeed = speedSum / speedCount;
+    // Serial.println(durchschnittSpeed);
   }
-  Serial.print(durchschnittSpeed);
 }
 
+void berechneGesamtfahrzeit()
+{
+  if (speed > 1.5)
+  {
+    gesamtFahrtZeit++;
+    Serial.println(gesamtFahrtZeit);
+  }
+}
 void verarbeiteGPS()
 {
   while (gpsSerial.available() > 0)
@@ -172,6 +183,8 @@ void aendereTestGPSDaten()
     fakeSpeed = 0;
 
   speed = fakeSpeed;
+
+  berechneDurschnittsSpeed(speed);
   if (speed > maxSpeed)
     maxSpeed = speed;
   altitude = 500 + fakeSpeed;
@@ -215,6 +228,12 @@ void loop()
   if (TEST_MODE)
   {
     aktualisiereWerte();
-    delay(200);
+    delay(500);
+  }
+
+  if (millis() - letztesSekunde >= 1000)
+  {
+    letztesSekunde = millis();
+    berechneGesamtfahrzeit();
   }
 }
