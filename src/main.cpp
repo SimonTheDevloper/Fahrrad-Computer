@@ -7,7 +7,7 @@ HardwareSerial gpsSerial(2);
 TinyGPSPlus gps;
 TFT_eSPI tft = TFT_eSPI();
 
-#define TEST_MODE false
+#define TEST_MODE true
 
 #define GPS_RX 32
 #define GPS_TX 33
@@ -17,6 +17,10 @@ double longitude = 0.0;
 double altitude = 0.0;
 double speed = 0.0;
 double maxSpeed = 0.0;
+
+float speedSum;
+int speedCount;
+float durchschnittSpeed;
 
 int satellites = 0;
 int day = 0;
@@ -114,6 +118,18 @@ void aktualisiereWerte()
   drawValue(120, 225, uhrzeit, TFT_GREEN);
 }
 
+void berechneDurschnittsSpeed(float currentspeed)
+{
+  speedSum += currentspeed;
+  speedCount++;
+
+  if (speedCount > 1)
+  {
+    durchschnittSpeed = speedSum / speedCount;
+  }
+  Serial.print(durchschnittSpeed);
+}
+
 void verarbeiteGPS()
 {
   while (gpsSerial.available() > 0)
@@ -127,6 +143,8 @@ void verarbeiteGPS()
     longitude = gps.location.lng();
     altitude = gps.altitude.meters();
     speed = gps.speed.kmph();
+
+    berechneDurschnittsSpeed(speed);
 
     if (speed > maxSpeed)
       maxSpeed = speed;
