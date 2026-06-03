@@ -222,17 +222,6 @@ void aendereTestGPSDaten()
   longitude = 32.5654 + fakeSpeed * 0.00001;
 }
 
-void updateData()
-{
-  if (TEST_MODE)
-  {
-    aendereTestGPSDaten();
-  }
-  else
-  {
-    verarbeiteGPS();
-  }
-}
 void setup()
 {
   Serial.begin(115200);
@@ -246,16 +235,20 @@ void setup()
 
 void loop()
 {
-  updateData();
-  if (TEST_MODE)
+  if (!TEST_MODE)
   {
-    aktualisiereWerte();
-    delay(500);
+    verarbeiteGPS();
   }
 
   if (millis() - letztesSekunde >= 1000)
   {
     letztesSekunde = millis();
+
+    if (TEST_MODE)
+    {
+      aendereTestGPSDaten();
+    }
+
     berechneGesamtfahrzeit();
     berechneDistanz();
   }
