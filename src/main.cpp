@@ -7,7 +7,7 @@ HardwareSerial gpsSerial(2);
 TinyGPSPlus gps;
 TFT_eSPI tft = TFT_eSPI();
 
-#define TEST_MODE true
+#define TEST_MODE false
 
 #define GPS_RX 32
 #define GPS_TX 33
@@ -96,7 +96,6 @@ void zeichneGrundLayout()
 
 void bekommeUhrzeit()
 {
-  char uhrzeit[16];
   sprintf(uhrzeit,          // sprintf() baut aus Variablen einen Text zusammen.
           "%02d:%02d:%02d", // das macht das es auch 04 statt einfach 4 sein kann und ist natührlich ein platzhalter
           hour,
@@ -105,6 +104,7 @@ void bekommeUhrzeit()
 }
 void aktualisiereWerte()
 {
+  bekommeUhrzeit();
   tft.setTextSize(2);
   String satText = "Sats: " + String(satellites) + "   ";
   drawValue(220, 5, satText, gpsColor());
