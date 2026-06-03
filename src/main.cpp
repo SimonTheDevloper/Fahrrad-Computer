@@ -7,7 +7,7 @@ HardwareSerial gpsSerial(2);
 TinyGPSPlus gps;
 TFT_eSPI tft = TFT_eSPI();
 
-#define TEST_MODE false
+#define TEST_MODE true
 
 #define GPS_RX 32
 #define GPS_TX 33
@@ -31,6 +31,11 @@ int minute = 0;
 int second = 0;
 
 char uhrzeit[16];
+
+double distanzInMetern;
+
+double letzteLat = 0.0;
+double letzteLong = 0.0;
 
 unsigned long gesamtFahrtZeit = 0;
 unsigned long letztesSekunde = 0;
@@ -133,11 +138,29 @@ void berechneDurschnittsSpeed(float currentspeed)
   }
 }
 
+void berechneDistanz()
+{
+  if (letzteLat == 0.0 && letzteLong == 0.0)
+  {
+    letzteLat = latitude;
+    letzteLong = longitude;
+    return;
+  }
+  double distanzInMetern = TinyGPSPlus::distanceBetween( // das berechnet es einfach schon
+      letzteLat, letzteLong,
+      latitude, longitude);
+
+  Serial.print("Distanz in m:");
+  Serial.println(distanzInMetern);
+  letzteLat = latitude;
+  letzteLong = longitude;
+}
 void berechneGesamtfahrzeit()
 {
   if (speed > 1.5)
   {
     gesamtFahrtZeit++;
+    Serial.print("Gesmatfahrzeit in s:");
     Serial.println(gesamtFahrtZeit);
   }
 }
@@ -169,7 +192,6 @@ void verarbeiteGPS()
     minute = gps.time.minute();
     second = gps.time.second();
 
-    Serial.println("GPS Update");
     aktualisiereWerte();
   }
 }
@@ -196,8 +218,8 @@ void aendereTestGPSDaten()
     testSatellitesVal = 0;
   satellites = testSatellitesVal;
 
-  latitude = 48.137154 + fakeSpeed * 0.00001;
-  longitude = 11.576124 + fakeSpeed * 0.00001;
+  latitude = 22.34556 + fakeSpeed * 0.00001;
+  longitude = 32.5654 + fakeSpeed * 0.00001;
 }
 
 void updateData()
@@ -235,5 +257,6 @@ void loop()
   {
     letztesSekunde = millis();
     berechneGesamtfahrzeit();
+    berechneDistanz();
   }
 }
