@@ -151,7 +151,7 @@ void berechneDistanz()
       letzteLat, letzteLong,
       latitude, longitude);
 
-  Serial.print("Distanz in m:");
+  Serial.print("Distance in m:");
   Serial.println(distanzInMetern);
   letzteLat = latitude;
   letzteLong = longitude;
@@ -160,9 +160,16 @@ void berechneDistanz()
 void berechneGesamtDistanz()
 {
   berechneDistanz();
-  gesamtStrecke += distanzInMetern;
-  Serial.print("Gesamtstrecke in m:");
-  Serial.println(gesamtStrecke);
+  if (distanzInMetern > 1.5)
+  {
+    gesamtStrecke += distanzInMetern;
+    Serial.print("Total distance in m");
+    Serial.println(gesamtStrecke);
+  }
+  else
+  {
+    Serial.println("Distance too short. => Too slow. Probably stationary and GPS noise");
+  }
 }
 void berechneGesamtfahrzeit()
 {
