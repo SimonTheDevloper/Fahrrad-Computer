@@ -12,8 +12,9 @@ void berechneDurschnittsSpeed(float currentspeed);
 void berechneDistanz();
 void bekommeUhrzeit();
 void speichereStatistiken();
-void showSaveInfo();
 void ladeStatistiken();
+
+void showLoadStaticsInfo();
 
 extern double gesamtStrecke;
 extern double distanzInMetern;

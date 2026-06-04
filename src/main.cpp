@@ -21,8 +21,6 @@ void verwalteSpeicherIntervall()
   {
     speicherZaeler = 0;
     speichereStatistiken();
-
-    Serial.println("Statistiken erfolgreich gespeichert");
   }
 }
 
