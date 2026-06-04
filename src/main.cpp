@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <FS.h>
+#include <LittleFS.h>
 #include "gps_manager.h" //hier müssen alle header geladen werden
 #include "trip_computer.h"
 #include "display_ui.h"
@@ -9,6 +11,7 @@ extern const bool TEST_MODE = true;
 #define GPS_TX 33
 
 unsigned long letztesSekunde = 0;
+int speicherZaeler = 0;
 
 void setup()
 {
@@ -18,6 +21,13 @@ void setup()
   tft.init();
   tft.setRotation(3);
 
+  if (!LittleFS.begin(true)) // startet LittleFS
+  {
+    Serial.println("LittleFS could not be started");
+    return;
+  }
+
+  ladeStatistiken();
   zeichneGrundLayout();
 }
 
@@ -40,5 +50,15 @@ void loop()
 
     berechneGesamtfahrzeit();
     berechneGesamtDistanz();
+
+    speicherZaeler++;
+    if (speicherZaeler >= 5)
+
+    {
+      speicherZaeler = 0;
+      speichereStatistiken();
+
+      Serial.println("Statistiken erfolgreich gespeichert");
+    }
   }
 }

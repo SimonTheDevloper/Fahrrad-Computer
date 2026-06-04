@@ -3,12 +3,16 @@
 #define TRIP_COMPUTER_H
 
 #include <Arduino.h>
+#include <FS.h>
+#include <LittleFS.h>
 
 void berechneGesamtDistanz();
 void berechneGesamtfahrzeit();
 void berechneDurschnittsSpeed(float currentspeed);
 void berechneDistanz();
 void bekommeUhrzeit();
+void speichereStatistiken();
+void ladeStatistiken();
 
 extern double gesamtStrecke;
 extern double distanzInMetern;

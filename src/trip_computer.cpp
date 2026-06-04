@@ -74,3 +74,33 @@ void bekommeUhrzeit()
             minute,
             second);
 }
+
+void speichereStatistiken()
+{
+    File datei = LittleFS.open("/statistiken.txt", "w");
+    if (!datei)
+    {
+        Serial.println("Fehler beim Öffnen der Datei zum Schreiben");
+        return;
+    }
+    datei.println(gesamtStrecke);
+    datei.println(gesamtFahrtZeit);
+    datei.println(maxSpeed);
+
+    datei.close();
+}
+
+void ladeStatistiken()
+{
+    File datei = LittleFS.open("/statistiken.txt", "r");
+    if (!datei)
+    {
+        Serial.println("Fehler beim Öffnen der Datei zum Lesen");
+        return;
+    }
+    gesamtStrecke = datei.parseFloat();
+    gesamtFahrtZeit = datei.parseInt();
+    maxSpeed = datei.parseFloat();
+
+    datei.close();
+}
