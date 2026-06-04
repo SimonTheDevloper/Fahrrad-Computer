@@ -13,6 +13,19 @@ extern const bool TEST_MODE = true;
 unsigned long letztesSekunde = 0;
 int speicherZaeler = 0;
 
+void verwalteSpeicherIntervall()
+{
+  speicherZaeler++;
+  if (speicherZaeler >= 5)
+
+  {
+    speicherZaeler = 0;
+    speichereStatistiken();
+
+    Serial.println("Statistiken erfolgreich gespeichert");
+  }
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -42,6 +55,8 @@ void loop()
   {
     letztesSekunde = millis();
 
+    verwalteSpeicherIntervall();
+
     if (TEST_MODE)
     {
       aendereTestGPSDaten();
@@ -50,15 +65,5 @@ void loop()
 
     berechneGesamtfahrzeit();
     berechneGesamtDistanz();
-
-    speicherZaeler++;
-    if (speicherZaeler >= 5)
-
-    {
-      speicherZaeler = 0;
-      speichereStatistiken();
-
-      Serial.println("Statistiken erfolgreich gespeichert");
-    }
   }
 }
