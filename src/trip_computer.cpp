@@ -26,14 +26,19 @@ String formatTime(unsigned long sek) // mit String am anfang sagt man schon am a
     return String(zeit);
 }
 
+double meterToKm(double meter)
+{
+    return meter / 1000.0;
+}
+
 void berechneGesamtDistanz()
 {
     berechneDistanz();
     if (distanzInMetern > 1.5)
     {
         gesamtStrecke += distanzInMetern;
-        Serial.print("Total distance in m: ");
-        Serial.println(gesamtStrecke);
+        Serial.print("Total distance in km: ");
+        Serial.println(meterToKm(gesamtStrecke));
     }
     else
     {
