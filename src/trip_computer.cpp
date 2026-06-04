@@ -75,6 +75,18 @@ void bekommeUhrzeit()
             second);
 }
 
+void showAutoSaveInfo()
+{
+    Serial.println("\n=============================================================");
+    Serial.print("[LittleFS saved that]:  ");
+    Serial.print(gesamtStrecke);
+    Serial.print(" km | ");
+    Serial.print(gesamtFahrtZeit);
+    Serial.print("s | Max: ");
+    Serial.print(maxSpeed);
+    Serial.println(" km/h");
+    Serial.println("=============================================================\n");
+}
 void speichereStatistiken()
 {
     File datei = LittleFS.open("/statistiken.txt", "w");
@@ -86,6 +98,8 @@ void speichereStatistiken()
     datei.println(gesamtStrecke);
     datei.println(gesamtFahrtZeit);
     datei.println(maxSpeed);
+
+    showAutoSaveInfo();
 
     datei.close();
 }
@@ -101,6 +115,19 @@ void ladeStatistiken()
     gesamtStrecke = datei.parseFloat();
     gesamtFahrtZeit = datei.parseInt();
     maxSpeed = datei.parseFloat();
+
+    Serial.println("\n====================================");
+    Serial.println("LittleFS has the statistics loaded successfully:");
+    Serial.print(" Total distance: ");
+    Serial.print(gesamtStrecke);
+    Serial.println(" m");
+    Serial.print(" Total travel time: ");
+    Serial.print(gesamtFahrtZeit);
+    Serial.println(" sec");
+    Serial.print(" Max. speed: ");
+    Serial.print(maxSpeed);
+    Serial.println(" km/h");
+    Serial.println("====================================\n");
 
     datei.close();
 }
