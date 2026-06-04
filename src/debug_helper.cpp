@@ -14,7 +14,6 @@ void showAutoSaveInfo()
     Serial.print(gesamtStrecke);
     Serial.print(" m | ");
     Serial.print(gesamtFahrtZeit);
-    Serial.print("s | Max: ");
     Serial.print(maxSpeed);
     Serial.println(" km/h");
     Serial.println("=============================================================\n");
