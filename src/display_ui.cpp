@@ -3,6 +3,13 @@
 #include "gps_manager.h"
 #include "trip_computer.h"
 
+const uint16_t FARBE_HINTERGRUND = 0x0000; // Schwarz
+const uint16_t FARBE_TEXT_WEISS = 0xFFFF;  // Weiß
+const uint16_t FARBE_LINIEN = 0x73AF;      // Grau
+const uint16_t FARBE_SPEED = 0xFF8D;       // Orange
+const uint16_t FARBE_EINHEITEN = 0xFDED;   // Helles Graublau
+const uint16_t FARBE_WERTE = 0xE521;       // Gold-Gelb
+
 TFT_eSPI tft = TFT_eSPI();
 
 void initDisplay()
@@ -38,67 +45,78 @@ void drawValue(int x, int y, String value, uint16_t color)
 
 void zeichneGrundLayout(void)
 {
-    tft.fillScreen(0x0);
-    // string 1
-    tft.setTextColor(0xFFFF);
+    tft.fillScreen(FARBE_HINTERGRUND);
+
+    // Statusbar
+    tft.setTextColor(FARBE_TEXT_WEISS);
     tft.setTextSize(1);
-    tft.setFreeFont(&FreeSerif9pt7b);
-    tft.drawString("Bike Computer", 5, 2);
-    // string 2
+    tft.setFreeFont(NULL); // Standard-Schriftart für die Statusbar
+    tft.setTextSize(2);
+    if (TEST_MODE)
+    {
+        tft.drawString("TEST MODE", 5, 5);
+    }
+    else
+    {
+        tft.drawString("Bike Computer", 5, 5);
+    }
+
+    // tft.drawString("13:44", 275, 5);
+
+    // Trennlinie
+    tft.drawLine(1, 16, 319, 16, FARBE_LINIEN);
+    tft.drawLine(195, 1, 195, 239, FARBE_LINIEN);
+    tft.drawLine(195, 80, 319, 80, FARBE_LINIEN);
+    tft.drawLine(195, 160, 319, 160, FARBE_LINIEN);
+
     tft.setFreeFont(&FreeSans9pt7b);
-    tft.drawString("13:44", 266, 2);
-    // line 3
-    tft.drawLine(1, 20, 319, 20, 0x73AF);
-    // line 4
-    tft.drawLine(195, 1, 195, 239, 0x73AF);
-    // line 5
-    tft.drawLine(195, 80, 319, 80, 0x73AF);
-    // line 6
-    tft.drawLine(195, 160, 319, 160, 0x73AF);
-    // string 7
-    tft.drawString("Speed", 70, 34);
-    // string 8
-    tft.setTextColor(0xFF8D);
-    tft.setTextSize(8);
-    tft.setFreeFont(&FreeSansBold9pt7b);
-    tft.drawString("23", 17, 60);
-    // string 9
-    tft.setTextColor(0xFDED);
+    tft.drawString("Speed", 70, 28);
+
+    // Große Geschwindigkeits Zahl
+    // tft.setTextColor(FARBE_SPEED);
+    // tft.setTextSize(8);
+    // tft.setFreeFont(&FreeSansBold9pt7b);
+    // tft.drawString("23", 17, 60);
+
+    // Einheit "km/h"
+    tft.setTextColor(FARBE_EINHEITEN);
     tft.setTextSize(1);
     tft.setFreeFont(&FreeSerif12pt7b);
     tft.drawString("km/h", 70, 189);
-    // string 10
-    tft.setTextColor(0xFFFF);
+
+    tft.setTextColor(FARBE_TEXT_WEISS);
     tft.setFreeFont(&FreeSans9pt7b);
-    tft.drawString("Mileage", 220, 28);
-    // string 11
-    tft.setTextColor(0xE521);
-    tft.setFreeFont(&FreeSansBold9pt7b);
-    tft.drawString("322.1", 210, 55);
-    // string 12
-    tft.setTextColor(0xFDED);
+    tft.drawString("Mileage", 220, 25);
+
+    // Wert für Kilometerstand
+    // tft.setTextColor(FARBE_WERTE);
+    // tft.setFreeFont(&FreeSansBold9pt7b);
+    // tft.drawString("322.1", 210, 55);
+
+    tft.setTextColor(FARBE_EINHEITEN);
     tft.setFreeFont(&FreeSans9pt7b);
     tft.drawString("km", 255, 55);
-    // string 13
-    tft.setTextColor(0xFFFF);
+
+    tft.setTextColor(FARBE_TEXT_WEISS);
     tft.drawString("Total Time", 205, 100);
-    // string 14
-    tft.setTextColor(0xE521);
-    tft.drawString("04:59:01", 215, 130);
-    // string 15
-    tft.setTextColor(0xFFFF);
+
+    // tft.setTextColor(FARBE_WERTE);
+    // tft.drawString("04:59:01", 215, 130);
+
+    tft.setTextColor(FARBE_TEXT_WEISS);
     tft.setFreeFont(&FreeSerif9pt7b);
     tft.drawString("Max", 238, 171);
-    // string 16
-    tft.setTextColor(0xE521);
-    tft.setFreeFont(&FreeSansBold9pt7b);
-    tft.drawString("35.2", 218, 200);
-    // string 17
-    tft.setTextColor(0xFDED);
+
+    // tft.setTextColor(FARBE_WERTE);
+    // tft.setFreeFont(&FreeSansBold9pt7b);
+    // tft.drawString("35.2", 218, 200);
+
+    tft.setTextColor(FARBE_EINHEITEN);
     tft.setFreeFont(&FreeSans9pt7b);
     tft.drawString("km/h", 258, 200);
-    // string 18
-    tft.setTextColor(0x73AF);
+
+    tft.setTextColor(FARBE_LINIEN);
+    tft.setTextSize(1);
     tft.setFreeFont(NULL);
     tft.drawString("v0.4", 292, 229);
 }
