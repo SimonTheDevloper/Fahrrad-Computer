@@ -29,8 +29,7 @@ void setup()
   Serial.begin(115200);
   gpsSerial.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
 
-  tft.init();
-  tft.setRotation(3);
+  initDisplay();
 
   if (!LittleFS.begin(true)) // startet LittleFS
   {
@@ -44,6 +43,7 @@ void setup()
 
 void loop()
 {
+  /*
   if (!TEST_MODE)
   {
     verarbeiteGPS();
@@ -64,4 +64,5 @@ void loop()
     berechneGesamtfahrzeit();
     berechneGesamtDistanz();
   }
+    */
 }
