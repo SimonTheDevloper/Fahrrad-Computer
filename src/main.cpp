@@ -43,7 +43,7 @@ void setup()
 
 void loop()
 {
-  /*
+
   if (!TEST_MODE)
   {
     verarbeiteGPS();
@@ -64,5 +64,4 @@ void loop()
     berechneGesamtfahrzeit();
     berechneGesamtDistanz();
   }
-    */
 }
