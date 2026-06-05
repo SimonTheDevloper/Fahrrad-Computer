@@ -93,7 +93,9 @@ void aktualisiereWerte()
     tft.setTextColor(FARBE_TEXT_WEISS, FARBE_HINTERGRUND);
     tft.drawString(uhrzeit, 260, 5);
 
-    tft.setTextColor(FARBE_SPEED, FARBE_HINTERGRUND);
+    tft.fillRect(15, 60, 165, 95, FARBE_HINTERGRUND); // damit es nicht mehr alte Zahlen da sind
+
+    tft.setTextColor(FARBE_SPEED);
     tft.setTextSize(6);
     tft.setFreeFont(&FreeSansBold9pt7b);
 
@@ -102,9 +104,13 @@ void aktualisiereWerte()
 
     if (speedInt < 10)
     {
-        speedText = " " + speedText;
+        tft.fillRect(85, 60, 80, 95, FARBE_HINTERGRUND);
+        tft.drawString(speedText, 50, 70);
     }
-    tft.drawString(speedText, 25, 70);
+    else
+    {
+        tft.drawString(speedText, 25, 70);
+    }
 
     tft.setTextSize(1);
     tft.setFreeFont(&FreeSansBold9pt7b);
