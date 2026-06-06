@@ -48,7 +48,7 @@ void verarbeiteGPS()
 void aendereTestGPSDaten()
 {
     static float fakeSpeed = 0;
-    fakeSpeed += 0.5;
+    fakeSpeed += 1;
 
     if (fakeSpeed > 30)
         fakeSpeed = 0;

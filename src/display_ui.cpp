@@ -87,13 +87,25 @@ void zeichneGrundLayout(void)
 
 void aktualisiereWerte()
 {
+    static String letzteUhrzeit = "";
+    static int letztesSpeedInt = -1;
+    static String letzteGesamtStrecke = "";
+    static String letzteGesamtFahrzeit = "";
+    static String letztesMaxSpeed = "";
+
     bekommeUhrzeit();
+
     tft.setFreeFont(NULL);
     tft.setTextSize(2);
     tft.setTextColor(FARBE_TEXT_WEISS, FARBE_HINTERGRUND);
-    tft.drawString(uhrzeit, 260, 5);
+    if (letzteUhrzeit != String(uhrzeit))
+    {
+        tft.drawString(uhrzeit, 260, 5);
 
-    tft.fillRect(15, 60, 165, 95, FARBE_HINTERGRUND); // damit es nicht mehr alte Zahlen da sind
+        tft.fillRect(15, 60, 165, 95, FARBE_HINTERGRUND); // damit es nicht mehr alte Zahlen da sind
+
+        letzteUhrzeit = String(uhrzeit);
+    }
 
     tft.setTextColor(FARBE_SPEED);
     tft.setTextSize(6);
@@ -102,14 +114,20 @@ void aktualisiereWerte()
     int speedInt = (int)speed; // dadurch gehen die kommazahlen weg
     String speedText = String(speedInt);
 
-    if (speedInt < 10)
+    if (letztesSpeedInt != speedInt)
     {
-        tft.fillRect(85, 60, 80, 95, FARBE_HINTERGRUND);
-        tft.drawString(speedText, 50, 70);
-    }
-    else
-    {
-        tft.drawString(speedText, 25, 70);
+        tft.fillRect(5, 50, 165, 110, FARBE_HINTERGRUND);
+
+        if (speedInt < 10)
+        {
+
+            tft.drawString(speedText, 50, 70);
+        }
+        else
+        {
+            tft.drawString(speedText, 25, 70);
+        }
+        letztesSpeedInt = speedInt;
     }
 
     tft.setTextSize(1);
@@ -117,11 +135,28 @@ void aktualisiereWerte()
     tft.setTextColor(FARBE_WERTE, FARBE_HINTERGRUND);
 
     String kmText = String(meterToKm(gesamtStrecke), 1);
-    tft.drawString(kmText, 205, 62);
+    if (letzteGesamtStrecke != String(gesamtFahrtZeit))
+    {
+        tft.drawString(kmText, 205, 62);
+
+        letzteGesamtStrecke = kmText;
+    }
 
     String zeitText = formatTime(gesamtFahrtZeit);
-    tft.drawString(zeitText, 205, 133);
+    if (letzteGesamtFahrzeit != String(gesamtFahrtZeit))
+    {
+        tft.drawString(zeitText, 205, 133);
+
+        letzteGesamtFahrzeit = zeitText;
+    }
 
     String maxSpeedText = String(maxSpeed, 1);
-    tft.drawString(maxSpeedText, 205, 205);
+
+    if (letztesMaxSpeed != maxSpeedText)
+    {
+
+        tft.drawString(maxSpeedText, 205, 205);
+
+        letztesMaxSpeed = maxSpeedText;
+    }
 }
