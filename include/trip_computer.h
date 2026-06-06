@@ -13,6 +13,7 @@ void berechneDistanz();
 void bekommeUhrzeit();
 void speichereStatistiken();
 void ladeStatistiken();
+void berechneSpeed();
 
 void showLoadStaticsInfo();
 

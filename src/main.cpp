@@ -5,7 +5,7 @@
 #include "trip_computer.h"
 #include "display_ui.h"
 
-extern const bool TEST_MODE = true;
+extern const bool TEST_MODE = false;
 
 #define GPS_RX 32
 #define GPS_TX 33
@@ -36,14 +36,13 @@ void setup()
     Serial.println("LittleFS could not be started");
     return;
   }
-
+  LittleFS.format();
   ladeStatistiken();
   zeichneGrundLayout();
 }
 
 void loop()
 {
-
   if (!TEST_MODE)
   {
     verarbeiteGPS();
@@ -53,14 +52,13 @@ void loop()
   {
     letztesSekunde = millis();
 
-    verwalteSpeicherIntervall();
-
     if (TEST_MODE)
     {
       aendereTestGPSDaten();
-      aktualisiereWerte();
     }
 
+    aktualisiereWerte();
+    verwalteSpeicherIntervall();
     berechneGesamtfahrzeit();
     berechneGesamtDistanz();
   }

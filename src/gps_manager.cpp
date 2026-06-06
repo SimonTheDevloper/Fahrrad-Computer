@@ -1,6 +1,7 @@
 #include "gps_manager.h"
 #include "trip_computer.h"
 #include "display_ui.h"
+#include "mock_daten.h"
 
 TinyGPSPlus gps;
 HardwareSerial gpsSerial(2); // Nutzt Serial 2 des ESP32
@@ -34,6 +35,7 @@ void verarbeiteGPS()
             maxSpeed = speed;
 
         satellites = gps.satellites.value();
+        Serial.println(satellites);
         day = gps.date.day();
         month = gps.date.month();
         year = gps.date.year();
@@ -41,32 +43,22 @@ void verarbeiteGPS()
         hour = gps.time.hour();
         minute = gps.time.minute();
         second = gps.time.second();
-
         aktualisiereWerte();
     }
 }
 void aendereTestGPSDaten()
 {
-    static float fakeSpeed = 0;
-    fakeSpeed += 1;
+    static int aktuelleKoordinatenIndex = 0;
+    latitude = MOCK_ROUTE[aktuelleKoordinatenIndex].lat;
+    longitude = MOCK_ROUTE[aktuelleKoordinatenIndex].lon;
 
-    if (fakeSpeed > 30)
-        fakeSpeed = 0;
+    speed = (distanzInMetern * 3.6);
 
-    speed = fakeSpeed;
+    aktuelleKoordinatenIndex++;
+    if (aktuelleKoordinatenIndex >= MOCK_ROUTE_LAENGE)
+    {
+        aktuelleKoordinatenIndex = 0;
+    }
 
-    berechneDurschnittsSpeed(speed);
-    if (speed > maxSpeed)
-        maxSpeed = speed;
-    altitude = 500 + fakeSpeed;
-
-    static int testSatellitesVal = 0;
-    testSatellitesVal += 1;
-
-    if (testSatellitesVal > 16)
-        testSatellitesVal = 0;
-    satellites = testSatellitesVal;
-
-    latitude = 22.34556 + fakeSpeed * 0.0001;
-    longitude = 32.5654 + fakeSpeed * 0.0001;
+    aktualisiereWerte();
 }

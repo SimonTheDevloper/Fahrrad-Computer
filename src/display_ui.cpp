@@ -87,7 +87,7 @@ void zeichneGrundLayout(void)
 
 void aktualisiereWerte()
 {
-    static String letzteUhrzeit = "";
+    static String letzteUhrzeit = ""; // Wie eine globale Variable, die aber sicher verpackt nur innerhalb dieser Funktion existiert
     static int letztesSpeedInt = -1;
     static String letzteGesamtStrecke = "";
     static String letzteGesamtFahrzeit = "";
