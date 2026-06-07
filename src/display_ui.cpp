@@ -102,8 +102,6 @@ void aktualisiereWerte()
     {
         tft.drawString(uhrzeit, 260, 5);
 
-        tft.fillRect(15, 60, 165, 95, FARBE_HINTERGRUND); // damit es nicht mehr alte Zahlen da sind
-
         letzteUhrzeit = String(uhrzeit);
     }
 
@@ -120,7 +118,6 @@ void aktualisiereWerte()
 
         if (speedInt < 10)
         {
-
             tft.drawString(speedText, 50, 70);
         }
         else
@@ -135,7 +132,7 @@ void aktualisiereWerte()
     tft.setTextColor(FARBE_WERTE, FARBE_HINTERGRUND);
 
     String kmText = String(meterToKm(gesamtStrecke), 1);
-    if (letzteGesamtStrecke != String(gesamtFahrtZeit))
+    if (letzteGesamtStrecke != kmText)
     {
         tft.drawString(kmText, 205, 62);
 
@@ -143,7 +140,7 @@ void aktualisiereWerte()
     }
 
     String zeitText = formatTime(gesamtFahrtZeit);
-    if (letzteGesamtFahrzeit != String(gesamtFahrtZeit))
+    if (letzteGesamtFahrzeit != zeitText)
     {
         tft.drawString(zeitText, 205, 133);
 
