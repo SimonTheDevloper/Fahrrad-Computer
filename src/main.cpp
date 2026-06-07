@@ -5,7 +5,7 @@
 #include "trip_computer.h"
 #include "display_ui.h"
 
-extern const bool TEST_MODE = false;
+extern const bool TEST_MODE = true;
 
 #define GPS_RX 32
 #define GPS_TX 33
@@ -51,15 +51,20 @@ void loop()
   if (millis() - letztesSekunde >= 1000)
   {
     letztesSekunde = millis();
-
     if (TEST_MODE)
     {
       aendereTestGPSDaten();
     }
 
+    berechneGesamtDistanz();
+
+    if (TEST_MODE)
+    {
+      speed = (distanzInMetern * 3.6);
+    }
+
     aktualisiereWerte();
     verwalteSpeicherIntervall();
     berechneGesamtfahrzeit();
-    berechneGesamtDistanz();
   }
 }

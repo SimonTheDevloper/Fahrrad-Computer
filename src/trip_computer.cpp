@@ -72,6 +72,7 @@ void berechneDistanz()
     {
         letzteLat = latitude;
         letzteLong = longitude;
+        distanzInMetern = 0.0;
         return;
     }
     distanzInMetern = TinyGPSPlus::distanceBetween( // das berechnet es einfach schon
@@ -104,7 +105,7 @@ void speichereStatistiken()
     datei.println(gesamtFahrtZeit);
     datei.println(maxSpeed);
 
-    showAutoSaveInfo();
+    // showAutoSaveInfo();
 
     datei.close();
 }
@@ -121,7 +122,7 @@ void ladeStatistiken()
     gesamtFahrtZeit = datei.parseInt();
     maxSpeed = datei.parseFloat();
 
-    showLoadStaticsInfo();
+    // showLoadStaticsInfo();
 
     datei.close();
 }

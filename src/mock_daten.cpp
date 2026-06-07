@@ -1,5 +1,7 @@
 #include "mock_daten.h"
 const GpsKoordinate MOCK_ROUTE[] = {
+    // Koordinaten sind KI generiert
+
     // Phase 1: Sanftes Anfahren (0 bis ca. 18 km/h)
     {50.941300, 6.961300}, // Start (0 km/h)
     {50.941300, 6.961314}, // ca. 3,5 km/h

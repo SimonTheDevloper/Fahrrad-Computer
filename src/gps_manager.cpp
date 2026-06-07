@@ -49,16 +49,36 @@ void verarbeiteGPS()
 void aendereTestGPSDaten()
 {
     static int aktuelleKoordinatenIndex = 0;
+    static bool vorwaers = true;
     latitude = MOCK_ROUTE[aktuelleKoordinatenIndex].lat;
     longitude = MOCK_ROUTE[aktuelleKoordinatenIndex].lon;
 
-    speed = (distanzInMetern * 3.6);
+    berechneDurschnittsSpeed(speed);
 
-    aktuelleKoordinatenIndex++;
-    if (aktuelleKoordinatenIndex >= MOCK_ROUTE_LAENGE)
+    if (speed > maxSpeed)
+        maxSpeed = speed;
+
+    if (vorwaers)
     {
-        aktuelleKoordinatenIndex = 0;
+        aktuelleKoordinatenIndex++;
+    }
+    else
+    {
+        aktuelleKoordinatenIndex--;
     }
 
+    if (aktuelleKoordinatenIndex >= MOCK_ROUTE_LAENGE)
+    {
+        aktuelleKoordinatenIndex = MOCK_ROUTE_LAENGE - 1;
+        vorwaers = false;
+    }
+
+    if (aktuelleKoordinatenIndex < 0)
+    {
+        aktuelleKoordinatenIndex = 0;
+        vorwaers = true;
+    }
+    Serial.print("KoordIndex: ");
+    Serial.println(aktuelleKoordinatenIndex);
     aktualisiereWerte();
 }
