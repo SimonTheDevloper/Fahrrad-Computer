@@ -15,6 +15,8 @@ int satellites = 0;
 int day = 0;
 int month = 0;
 int year = 0;
+
+int utcHour = 0;
 void verarbeiteGPS()
 {
     while (gpsSerial.available() > 0)
@@ -40,7 +42,7 @@ void verarbeiteGPS()
         month = gps.date.month();
         year = gps.date.year();
 
-        hour = gps.time.hour();
+        utcHour = gps.time.hour();
         minute = gps.time.minute();
         second = gps.time.second();
         aktualisiereWerte();

@@ -13,7 +13,7 @@ void berechneDistanz();
 void bekommeUhrzeit();
 void speichereStatistiken();
 void ladeStatistiken();
-void berechneSpeed();
+void berechneHour();
 
 void showLoadStaticsInfo();
 
@@ -23,9 +23,6 @@ extern unsigned long gesamtFahrtZeit;
 extern float durchschnittSpeed;
 extern float speedSum;
 extern int speedCount;
-extern int hour;
-extern int minute;
-extern int second;
 extern char uhrzeit[16];
 extern double letzteLat;
 extern double letzteLong;

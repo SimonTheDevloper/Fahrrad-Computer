@@ -84,8 +84,17 @@ void berechneDistanz()
     letzteLat = latitude;
     letzteLong = longitude;
 }
+void berechneHour()
+{
+    hour = utcHour + 2;
+    if (hour >= 24)
+    {
+        hour = -24;
+    }
+}
 void bekommeUhrzeit()
 {
+    berechneHour();
     sprintf(uhrzeit,          // sprintf() baut aus Variablen einen Text zusammen.
             "%02d:%02d:%02d", // das macht das es auch 04 statt einfach 4 sein kann und ist natührlich ein platzhalter
             hour,

@@ -19,4 +19,9 @@ extern int day;
 extern int month;
 extern int year;
 
+extern int utcHour;
+extern int hour;
+extern int minute;
+extern int second;
+
 #endif
