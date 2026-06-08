@@ -34,3 +34,19 @@ void showLoadStaticsInfo()
     Serial.println(" km/h");
     Serial.println("====================================\n");
 }
+
+void showGPSDaten()
+{
+    Serial.print("Latitude: ");
+    Serial.println(latitude, 6);
+
+    Serial.print("Longitude: ");
+    Serial.println(longitude, 6);
+
+    Serial.print("Altitude: ");
+    Serial.print(altitude);
+    Serial.println(" m");
+
+    Serial.print("Satalites: ");
+    Serial.println(satellites);
+}

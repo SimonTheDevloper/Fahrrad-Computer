@@ -2,6 +2,7 @@
 #include "trip_computer.h"
 #include "display_ui.h"
 #include "mock_daten.h"
+#include "debug_helper.h"
 
 TinyGPSPlus gps;
 HardwareSerial gpsSerial(2); // Nutzt Serial 2 des ESP32
@@ -46,8 +47,10 @@ void verarbeiteGPS()
         minute = gps.time.minute();
         second = gps.time.second();
         aktualisiereWerte();
+        showGPSDaten();
     }
 }
+
 void aendereTestGPSDaten()
 {
     static int aktuelleKoordinatenIndex = 0;

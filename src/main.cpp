@@ -23,7 +23,6 @@ void verwalteSpeicherIntervall()
     speichereStatistiken();
   }
 }
-
 void setup()
 {
   Serial.begin(115200);
@@ -36,7 +35,7 @@ void setup()
     Serial.println("LittleFS could not be started");
     return;
   }
-  LittleFS.format();
+  // LittleFS.format();
   ladeStatistiken();
   zeichneGrundLayout();
 }

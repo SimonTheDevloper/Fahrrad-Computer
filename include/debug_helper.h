@@ -5,5 +5,6 @@
 
 void showAutoSaveInfo();
 void showLoadStaticsInfo();
+void showGPSDaten();
 
 #endif
