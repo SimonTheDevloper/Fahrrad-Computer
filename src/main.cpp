@@ -20,13 +20,23 @@ int day = 0;
 int month = 0;
 int year = 0;
 
-void zeigeBildschirm();
-void verarbeiteGPS();
+const int BTN_X = 50;
+const int BTN_Y = 100;
+const int BTN_BREITE = 100;
+const int BTN_HOEHE = 50;
 
-void zeigeBildschirm()
+void zeigeBtn();
+
+void zeigeBtn()
 {
-}
 
+  tft.fillRoundRect(BTN_X, BTN_Y, BTN_BREITE, BTN_HOEHE, 8, TFT_BLUE);
+}
+bool gedruecktImBtn(uint16_t x, uint16_t y)
+{
+  return x >= 50 && x <= 150 &&
+         y >= 100 && y <= 150;
+}
 void setup()
 {
   Serial.begin(115200);
@@ -34,22 +44,29 @@ void setup()
   gpsSerial.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
   tft.init();
   tft.setRotation(3);
+  tft.fillScreen(TFT_BLACK);
 
   uint16_t calData[5] = {275, 3620, 264, 3532, 1}; // fürs kalibrieren
   tft.setTouch(calData);
-  zeigeBildschirm();
+  zeigeBtn();
 }
 
 void loop()
 {
   uint16_t x = 0, y = 0;               // kurzschreibweise wenn man mit , trennt
   bool beruert = tft.getTouch(&x, &y); // liest die Touch-Position und schreibt die X- und Y-Werte direkt in x und y
+  if (beruert)
   {
-    Serial.println("Beruerung entdeckt");
+    Serial.println("Touch detected");
     Serial.print("X: ");
     Serial.print(x);
 
     Serial.print(" Y: ");
     Serial.println(y);
+
+    if (gedruecktImBtn(x, y))
+    {
+      Serial.println("Pressed on BTN!");
+    }
   }
 }
