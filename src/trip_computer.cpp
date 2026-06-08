@@ -14,6 +14,7 @@ int second = 0;
 char uhrzeit[16];
 double letzteLat = 0.0;
 double letzteLong = 0.0;
+const int UTC_OFFSET = 2;
 
 String formatTime(unsigned long sek) // mit String am anfang sagt man schon am anfang das es einen String zurück gibt
 {
@@ -86,7 +87,7 @@ void berechneDistanz()
 }
 void berechneHour()
 {
-    hour = utcHour + 2;
+    hour = utcHour + UTC_OFFSET;
     if (hour >= 24)
     {
         hour = -24;
