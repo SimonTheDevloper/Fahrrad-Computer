@@ -22,20 +22,27 @@ int year = 0;
 
 const int BTN_X = 50;
 const int BTN_Y = 100;
-const int BTN_BREITE = 100;
+const int BTN_BREITE = 88;
 const int BTN_HOEHE = 50;
+
+bool btnAktiv = false;
+bool letzterTouch = false;
+
+uint16_t BTN_FARBE = TFT_BLUE;
 
 void zeigeBtn();
 
 void zeigeBtn()
 {
 
-  tft.fillRoundRect(BTN_X, BTN_Y, BTN_BREITE, BTN_HOEHE, 8, TFT_BLUE);
+  tft.fillRoundRect(BTN_X, BTN_Y, BTN_BREITE, BTN_HOEHE, 8, BTN_FARBE);
 }
 bool gedruecktImBtn(uint16_t x, uint16_t y)
 {
-  return x >= 50 && x <= 150 &&
-         y >= 100 && y <= 150;
+  return x >= BTN_X &&
+         x <= BTN_X + BTN_BREITE &&
+         y >= BTN_Y &&
+         y <= BTN_Y + BTN_HOEHE;
 }
 void setup()
 {
@@ -53,9 +60,9 @@ void setup()
 
 void loop()
 {
-  uint16_t x = 0, y = 0;               // kurzschreibweise wenn man mit , trennt
-  bool beruert = tft.getTouch(&x, &y); // liest die Touch-Position und schreibt die X- und Y-Werte direkt in x und y
-  if (beruert)
+  uint16_t x = 0, y = 0;             // kurzschreibweise wenn man mit , trennt
+  bool touch = tft.getTouch(&x, &y); // liest die Touch-Position und schreibt die X- und Y-Werte direkt in x und y
+  if (touch && !letzterTouch)
   {
     Serial.println("Touch detected");
     Serial.print("X: ");
@@ -67,6 +74,19 @@ void loop()
     if (gedruecktImBtn(x, y))
     {
       Serial.println("Pressed on BTN!");
+      btnAktiv = !btnAktiv;
+
+      if (btnAktiv)
+      {
+        BTN_FARBE = TFT_YELLOW;
+      }
+      else
+      {
+        BTN_FARBE = TFT_BLUE;
+      }
+      zeigeBtn();
     }
   }
+  letzterTouch = touch;
 }
+qweqwsqws
