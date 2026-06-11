@@ -27,4 +27,9 @@ extern char uhrzeit[16];
 extern double letzteLat;
 extern double letzteLong;
 
+extern double sessionStrecke;
+extern unsigned long sessionFahrtZeit;
+extern float avgSpeed;
+extern float sessionMaxSpeed;
+
 #endif

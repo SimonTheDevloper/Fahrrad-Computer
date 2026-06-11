@@ -9,6 +9,9 @@ extern TFT_eSPI tft;
 void initDisplay();
 void zeichneGrundLayout();
 void aktualisiereWerte();
+void zeichneSessionLayout();
+void aktualisiereSessionScreenWerte();
+
 uint16_t gpsColor();
 
 #endif

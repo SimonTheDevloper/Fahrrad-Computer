@@ -16,6 +16,11 @@ double letzteLat = 0.0;
 double letzteLong = 0.0;
 const int UTC_OFFSET = 2;
 
+double sessionStrecke = 0.0;
+unsigned long sessionFahrtZeit = 0.0;
+float avgSpeed = 0.0;
+float sessionMaxSpeed = 0.0;
+
 String formatTime(unsigned long sek) // mit String am anfang sagt man schon am anfang das es einen String zurück gibt
 {
     unsigned long stunden = sek / 3600;

@@ -37,14 +37,15 @@ void setup()
   }
   // LittleFS.format();
   ladeStatistiken();
-  zeichneGrundLayout();
+  // zeichneGrundLayout();
+  zeichneSessionLayout();
 }
 
 void loop()
 {
   if (!TEST_MODE)
   {
-    verarbeiteGPS();
+    // verarbeiteGPS();
   }
 
   if (millis() - letztesSekunde >= 1000)
@@ -62,7 +63,8 @@ void loop()
       speed = (distanzInMetern * 3.6);
     }
 
-    aktualisiereWerte();
+    aktualisiereSessionScreenWerte();
+    // aktualisiereWerte();
     verwalteSpeicherIntervall();
     berechneGesamtfahrzeit();
   }

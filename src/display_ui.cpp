@@ -157,3 +157,107 @@ void aktualisiereWerte()
         letztesMaxSpeed = maxSpeedText;
     }
 }
+
+void aktualisiereSessionScreenWerte()
+{
+    static String letzteDistanz = "";
+    static String letzteZeit = "";
+    static String letzterAvgSpeed = "";
+    static String letzterMaxSpeed = "";
+
+    String distanzText = String(meterToKm(sessionStrecke), 1);
+
+    if (distanzText != letzteDistanz)
+    {
+        tft.fillRect(20, 50, 80, 25, FARBE_HINTERGRUND);
+
+        tft.setTextColor(FARBE_WERTE);
+        tft.setFreeFont(&FreeSansBold9pt7b);
+        tft.drawString(distanzText, 20, 60);
+
+        letzteDistanz = distanzText;
+    }
+
+    String zeitText = formatTime(sessionFahrtZeit);
+
+    if (zeitText != letzteZeit)
+    {
+        tft.fillRect(180, 50, 120, 25, FARBE_HINTERGRUND);
+
+        tft.setTextColor(FARBE_WERTE);
+        tft.setFreeFont(&FreeSansBold9pt7b);
+        tft.drawString(zeitText, 180, 60);
+
+        letzteZeit = zeitText;
+    }
+
+    String avgText = String(avgSpeed, 1);
+
+    if (avgText != letzterAvgSpeed)
+    {
+        tft.fillRect(20, 125, 80, 25, FARBE_HINTERGRUND);
+
+        tft.setTextColor(FARBE_WERTE);
+        tft.setFreeFont(&FreeSansBold9pt7b);
+        tft.drawString(avgText, 20, 135);
+
+        letzterAvgSpeed = avgText;
+    }
+    String maxText = String(sessionMaxSpeed, 1);
+
+    if (maxText != letzterMaxSpeed)
+    {
+        tft.fillRect(180, 125, 80, 25, FARBE_HINTERGRUND);
+
+        tft.setTextColor(FARBE_WERTE);
+        tft.setFreeFont(&FreeSansBold9pt7b);
+        tft.drawString(maxText, 180, 135);
+
+        letzterMaxSpeed = maxText;
+    }
+}
+
+void zeichneSessionLayout()
+{
+    tft.fillScreen(FARBE_HINTERGRUND);
+    tft.setTextColor(FARBE_TEXT_WEISS);
+    tft.setTextSize(1);
+    tft.setFreeFont(&FreeSerif9pt7b);
+    tft.drawString("Session Record", 5, 3);
+
+    tft.drawLine(1, 20, 319, 20, FARBE_LINIEN);
+
+    tft.drawString("Session Dist", 20, 35);
+
+    tft.setTextColor(FARBE_EINHEITEN);
+    tft.setFreeFont(&FreeSans9pt7b);
+    tft.drawString("km", 70, 60);
+
+    tft.setTextColor(FARBE_TEXT_WEISS);
+    tft.drawString("Session Time", 180, 35);
+
+    tft.drawLine(1, 95, 319, 95, FARBE_LINIEN);
+
+    tft.setTextColor(FARBE_TEXT_WEISS);
+    tft.setFreeFont(&FreeSans9pt7b);
+    tft.drawString("Avg Speed", 20, 110);
+
+    tft.setTextColor(FARBE_EINHEITEN);
+    tft.setFreeFont(&FreeSans9pt7b);
+    tft.drawString("km/h", 70, 135);
+
+    tft.setTextColor(FARBE_TEXT_WEISS);
+    tft.drawString("Max Speed", 180, 110);
+
+    tft.setTextColor(FARBE_EINHEITEN);
+    tft.setFreeFont(&FreeSans9pt7b);
+    tft.drawString("km/h", 230, 135);
+
+    tft.drawLine(1, 165, 319, 165, FARBE_LINIEN);
+
+    tft.fillRoundRect(80, 180, 160, 45, 8, FARBE_WERTE);
+
+    tft.setTextColor(FARBE_HINTERGRUND);
+    tft.setFreeFont(&FreeSansBold9pt7b);
+    tft.drawString("START / PAUSE", 95, 194);
+}
