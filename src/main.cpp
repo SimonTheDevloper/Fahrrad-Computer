@@ -43,6 +43,10 @@ void setup()
 
 void loop()
 {
+  if (aktiverScreen == SCREEN_SESSION)
+  {
+    aktualisiereWerte();
+  }
   if (!TEST_MODE)
   {
     // verarbeiteGPS();
@@ -63,8 +67,7 @@ void loop()
       speed = (distanzInMetern * 3.6);
     }
 
-    aktualisiereSessionScreenWerte();
-    // aktualisiereWerte();
+    updateAktivenScreen();
     verwalteSpeicherIntervall();
     berechneGesamtfahrzeit();
   }
