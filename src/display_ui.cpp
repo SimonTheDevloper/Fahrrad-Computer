@@ -15,11 +15,6 @@ extern String formatTime(unsigned long sek);
 
 TFT_eSPI tft = TFT_eSPI();
 
-enum Screen // macht einen neuen Datentyp Screen wo man dann mehrer zustände definieren kann was Screen sein kann
-{
-    SCREEN_MAIN, // so kann man mit Wörtern auch Zahlen machen. Intern würde hier 0 stehen
-    SCREEN_SESSION
-};
 Screen aktiverScreen = SCREEN_SESSION;
 
 void initDisplay()
@@ -284,5 +279,14 @@ void updateAktivenScreen()
 
 void setNewScreen(Screen neuerScreen) // hier auch wieder den extra Datentyp nehemn
 {
-    Screen aktiverScreen = neuerScreen;
+    aktiverScreen = neuerScreen;
+
+    if (aktiverScreen == SCREEN_MAIN)
+    {
+        zeichneGrundLayout();
+    }
+    else if (aktiverScreen == SCREEN_SESSION)
+    {
+        zeichneSessionLayout();
+    }
 }
