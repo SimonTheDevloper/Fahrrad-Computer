@@ -10,8 +10,7 @@ HardwareSerial gpsSerial(2); // Nutzt Serial 2 des ESP32
 double latitude = 0.0;
 double longitude = 0.0;
 double altitude = 0.0;
-float speed = 0.0;
-float maxSpeed = 0.0;
+float currentSpeed = 0.0;
 int satellites = 0;
 int day = 0;
 int month = 0;
@@ -30,12 +29,10 @@ void verarbeiteGPS()
         latitude = gps.location.lat();
         longitude = gps.location.lng();
         altitude = gps.altitude.meters();
-        speed = gps.speed.kmph();
+        currentSpeed = gps.speed.kmph();
 
-        berechneDurschnittsSpeed(speed);
-
-        if (speed > maxSpeed)
-            maxSpeed = speed;
+        berechneDurschnittsSpeed(currentSpeed);
+        berechneMaxSpeed();
 
         satellites = gps.satellites.value();
         Serial.println(satellites);
@@ -58,10 +55,9 @@ void aendereTestGPSDaten()
     latitude = MOCK_ROUTE[aktuelleKoordinatenIndex].lat;
     longitude = MOCK_ROUTE[aktuelleKoordinatenIndex].lon;
 
-    berechneDurschnittsSpeed(speed);
+    berechneDurschnittsSpeed(currentSpeed);
 
-    if (speed > maxSpeed)
-        maxSpeed = speed;
+    berechneMaxSpeed();
 
     if (vorwaers)
     {

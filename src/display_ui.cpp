@@ -111,7 +111,7 @@ void aktualisiereWerte()
     tft.setTextSize(6);
     tft.setFreeFont(&FreeSansBold9pt7b);
 
-    int speedInt = (int)speed; // dadurch gehen die kommazahlen weg
+    int speedInt = (int)currentSpeed; // dadurch gehen die kommazahlen weg
     String speedText = String(speedInt);
 
     if (letztesSpeedInt != speedInt)
@@ -193,7 +193,7 @@ void aktualisiereSessionScreenWerte()
         letzteZeit = zeitText;
     }
 
-    String avgText = String(avgSpeed, 1);
+    String avgText = String(sessionAvgSpeed, 1);
 
     if (avgText != letzterAvgSpeed)
     {
@@ -263,6 +263,7 @@ void zeichneSessionLayout()
     tft.setFreeFont(&FreeSansBold9pt7b);
     tft.drawString("START / PAUSE", 95, 194);
 }
+
 void updateAktivenScreen()
 {
     switch (aktiverScreen)

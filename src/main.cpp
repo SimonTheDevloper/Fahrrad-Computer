@@ -37,16 +37,11 @@ void setup()
   }
   // LittleFS.format();
   ladeStatistiken();
-  // zeichneGrundLayout();
-  zeichneSessionLayout();
+  setNewScreen(SCREEN_MAIN);
 }
 
 void loop()
 {
-  if (aktiverScreen == SCREEN_SESSION)
-  {
-    aktualisiereWerte();
-  }
   if (!TEST_MODE)
   {
     // verarbeiteGPS();
@@ -64,7 +59,7 @@ void loop()
 
     if (TEST_MODE)
     {
-      speed = (distanzInMetern * 3.6);
+      currentSpeed = (distanzInMetern * 3.6);
     }
 
     updateAktivenScreen();

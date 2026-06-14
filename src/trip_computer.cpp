@@ -15,11 +15,11 @@ char uhrzeit[16];
 double letzteLat = 0.0;
 double letzteLong = 0.0;
 const int UTC_OFFSET = 2;
-
 double sessionStrecke = 0.0;
 unsigned long sessionFahrtZeit = 0.0;
-float avgSpeed = 0.0;
+float sessionAvgSpeed = 0.0;
 float sessionMaxSpeed = 0.0;
+float maxSpeed = 0.0;
 
 String formatTime(unsigned long sek) // mit String am anfang sagt man schon am anfang das es einen String zurück gibt
 {
@@ -43,6 +43,7 @@ void berechneGesamtDistanz()
     if (distanzInMetern > 1.5)
     {
         gesamtStrecke += distanzInMetern;
+        sessionStrecke += distanzInMetern;
         Serial.print("Total distance in km: ");
         Serial.println(meterToKm(gesamtStrecke));
     }
@@ -53,8 +54,9 @@ void berechneGesamtDistanz()
 }
 void berechneGesamtfahrzeit()
 {
-    if (speed > 1.5)
+    if (currentSpeed > 1.5)
     {
+        sessionFahrtZeit++;
         gesamtFahrtZeit++;
         Serial.print("Gesmatfahrzeit: ");
         Serial.println(formatTime(gesamtFahrtZeit));
@@ -98,6 +100,17 @@ void berechneHour()
         hour = -24;
     }
 }
+void berechneMaxSpeed()
+{
+    if (currentSpeed > maxSpeed)
+        maxSpeed = currentSpeed;
+
+    if (currentSpeed > sessionMaxSpeed)
+    {
+        sessionMaxSpeed = currentSpeed;
+    }
+}
+
 void bekommeUhrzeit()
 {
     berechneHour();

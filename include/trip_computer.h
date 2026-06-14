@@ -14,6 +14,7 @@ void bekommeUhrzeit();
 void speichereStatistiken();
 void ladeStatistiken();
 void berechneHour();
+void berechneMaxSpeed();
 
 void showLoadStaticsInfo();
 
@@ -23,13 +24,14 @@ extern unsigned long gesamtFahrtZeit;
 extern float durchschnittSpeed;
 extern float speedSum;
 extern int speedCount;
+extern float maxSpeed;
 extern char uhrzeit[16];
 extern double letzteLat;
 extern double letzteLong;
 
 extern double sessionStrecke;
 extern unsigned long sessionFahrtZeit;
-extern float avgSpeed;
+extern float sessionAvgSpeed;
 extern float sessionMaxSpeed;
 
 #endif
