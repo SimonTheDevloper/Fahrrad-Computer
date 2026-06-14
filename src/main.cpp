@@ -11,6 +11,7 @@ extern const bool TEST_MODE = false;
 #define GPS_TX 33
 
 unsigned long letztesSekunde = 0;
+unsigned long letzteDisplayUpdateZeit = 0;
 int speicherZaeler = 0;
 
 void verwalteSpeicherIntervall()
@@ -37,16 +38,21 @@ void setup()
   }
   // LittleFS.format();
   ladeStatistiken();
-  setNewScreen(SCREEN_MAIN);
+  setNewScreen(SCREEN_SESSION);
 }
 
 void loop()
 {
   if (!TEST_MODE)
   {
-    // verarbeiteGPS();
+    verarbeiteGPS();
   }
 
+  if (millis() - letzteDisplayUpdateZeit >= 200)
+  {
+    letzteDisplayUpdateZeit = millis();
+    updateAktivenScreen();
+  }
   if (millis() - letztesSekunde >= 1000)
   {
     letztesSekunde = millis();
@@ -54,7 +60,6 @@ void loop()
     {
       aendereTestGPSDaten();
     }
-
     berechneGesamtDistanz();
 
     if (TEST_MODE)
@@ -62,7 +67,6 @@ void loop()
       currentSpeed = (distanzInMetern * 3.6);
     }
 
-    updateAktivenScreen();
     verwalteSpeicherIntervall();
     berechneGesamtfahrzeit();
   }
