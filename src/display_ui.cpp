@@ -171,7 +171,7 @@ void aktualisiereSessionScreenWerte()
 
     if (distanzText != letzteDistanz)
     {
-        tft.fillRect(20, 50, 80, 25, FARBE_HINTERGRUND);
+        tft.fillRect(20, 50, 40, 25, FARBE_HINTERGRUND);
 
         tft.setTextColor(FARBE_WERTE);
         tft.setFreeFont(&FreeSansBold9pt7b);
@@ -197,7 +197,7 @@ void aktualisiereSessionScreenWerte()
 
     if (avgText != letzterAvgSpeed)
     {
-        tft.fillRect(20, 125, 80, 25, FARBE_HINTERGRUND);
+        tft.fillRect(20, 129, 40, 22, FARBE_HINTERGRUND);
 
         tft.setTextColor(FARBE_WERTE);
         tft.setFreeFont(&FreeSansBold9pt7b);
@@ -209,7 +209,7 @@ void aktualisiereSessionScreenWerte()
 
     if (maxText != letzterMaxSpeed)
     {
-        tft.fillRect(180, 125, 80, 25, FARBE_HINTERGRUND);
+        tft.fillRect(180, 125, 40, 25, FARBE_HINTERGRUND);
 
         tft.setTextColor(FARBE_WERTE);
         tft.setFreeFont(&FreeSansBold9pt7b);
