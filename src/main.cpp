@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <FS.h>
 #include <LittleFS.h>
-#include "gps_manager.h" //hier müssen alle header geladen werden
+#include "gps_manager.h"
 #include "trip_computer.h"
 #include "display_ui.h"
 
@@ -12,18 +12,21 @@ extern const bool TEST_MODE = false;
 
 unsigned long letztesSekunde = 0;
 unsigned long letzteDisplayUpdateZeit = 0;
+
+bool letzterTouch = false;
+
 int speicherZaeler = 0;
 
 void verwalteSpeicherIntervall()
 {
   speicherZaeler++;
   if (speicherZaeler >= 5)
-
   {
     speicherZaeler = 0;
     speichereStatistiken();
   }
 }
+
 void setup()
 {
   Serial.begin(115200);
@@ -31,18 +34,43 @@ void setup()
 
   initDisplay();
 
-  if (!LittleFS.begin(true)) // startet LittleFS
+  if (!LittleFS.begin(true))
   {
     Serial.println("LittleFS could not be started");
     return;
   }
-  // LittleFS.format();
   ladeStatistiken();
+
   setNewScreen(SCREEN_SESSION);
 }
 
 void loop()
 {
+  uint16_t x = 0, y = 0;
+  bool touch = tft.getTouch(&x, &y);
+
+  if (touch)
+  {
+    if (!letzterTouch)
+    {
+      Serial.println("Touch detected");
+      Serial.print("X: ");
+      Serial.print(x);
+      Serial.print(" Y: ");
+      Serial.println(y);
+
+      if (pruefeStartButton(x, y))
+      {
+        Serial.println("Pressed on BTN!");
+        isSessionRunning = !isSessionRunning;
+      }
+    }
+    letzterTouch = true;
+  }
+  else
+  {
+    letzterTouch = false;
+  }
   if (!TEST_MODE)
   {
     verarbeiteGPS();
@@ -53,6 +81,7 @@ void loop()
     letzteDisplayUpdateZeit = millis();
     updateAktivenScreen();
   }
+
   if (millis() - letztesSekunde >= 1000)
   {
     letztesSekunde = millis();
@@ -60,6 +89,7 @@ void loop()
     {
       aendereTestGPSDaten();
     }
+
     berechneGesamtDistanz();
 
     if (TEST_MODE)

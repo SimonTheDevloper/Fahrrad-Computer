@@ -10,6 +10,12 @@ const uint16_t FARBE_SPEED = 0xFF8D;       // Orange
 const uint16_t FARBE_EINHEITEN = 0xFDED;   // Helles Graublau
 const uint16_t FARBE_WERTE = 0xE521;       // Goldgelb
 
+const int BTN_X = 80;
+const int BTN_Y = 180;
+const int BTN_BREITE = 160;
+const int BTN_HOEHE = 45;
+const int BTN_RADIUS = 8;
+
 extern double meterToKm(double meter);
 extern String formatTime(unsigned long sek);
 
@@ -21,6 +27,9 @@ void initDisplay()
 {
     tft.init();
     tft.setRotation(3);
+
+    uint16_t calData[5] = {275, 3620, 264, 3532, 1}; // fürs kalibrieren
+    tft.setTouch(calData);
 }
 
 extern const bool TEST_MODE;
@@ -257,7 +266,13 @@ void zeichneSessionLayout()
 
     tft.drawLine(1, 165, 319, 165, FARBE_LINIEN);
 
-    tft.fillRoundRect(80, 180, 160, 45, 8, FARBE_WERTE);
+    tft.fillRoundRect(
+        BTN_X,
+        BTN_Y,
+        BTN_BREITE,
+        BTN_HOEHE,
+        BTN_RADIUS,
+        FARBE_WERTE);
 
     tft.setTextColor(FARBE_HINTERGRUND);
     tft.setFreeFont(&FreeSansBold9pt7b);
@@ -290,4 +305,10 @@ void setNewScreen(Screen neuerScreen) // hier auch wieder den extra Datentyp neh
     {
         zeichneSessionLayout();
     }
+}
+
+bool pruefeStartButton(uint16_t x, uint16_t y)
+{
+    return (x >= BTN_X && x <= (BTN_X + BTN_BREITE) &&
+            y >= BTN_Y && y <= (BTN_Y + BTN_HOEHE));
 }

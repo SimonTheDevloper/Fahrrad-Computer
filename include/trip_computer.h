@@ -33,5 +33,6 @@ extern double sessionStrecke;
 extern unsigned long sessionFahrtZeit;
 extern float sessionAvgSpeed;
 extern float sessionMaxSpeed;
+extern bool isSessionRunning;
 
 #endif

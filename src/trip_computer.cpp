@@ -20,6 +20,7 @@ unsigned long sessionFahrtZeit = 0.0;
 float sessionAvgSpeed = 0.0;
 float sessionMaxSpeed = 0.0;
 float maxSpeed = 0.0;
+bool isSessionRunning = false;
 
 String formatTime(unsigned long sek) // mit String am anfang sagt man schon am anfang das es einen String zurück gibt
 {
@@ -43,7 +44,10 @@ void berechneGesamtDistanz()
     if (distanzInMetern > 1.5)
     {
         gesamtStrecke += distanzInMetern;
-        sessionStrecke += distanzInMetern;
+        if (isSessionRunning)
+        {
+            sessionStrecke += distanzInMetern;
+        }
         Serial.print("Total distance in km: ");
         Serial.println(meterToKm(gesamtStrecke));
     }
@@ -56,8 +60,11 @@ void berechneGesamtfahrzeit()
 {
     if (currentSpeed > 1.5)
     {
-        sessionFahrtZeit++;
         gesamtFahrtZeit++;
+        if (isSessionRunning)
+        {
+            sessionFahrtZeit++;
+        }
         Serial.print("Gesmatfahrzeit: ");
         Serial.println(formatTime(gesamtFahrtZeit));
     }

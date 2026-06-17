@@ -2,8 +2,8 @@
 #define DISPLAY_UI_H
 
 #include <Arduino.h>
+#include <TFT_eSPI.h>
 
-class TFT_eSPI;
 extern TFT_eSPI tft;
 enum Screen // macht einen neuen Datentyp Screen wo man dann mehrer zustände definieren kann was Screen sein kann
 {
@@ -19,6 +19,7 @@ void zeichneSessionLayout();
 void aktualisiereSessionScreenWerte();
 void updateAktivenScreen();
 void setNewScreen(Screen neuerScreen);
+bool pruefeStartButton(uint16_t x, uint16_t y);
 
 uint16_t gpsColor();
 
