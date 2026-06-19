@@ -54,17 +54,12 @@ void aendereTestGPSDaten()
     latitude = MOCK_ROUTE[aktuelleKoordinatenIndex].lat;
     longitude = MOCK_ROUTE[aktuelleKoordinatenIndex].lon;
 
-    berechneDurschnittsSpeed(currentSpeed);
-
-    berechneMaxSpeed();
-
     if (vorwaers)
     {
         aktuelleKoordinatenIndex++;
     }
     else
     {
-        aktuelleKoordinatenIndex--;
     }
 
     if (aktuelleKoordinatenIndex >= MOCK_ROUTE_LAENGE)

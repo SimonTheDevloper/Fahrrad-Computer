@@ -5,7 +5,7 @@
 #include "trip_computer.h"
 #include "display_ui.h"
 
-extern const bool TEST_MODE = false;
+extern const bool TEST_MODE = true;
 
 #define GPS_RX 32
 #define GPS_TX 33
@@ -43,7 +43,6 @@ void setup()
 
   setNewScreen(SCREEN_SESSION);
 }
-
 void loop()
 {
   uint16_t x = 0, y = 0;
@@ -95,6 +94,9 @@ void loop()
     if (TEST_MODE)
     {
       currentSpeed = (distanzInMetern * 3.6);
+
+      berechneDurschnittsSpeed(currentSpeed);
+      berechneMaxSpeed();
     }
 
     verwalteSpeicherIntervall();

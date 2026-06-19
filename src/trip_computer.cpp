@@ -77,7 +77,16 @@ void berechneDurschnittsSpeed(float currentspeed)
     if (speedCount > 1)
     {
         durchschnittSpeed = speedSum / speedCount;
-        // Serial.println(durchschnittSpeed);
+    }
+
+    static float sessionSpeedSum = 0.0;
+    static int sessionSpeedCount = 0;
+
+    if (isSessionRunning && currentspeed > 1.5)
+    {
+        sessionSpeedSum += currentspeed;
+        sessionSpeedCount++;
+        sessionAvgSpeed = sessionSpeedSum / sessionSpeedCount;
     }
 }
 
