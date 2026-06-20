@@ -58,10 +58,12 @@ void loop()
       Serial.print(" Y: ");
       Serial.println(y);
 
-      if (pruefeStartButton(x, y))
+      static unsigned long letztePressZeit = 0;
+      if (pruefeStartButton(x, y) && (millis() - letztePressZeit > 500)) // damit es entprellt wird
       {
         Serial.println("Pressed on BTN!");
         isSessionRunning = !isSessionRunning;
+        letztePressZeit = millis();
       }
     }
     letzterTouch = true;

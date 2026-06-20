@@ -119,11 +119,15 @@ void berechneHour()
 void berechneMaxSpeed()
 {
     if (currentSpeed > maxSpeed)
-        maxSpeed = currentSpeed;
-
-    if (currentSpeed > sessionMaxSpeed)
     {
-        sessionMaxSpeed = currentSpeed;
+        maxSpeed = currentSpeed;
+    }
+    if (isSessionRunning)
+    {
+        if (currentSpeed > sessionMaxSpeed)
+        {
+            sessionMaxSpeed = currentSpeed;
+        }
     }
 }
 

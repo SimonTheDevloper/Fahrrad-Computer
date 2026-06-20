@@ -175,6 +175,7 @@ void aktualisiereSessionScreenWerte()
     static String letzteZeit = "";
     static String letzterAvgSpeed = "";
     static String letzterMaxSpeed = "";
+    static int letzterSessionRunningState = -1;
 
     String distanzText = String(meterToKm(sessionStrecke), 1);
 
@@ -225,6 +226,28 @@ void aktualisiereSessionScreenWerte()
         tft.drawString(maxText, 180, 135);
 
         letzterMaxSpeed = maxText;
+    }
+
+    if (isSessionRunning != letzterSessionRunningState)
+    {
+        uint16_t btnFarbe = isSessionRunning ? TFT_RED : FARBE_WERTE;
+        String btnText = isSessionRunning ? "STOPP" : "START";
+
+        tft.fillRoundRect(
+            BTN_X,
+            BTN_Y,
+            BTN_BREITE,
+            BTN_HOEHE,
+            BTN_RADIUS,
+            btnFarbe);
+
+        tft.setTextColor(isSessionRunning ? FARBE_TEXT_WEISS : FARBE_HINTERGRUND);
+        tft.setFreeFont(&FreeSansBold9pt7b);
+        tft.setTextDatum(MC_DATUM); // macht das es das es in die mitte kommt
+        tft.drawString(btnText, BTN_X + BTN_BREITE / 2, BTN_Y + BTN_HOEHE / 2);
+        tft.setTextDatum(TL_DATUM);
+
+        letzterSessionRunningState = isSessionRunning;
     }
 }
 

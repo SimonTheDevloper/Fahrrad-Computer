@@ -57,21 +57,20 @@ void aendereTestGPSDaten()
     if (vorwaers)
     {
         aktuelleKoordinatenIndex++;
+        if (aktuelleKoordinatenIndex >= MOCK_ROUTE_LAENGE)
+        {
+            aktuelleKoordinatenIndex = MOCK_ROUTE_LAENGE - 2;
+            vorwaers = false;
+        }
     }
     else
     {
-    }
-
-    if (aktuelleKoordinatenIndex >= MOCK_ROUTE_LAENGE)
-    {
-        aktuelleKoordinatenIndex = MOCK_ROUTE_LAENGE - 1;
-        vorwaers = false;
-    }
-
-    if (aktuelleKoordinatenIndex < 0)
-    {
-        aktuelleKoordinatenIndex = 0;
-        vorwaers = true;
+        aktuelleKoordinatenIndex--;
+        if (aktuelleKoordinatenIndex < 0)
+        {
+            aktuelleKoordinatenIndex = 1;
+            vorwaers = true;
+        }
     }
     Serial.print("KoordIndex: ");
     Serial.println(aktuelleKoordinatenIndex);
