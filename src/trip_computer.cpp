@@ -1,6 +1,7 @@
 #include "trip_computer.h"
 #include "gps_manager.h"
 #include "debug_helper.h"
+#include "ride_session.h"
 
 double gesamtStrecke = 0.0;
 double distanzInMetern = 0.0;
@@ -15,12 +16,6 @@ char uhrzeit[16];
 double letzteLat = 0.0;
 double letzteLong = 0.0;
 const int UTC_OFFSET = 2;
-double sessionStrecke = 0.0;
-unsigned long sessionFahrtZeit = 0.0;
-float sessionAvgSpeed = 0.0;
-float sessionMaxSpeed = 0.0;
-float maxSpeed = 0.0;
-bool isSessionRunning = false;
 
 String formatTime(unsigned long sek) // mit String am anfang sagt man schon am anfang das es einen String zurück gibt
 {
@@ -44,10 +39,6 @@ void berechneGesamtDistanz()
     if (distanzInMetern > 1.5)
     {
         gesamtStrecke += distanzInMetern;
-        if (isSessionRunning)
-        {
-            sessionStrecke += distanzInMetern;
-        }
         Serial.print("Total distance in km: ");
         Serial.println(meterToKm(gesamtStrecke));
     }
@@ -64,10 +55,6 @@ void berechneGesamtfahrzeit()
         Serial.print("Gesmatfahrzeit: ");
         Serial.println(formatTime(gesamtFahrtZeit));
     }
-    if (isSessionRunning)
-    {
-        sessionFahrtZeit++;
-    }
 }
 void berechneDurschnittsSpeed(float currentspeed)
 {
@@ -77,16 +64,6 @@ void berechneDurschnittsSpeed(float currentspeed)
     if (speedCount > 1)
     {
         durchschnittSpeed = speedSum / speedCount;
-    }
-
-    static float sessionSpeedSum = 0.0;
-    static int sessionSpeedCount = 0;
-
-    if (isSessionRunning && currentspeed > 1.5)
-    {
-        sessionSpeedSum += currentspeed;
-        sessionSpeedCount++;
-        sessionAvgSpeed = sessionSpeedSum / sessionSpeedCount;
     }
 }
 
@@ -121,13 +98,6 @@ void berechneMaxSpeed()
     if (currentSpeed > maxSpeed)
     {
         maxSpeed = currentSpeed;
-    }
-    if (isSessionRunning)
-    {
-        if (currentSpeed > sessionMaxSpeed)
-        {
-            sessionMaxSpeed = currentSpeed;
-        }
     }
 }
 

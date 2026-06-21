@@ -93,16 +93,22 @@ void loop()
     }
 
     berechneGesamtDistanz();
+    berechneSessionDistanz();
 
     if (TEST_MODE)
     {
       currentSpeed = (distanzInMetern * 3.6);
 
       berechneDurschnittsSpeed(currentSpeed);
+      berechneSessionAvgSpeed();
+
       berechneMaxSpeed();
+      berechneSessionMaxSpeed();
     }
 
     verwalteSpeicherIntervall();
+
     berechneGesamtfahrzeit();
+    berechneSessionMaxSpeed();
   }
 }

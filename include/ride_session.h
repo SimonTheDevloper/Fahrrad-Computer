@@ -2,21 +2,24 @@
 #define RIDE_SESSION_H
 
 #include <Arduino.h>
-
-void setNewFahrtState(FahrtSate neuerState);
-
 enum FahrtSate
 {
+    UNBEKANNT,
     GESTOPPT,
     PAUSIERT,
     LAEFT
 };
+void setNewFahrtState(FahrtSate neuerState);
+void berechneSessionDistanz();
+void berechneSessionFahrzeit();
+void berechneSessionAvgSpeed();
+void berechneSessionMaxSpeed();
+
 extern FahrtSate aktivFahrtState;
 
 extern double sessionStrecke;
 extern unsigned long sessionFahrtZeit;
 extern float sessionAvgSpeed;
 extern float sessionMaxSpeed;
-extern bool isSessionRunning;
 
 #endif

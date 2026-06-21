@@ -176,7 +176,7 @@ void aktualisiereSessionScreenWerte()
     static String letzteZeit = "";
     static String letzterAvgSpeed = "";
     static String letzterMaxSpeed = "";
-    static FahrtSate letzterState = GESTOPPT;
+    static FahrtSate letzterState = UNBEKANNT;
 
     String distanzText = String(meterToKm(sessionStrecke), 1);
 
@@ -231,8 +231,8 @@ void aktualisiereSessionScreenWerte()
 
     if (aktivFahrtState != letzterState)
     {
-        uint16_t btnFarbe = isSessionRunning ? TFT_RED : FARBE_WERTE;
-        String btnText = isSessionRunning ? "STOPP" : "START";
+        uint16_t btnFarbe = aktivFahrtState == LAEFT ? TFT_RED : FARBE_WERTE;
+        String btnText = aktivFahrtState == LAEFT ? "STOPP" : "START";
 
         tft.fillRoundRect(
             BTN_X,
@@ -242,7 +242,7 @@ void aktualisiereSessionScreenWerte()
             BTN_RADIUS,
             btnFarbe);
 
-        tft.setTextColor(isSessionRunning ? FARBE_TEXT_WEISS : FARBE_HINTERGRUND);
+        tft.setTextColor(aktivFahrtState == LAEFT ? FARBE_TEXT_WEISS : FARBE_HINTERGRUND);
         tft.setFreeFont(&FreeSansBold9pt7b);
         tft.setTextDatum(MC_DATUM); // macht das es das es in die mitte kommt
         tft.drawString(btnText, BTN_X + BTN_BREITE / 2, BTN_Y + BTN_HOEHE / 2);
