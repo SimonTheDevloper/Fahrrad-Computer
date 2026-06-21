@@ -18,6 +18,14 @@ void berechneMaxSpeed();
 
 void showLoadStaticsInfo();
 
+enum FahrtSate
+{
+    GETOPPT,
+    PAUSIERT,
+    LAEFT
+};
+extern FahrtSate aktiverFahrtSate;
+
 extern double gesamtStrecke;
 extern double distanzInMetern;
 extern unsigned long gesamtFahrtZeit;

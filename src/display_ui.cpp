@@ -259,8 +259,27 @@ void zeichneSessionLayout()
     tft.setFreeFont(&FreeSerif9pt7b);
     tft.drawString("Session Record", 5, 3);
 
+    if (TEST_MODE)
+    {
+        tft.fillRect(200, 0, 120, 20, FARBE_HINTERGRUND);
+
+        tft.setTextColor(TFT_ORANGE, FARBE_HINTERGRUND);
+        tft.setFreeFont(&FreeSansBold9pt7b);
+        tft.setTextDatum(TR_DATUM);
+        tft.drawString("Testmode", 315, 3);
+        tft.setTextDatum(TL_DATUM);
+    }
+    else
+    {
+
+        tft.fillRect(200, 0, 120, 20, FARBE_HINTERGRUND);
+    }
+
     tft.drawLine(1, 20, 319, 20, FARBE_LINIEN);
 
+    tft.setTextColor(FARBE_TEXT_WEISS);
+
+    tft.setFreeFont(&FreeSerif9pt7b);
     tft.drawString("Session Dist", 20, 35);
 
     tft.setTextColor(FARBE_EINHEITEN);

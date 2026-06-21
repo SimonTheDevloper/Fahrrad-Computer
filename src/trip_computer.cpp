@@ -61,12 +61,12 @@ void berechneGesamtfahrzeit()
     if (currentSpeed > 1.5)
     {
         gesamtFahrtZeit++;
-        if (isSessionRunning)
-        {
-            sessionFahrtZeit++;
-        }
         Serial.print("Gesmatfahrzeit: ");
         Serial.println(formatTime(gesamtFahrtZeit));
+    }
+    if (isSessionRunning)
+    {
+        sessionFahrtZeit++;
     }
 }
 void berechneDurschnittsSpeed(float currentspeed)
