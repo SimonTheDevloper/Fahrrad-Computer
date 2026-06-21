@@ -15,6 +15,7 @@ void berechneSessionFahrzeit();
 void berechneSessionAvgSpeed();
 void berechneSessionMaxSpeed();
 void verarbeiteSessionTouchInput(uint16_t x, uint16_t y);
+void resetSessionWerte();
 
 extern FahrtSate aktivFahrtState;
 

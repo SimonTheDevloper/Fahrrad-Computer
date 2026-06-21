@@ -85,6 +85,7 @@ void verarbeiteSessionTouchInput(uint16_t x, uint16_t y)
             {
                 Serial.println("Pressed STOPPEN!");
                 setNewFahrtState(GESTOPPT);
+                resetSessionWerte();
                 letztePressZeit = millis();
             }
         }
@@ -101,10 +102,6 @@ void verarbeiteSessionTouchInput(uint16_t x, uint16_t y)
                 {
                     setNewFahrtState(PAUSIERT);
                 }
-                else if (aktivFahrtState == PAUSIERT)
-                {
-                    setNewFahrtState(LAEUFT);
-                }
 
                 letztePressZeit = millis();
             }
@@ -115,4 +112,13 @@ void verarbeiteSessionTouchInput(uint16_t x, uint16_t y)
     {
         letzterTouch = false;
     }
+}
+
+void resetSessionWerte()
+{
+    sessionStrecke = 0.0;
+    sessionFahrtZeit = 0.0;
+    sessionAvgSpeed = 0.0;
+    sessionMaxSpeed = 0.0;
+    maxSpeed = 0.0;
 }
