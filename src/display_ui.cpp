@@ -17,6 +17,9 @@ const int BTN_BREITE = 160;
 const int BTN_HOEHE = 45;
 const int BTN_RADIUS = 8;
 
+const int BTN_WEITER_X = 10;
+const int BTN_STOPP_X = 165;
+
 extern double meterToKm(double meter);
 extern String formatTime(unsigned long sek);
 
@@ -231,48 +234,94 @@ void aktualisiereSessionScreenWerte()
 
     if (aktivFahrtState != letzterState)
     {
+        tft.fillRect(BTN_WEITER_X, BTN_Y, 310, BTN_HOEHE, FARBE_HINTERGRUND);
+
         uint16_t btnFarbe;
         String btnText;
+        int btnX;
 
         switch (aktivFahrtState)
         {
         case GESTOPPT:
             btnFarbe = FARBE_WERTE;
             btnText = "START";
+            btnX = 80;
+
+            tft.fillRoundRect(btnX, BTN_Y, 160, BTN_HOEHE, BTN_RADIUS, btnFarbe);
+            tft.setTextColor(FARBE_HINTERGRUND);
+            tft.setFreeFont(&FreeSansBold9pt7b);
+            tft.setTextDatum(MC_DATUM);
+            tft.drawString(btnText, btnX + 80, BTN_Y + BTN_HOEHE / 2);
+            tft.setTextDatum(TL_DATUM);
             break;
 
         case LAEUFT:
             btnFarbe = TFT_RED;
             btnText = "PAUSE";
+            btnX = 80;
+
+            tft.fillRoundRect(btnX, BTN_Y, 160, BTN_HOEHE, BTN_RADIUS, btnFarbe);
+            tft.setTextColor(FARBE_HINTERGRUND);
+            tft.setFreeFont(&FreeSansBold9pt7b);
+            tft.setTextDatum(MC_DATUM);
+            tft.drawString(btnText, btnX + 80, BTN_Y + BTN_HOEHE / 2);
+            tft.setTextDatum(TL_DATUM);
             break;
 
         case PAUSIERT:
-            btnFarbe = TFT_GREEN;
-            btnText = "WEITER";
+            zeigeZweiButtons();
             break;
 
         default:
             btnFarbe = FARBE_WERTE;
             btnText = "START";
+            btnX = 80;
+
+            tft.fillRoundRect(btnX, BTN_Y, 160, BTN_HOEHE, BTN_RADIUS, btnFarbe);
+            tft.setTextColor(FARBE_HINTERGRUND);
+            tft.setFreeFont(&FreeSansBold9pt7b);
+            tft.setTextDatum(MC_DATUM);
+            tft.drawString(btnText, btnX + 80, BTN_Y + BTN_HOEHE / 2);
+            tft.setTextDatum(TL_DATUM);
             break;
         }
 
-        tft.fillRoundRect(
-            BTN_X,
-            BTN_Y,
-            BTN_BREITE,
-            BTN_HOEHE,
-            BTN_RADIUS,
-            btnFarbe);
-
-        tft.setTextColor(FARBE_HINTERGRUND);
-        tft.setFreeFont(&FreeSansBold9pt7b);
-        tft.setTextDatum(MC_DATUM);
-        tft.drawString(btnText, BTN_X + BTN_BREITE / 2, BTN_Y + BTN_HOEHE / 2);
-        tft.setTextDatum(TL_DATUM);
-
         letzterState = aktivFahrtState;
     }
+}
+
+void zeigeZweiButtons()
+{
+    tft.fillRoundRect(
+        BTN_WEITER_X,
+        BTN_Y,
+        BTN_BREITE,
+        BTN_HOEHE,
+        BTN_RADIUS,
+        TFT_GREEN);
+
+    tft.setTextColor(FARBE_HINTERGRUND);
+    tft.setFreeFont(&FreeSansBold9pt7b);
+    tft.setTextDatum(MC_DATUM);
+    tft.drawString("WEITER",
+                   BTN_WEITER_X + BTN_BREITE / 2,
+                   BTN_Y + BTN_HOEHE / 2);
+    tft.fillRoundRect(
+        BTN_STOPP_X,
+        BTN_Y,
+        BTN_BREITE,
+        BTN_HOEHE,
+        BTN_RADIUS,
+        TFT_RED);
+
+    tft.setTextColor(FARBE_HINTERGRUND);
+    tft.setFreeFont(&FreeSansBold9pt7b);
+    tft.setTextDatum(MC_DATUM);
+    tft.drawString("STOPPEN",
+                   BTN_STOPP_X + BTN_BREITE / 2,
+                   BTN_Y + BTN_HOEHE / 2);
+
+    tft.setTextDatum(TL_DATUM);
 }
 
 void zeichneSessionLayout()
@@ -333,16 +382,18 @@ void zeichneSessionLayout()
     tft.drawLine(1, 165, 319, 165, FARBE_LINIEN);
 
     tft.fillRoundRect(
-        BTN_X,
+        80, // Zentriert
         BTN_Y,
-        BTN_BREITE,
+        160,
         BTN_HOEHE,
         BTN_RADIUS,
         FARBE_WERTE);
 
     tft.setTextColor(FARBE_HINTERGRUND);
     tft.setFreeFont(&FreeSansBold9pt7b);
-    tft.drawString("START / PAUSE", 95, 194);
+    tft.setTextDatum(MC_DATUM);
+    tft.drawString("START / PAUSE", 160, BTN_Y + BTN_HOEHE / 2);
+    tft.setTextDatum(TL_DATUM);
 }
 
 void updateAktivenScreen()
@@ -375,6 +426,18 @@ void setNewScreen(Screen neuerScreen) // hier auch wieder den extra Datentyp neh
 
 bool pruefeStartButton(uint16_t x, uint16_t y)
 {
-    return (x >= BTN_X && x <= (BTN_X + BTN_BREITE) &&
+    return (x >= 80 && x <= 240 &&
+            y >= BTN_Y && y <= (BTN_Y + BTN_HOEHE));
+}
+
+bool pruefeWeiterButton(uint16_t x, uint16_t y)
+{
+    return (x >= BTN_WEITER_X && x <= (BTN_WEITER_X + BTN_BREITE) &&
+            y >= BTN_Y && y <= (BTN_Y + BTN_HOEHE));
+}
+
+bool pruefeStoppButton(uint16_t x, uint16_t y)
+{
+    return (x >= BTN_STOPP_X && x <= (BTN_STOPP_X + BTN_BREITE) &&
             y >= BTN_Y && y <= (BTN_Y + BTN_HOEHE));
 }

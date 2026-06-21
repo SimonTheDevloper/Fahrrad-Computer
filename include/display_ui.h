@@ -20,6 +20,9 @@ void aktualisiereSessionScreenWerte();
 void updateAktivenScreen();
 void setNewScreen(Screen neuerScreen);
 bool pruefeStartButton(uint16_t x, uint16_t y);
+bool pruefeWeiterButton(uint16_t x, uint16_t y);
+bool pruefeStoppButton(uint16_t x, uint16_t y);
+void zeigeZweiButtons();
 
 uint16_t gpsColor();
 

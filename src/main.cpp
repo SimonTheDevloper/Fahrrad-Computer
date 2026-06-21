@@ -60,55 +60,99 @@ void loop()
       Serial.println(y);
 
       static unsigned long letztePressZeit = 0;
-      if (pruefeStartButton(x, y) && (millis() - letztePressZeit > 500)) // damit es entprellt wird
+      if (aktivFahrtState == PAUSIERT)
       {
-        Serial.println("Pressed on BTN!");
-        setNewFahrtState(LAEUFT);
-        letztePressZeit = millis();
+        if (pruefeWeiterButton(x, y) && (millis() - letztePressZeit > 500))
+        {
+          Serial.println("Pressed WEITER!");
+          setNewFahrtState(LAEUFT);
+          letztePressZeit = millis();
+        }
+        else if (pruefeStoppButton(x, y) && (millis() - letztePressZeit > 500))
+        {
+          Serial.println("Pressed STOPPEN!");
+          setNewFahrtState(GESTOPPT);
+          letztePressZeit = millis();
+        }
       }
+      else
+      {
+        if (pruefeStartButton(x, y) && (millis() - letztePressZeit > 500)) // damit es entprellt wird
+        {
+          Serial.println("Pressed on BTN!");
+          if (aktivFahrtState == GESTOPPT)
+          {
+            setNewFahrtState(LAEUFT);
+          }
+          else if (aktivFahrtState == LAEUFT)
+          {
+            setNewFahrtState(PAUSIERT);
+          }
+          else if (aktivFahrtState == PAUSIERT)
+          {
+            setNewFahrtState(LAEUFT);
+          }
+
+          letztePressZeit = millis();
+        }
+      }
+      letzterTouch = true;
     }
-    letzterTouch = true;
-  }
-  else
-  {
-    letzterTouch = false;
-  }
-  if (!TEST_MODE)
-  {
-    verarbeiteGPS();
-  }
-
-  if (millis() - letzteDisplayUpdateZeit >= 200)
-  {
-    letzteDisplayUpdateZeit = millis();
-    updateAktivenScreen();
-  }
-
-  if (millis() - letztesSekunde >= 1000)
-  {
-    letztesSekunde = millis();
-    if (TEST_MODE)
+    else
     {
-      aendereTestGPSDaten();
+      letzterTouch = false;
     }
 
-    berechneGesamtDistanz();
-    berechneSessionDistanz();
+    static unsigned long letztePressZeit = 0;
 
-    if (TEST_MODE)
+    if (pruefeStoppButton(x, y) && (millis() - letztePressZeit > 500))
     {
-      currentSpeed = (distanzInMetern * 3.6);
+      Serial.println("Pressed STOP BTN!");
 
-      berechneDurschnittsSpeed(currentSpeed);
-      berechneSessionAvgSpeed();
+      if (aktivFahrtState == PAUSIERT)
+      {
+        setNewFahrtState(GESTOPPT);
+      }
 
-      berechneMaxSpeed();
+      letztePressZeit = millis();
+    }
+    if (!TEST_MODE)
+    {
+      verarbeiteGPS();
+    }
+
+    if (millis() - letzteDisplayUpdateZeit >= 200)
+    {
+      letzteDisplayUpdateZeit = millis();
+      updateAktivenScreen();
+    }
+
+    if (millis() - letztesSekunde >= 1000)
+    {
+      letztesSekunde = millis();
+      if (TEST_MODE)
+      {
+        aendereTestGPSDaten();
+      }
+
+      berechneGesamtDistanz();
+      berechneSessionDistanz();
+
+      if (TEST_MODE)
+      {
+        currentSpeed = (distanzInMetern * 3.6);
+
+        berechneDurschnittsSpeed(currentSpeed);
+        berechneSessionAvgSpeed();
+
+        berechneMaxSpeed();
+        berechneSessionMaxSpeed();
+      }
+
+      verwalteSpeicherIntervall();
+
+      berechneGesamtfahrzeit();
       berechneSessionMaxSpeed();
     }
-
-    verwalteSpeicherIntervall();
-
-    berechneGesamtfahrzeit();
-    berechneSessionMaxSpeed();
   }
 }
