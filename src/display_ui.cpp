@@ -17,8 +17,11 @@ const int BTN_BREITE = 160;
 const int BTN_HOEHE = 45;
 const int BTN_RADIUS = 8;
 
-const int BTN_WEITER_X = 10;
-const int BTN_STOPP_X = 165;
+const int BTN_WEITER_X = 18;
+const int BTN_WEITER_BREITE = 175;
+
+const int BTN_STOPP_X = 220;
+const int BTN_STOPP_BREITE = 80;
 
 extern double meterToKm(double meter);
 extern String formatTime(unsigned long sek);
@@ -295,7 +298,7 @@ void zeigeZweiButtons()
     tft.fillRoundRect(
         BTN_WEITER_X,
         BTN_Y,
-        BTN_BREITE,
+        BTN_WEITER_BREITE,
         BTN_HOEHE,
         BTN_RADIUS,
         TFT_GREEN);
@@ -303,23 +306,24 @@ void zeigeZweiButtons()
     tft.setTextColor(FARBE_HINTERGRUND);
     tft.setFreeFont(&FreeSansBold9pt7b);
     tft.setTextDatum(MC_DATUM);
-    tft.drawString("WEITER",
-                   BTN_WEITER_X + BTN_BREITE / 2,
-                   BTN_Y + BTN_HOEHE / 2);
+
+    tft.drawString(
+        "Weiter",
+        BTN_WEITER_X + BTN_WEITER_BREITE / 2,
+        BTN_Y + BTN_HOEHE / 2);
+
     tft.fillRoundRect(
         BTN_STOPP_X,
         BTN_Y,
-        BTN_BREITE,
+        BTN_STOPP_BREITE,
         BTN_HOEHE,
         BTN_RADIUS,
         TFT_RED);
 
-    tft.setTextColor(FARBE_HINTERGRUND);
-    tft.setFreeFont(&FreeSansBold9pt7b);
-    tft.setTextDatum(MC_DATUM);
-    tft.drawString("STOPPEN",
-                   BTN_STOPP_X + BTN_BREITE / 2,
-                   BTN_Y + BTN_HOEHE / 2);
+    tft.drawString(
+        "STOPP",
+        BTN_STOPP_X + BTN_STOPP_BREITE / 2,
+        BTN_Y + BTN_HOEHE / 2);
 
     tft.setTextDatum(TL_DATUM);
 }
@@ -382,7 +386,7 @@ void zeichneSessionLayout()
     tft.drawLine(1, 165, 319, 165, FARBE_LINIEN);
 
     tft.fillRoundRect(
-        80, // Zentriert
+        80,
         BTN_Y,
         160,
         BTN_HOEHE,
@@ -392,7 +396,7 @@ void zeichneSessionLayout()
     tft.setTextColor(FARBE_HINTERGRUND);
     tft.setFreeFont(&FreeSansBold9pt7b);
     tft.setTextDatum(MC_DATUM);
-    tft.drawString("START / PAUSE", 160, BTN_Y + BTN_HOEHE / 2);
+    tft.drawString("START", 160, BTN_Y + BTN_HOEHE / 2);
     tft.setTextDatum(TL_DATUM);
 }
 
@@ -432,12 +436,16 @@ bool pruefeStartButton(uint16_t x, uint16_t y)
 
 bool pruefeWeiterButton(uint16_t x, uint16_t y)
 {
-    return (x >= BTN_WEITER_X && x <= (BTN_WEITER_X + BTN_BREITE) &&
-            y >= BTN_Y && y <= (BTN_Y + BTN_HOEHE));
+    return (x >= BTN_WEITER_X &&
+            x <= (BTN_WEITER_X + BTN_WEITER_BREITE) &&
+            y >= BTN_Y &&
+            y <= (BTN_Y + BTN_HOEHE));
 }
 
 bool pruefeStoppButton(uint16_t x, uint16_t y)
 {
-    return (x >= BTN_STOPP_X && x <= (BTN_STOPP_X + BTN_BREITE) &&
-            y >= BTN_Y && y <= (BTN_Y + BTN_HOEHE));
+    return (x >= BTN_STOPP_X &&
+            x <= (BTN_STOPP_X + BTN_STOPP_BREITE) &&
+            y >= BTN_Y &&
+            y <= (BTN_Y + BTN_HOEHE));
 }

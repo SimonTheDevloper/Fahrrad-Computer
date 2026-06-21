@@ -102,57 +102,44 @@ void loop()
     {
       letzterTouch = false;
     }
+  }
 
-    static unsigned long letztePressZeit = 0;
+  if (!TEST_MODE)
+  {
+    verarbeiteGPS();
+  }
 
-    if (pruefeStoppButton(x, y) && (millis() - letztePressZeit > 500))
+  if (millis() - letzteDisplayUpdateZeit >= 200)
+  {
+    letzteDisplayUpdateZeit = millis();
+    updateAktivenScreen();
+  }
+
+  if (millis() - letztesSekunde >= 1000)
+  {
+    letztesSekunde = millis();
+    if (TEST_MODE)
     {
-      Serial.println("Pressed STOP BTN!");
-
-      if (aktivFahrtState == PAUSIERT)
-      {
-        setNewFahrtState(GESTOPPT);
-      }
-
-      letztePressZeit = millis();
-    }
-    if (!TEST_MODE)
-    {
-      verarbeiteGPS();
-    }
-
-    if (millis() - letzteDisplayUpdateZeit >= 200)
-    {
-      letzteDisplayUpdateZeit = millis();
-      updateAktivenScreen();
+      aendereTestGPSDaten();
     }
 
-    if (millis() - letztesSekunde >= 1000)
+    berechneGesamtDistanz();
+    berechneSessionDistanz();
+
+    if (TEST_MODE)
     {
-      letztesSekunde = millis();
-      if (TEST_MODE)
-      {
-        aendereTestGPSDaten();
-      }
+      currentSpeed = (distanzInMetern * 3.6);
 
-      berechneGesamtDistanz();
-      berechneSessionDistanz();
-
-      if (TEST_MODE)
-      {
-        currentSpeed = (distanzInMetern * 3.6);
-
-        berechneDurschnittsSpeed(currentSpeed);
-        berechneSessionAvgSpeed();
-
-        berechneMaxSpeed();
-        berechneSessionMaxSpeed();
-      }
-
-      verwalteSpeicherIntervall();
-
-      berechneGesamtfahrzeit();
-      berechneSessionMaxSpeed();
+      berechneDurschnittsSpeed(currentSpeed);
+      berechneMaxSpeed();
     }
+
+    berechneSessionAvgSpeed();
+    berechneSessionMaxSpeed();
+
+    verwalteSpeicherIntervall();
+
+    berechneGesamtfahrzeit();
+    berechneSessionFahrzeit();
   }
 }
