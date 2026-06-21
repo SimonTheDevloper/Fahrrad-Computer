@@ -2,6 +2,7 @@
 #include "display_ui.h"
 #include "gps_manager.h"
 #include "trip_computer.h"
+#include "ride_session.h"
 
 const uint16_t FARBE_HINTERGRUND = 0x0000; // Schwarz
 const uint16_t FARBE_TEXT_WEISS = 0xFFFF;  // Weiß
@@ -175,7 +176,7 @@ void aktualisiereSessionScreenWerte()
     static String letzteZeit = "";
     static String letzterAvgSpeed = "";
     static String letzterMaxSpeed = "";
-    static int letzterSessionRunningState = -1;
+    static FahrtSate letzterState = GESTOPPT;
 
     String distanzText = String(meterToKm(sessionStrecke), 1);
 
@@ -228,7 +229,7 @@ void aktualisiereSessionScreenWerte()
         letzterMaxSpeed = maxText;
     }
 
-    if (isSessionRunning != letzterSessionRunningState)
+    if (aktivFahrtState != letzterState)
     {
         uint16_t btnFarbe = isSessionRunning ? TFT_RED : FARBE_WERTE;
         String btnText = isSessionRunning ? "STOPP" : "START";
@@ -247,7 +248,7 @@ void aktualisiereSessionScreenWerte()
         tft.drawString(btnText, BTN_X + BTN_BREITE / 2, BTN_Y + BTN_HOEHE / 2);
         tft.setTextDatum(TL_DATUM);
 
-        letzterSessionRunningState = isSessionRunning;
+        letzterState = aktivFahrtState;
     }
 }
 

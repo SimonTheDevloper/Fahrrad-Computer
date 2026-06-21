@@ -4,6 +4,7 @@
 #include "gps_manager.h"
 #include "trip_computer.h"
 #include "display_ui.h"
+#include "ride_session.h"
 
 extern const bool TEST_MODE = true;
 
@@ -62,7 +63,7 @@ void loop()
       if (pruefeStartButton(x, y) && (millis() - letztePressZeit > 500)) // damit es entprellt wird
       {
         Serial.println("Pressed on BTN!");
-        isSessionRunning = !isSessionRunning;
+        setNewFahrtState(LAEFT);
         letztePressZeit = millis();
       }
     }

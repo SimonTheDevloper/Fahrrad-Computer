@@ -18,14 +18,6 @@ void berechneMaxSpeed();
 
 void showLoadStaticsInfo();
 
-enum FahrtSate
-{
-    GETOPPT,
-    PAUSIERT,
-    LAEFT
-};
-extern FahrtSate aktiverFahrtSate;
-
 extern double gesamtStrecke;
 extern double distanzInMetern;
 extern unsigned long gesamtFahrtZeit;
@@ -36,11 +28,5 @@ extern float maxSpeed;
 extern char uhrzeit[16];
 extern double letzteLat;
 extern double letzteLong;
-
-extern double sessionStrecke;
-extern unsigned long sessionFahrtZeit;
-extern float sessionAvgSpeed;
-extern float sessionMaxSpeed;
-extern bool isSessionRunning;
 
 #endif
