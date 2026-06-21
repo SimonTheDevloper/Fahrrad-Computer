@@ -231,8 +231,31 @@ void aktualisiereSessionScreenWerte()
 
     if (aktivFahrtState != letzterState)
     {
-        uint16_t btnFarbe = aktivFahrtState == LAEFT ? TFT_RED : FARBE_WERTE;
-        String btnText = aktivFahrtState == LAEFT ? "STOPP" : "START";
+        uint16_t btnFarbe;
+        String btnText;
+
+        switch (aktivFahrtState)
+        {
+        case GESTOPPT:
+            btnFarbe = FARBE_WERTE;
+            btnText = "START";
+            break;
+
+        case LAEUFT:
+            btnFarbe = TFT_RED;
+            btnText = "PAUSE";
+            break;
+
+        case PAUSIERT:
+            btnFarbe = TFT_GREEN;
+            btnText = "WEITER";
+            break;
+
+        default:
+            btnFarbe = FARBE_WERTE;
+            btnText = "START";
+            break;
+        }
 
         tft.fillRoundRect(
             BTN_X,
@@ -242,9 +265,9 @@ void aktualisiereSessionScreenWerte()
             BTN_RADIUS,
             btnFarbe);
 
-        tft.setTextColor(aktivFahrtState == LAEFT ? FARBE_TEXT_WEISS : FARBE_HINTERGRUND);
+        tft.setTextColor(FARBE_HINTERGRUND);
         tft.setFreeFont(&FreeSansBold9pt7b);
-        tft.setTextDatum(MC_DATUM); // macht das es das es in die mitte kommt
+        tft.setTextDatum(MC_DATUM);
         tft.drawString(btnText, BTN_X + BTN_BREITE / 2, BTN_Y + BTN_HOEHE / 2);
         tft.setTextDatum(TL_DATUM);
 

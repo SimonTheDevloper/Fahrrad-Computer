@@ -63,7 +63,7 @@ void loop()
       if (pruefeStartButton(x, y) && (millis() - letztePressZeit > 500)) // damit es entprellt wird
       {
         Serial.println("Pressed on BTN!");
-        setNewFahrtState(LAEFT);
+        setNewFahrtState(LAEUFT);
         letztePressZeit = millis();
       }
     }

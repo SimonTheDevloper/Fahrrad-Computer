@@ -16,7 +16,7 @@ void setNewFahrtState(FahrtSate neuerState)
 
 void berechneSessionDistanz()
 {
-    if (aktivFahrtState == LAEFT)
+    if (aktivFahrtState == LAEUFT)
     {
         sessionStrecke += distanzInMetern;
     }
@@ -24,7 +24,7 @@ void berechneSessionDistanz()
 
 void berechneSessionFahrzeit()
 {
-    if (aktivFahrtState == LAEFT)
+    if (aktivFahrtState == LAEUFT)
     {
         sessionFahrtZeit++;
     }
@@ -32,7 +32,7 @@ void berechneSessionFahrzeit()
 
 void berechneSessionAvgSpeed()
 {
-    if (aktivFahrtState == LAEFT)
+    if (aktivFahrtState == LAEUFT)
     {
         static float sessionSpeedSum = 0.0;
         static int sessionSpeedCount = 0;
@@ -49,7 +49,7 @@ void berechneSessionAvgSpeed()
 void berechneSessionMaxSpeed()
 {
 
-    if (aktivFahrtState == LAEFT)
+    if (aktivFahrtState == LAEUFT)
     {
         if (currentSpeed > sessionMaxSpeed)
         {

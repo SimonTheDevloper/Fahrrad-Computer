@@ -7,7 +7,7 @@ enum FahrtSate
     UNBEKANNT,
     GESTOPPT,
     PAUSIERT,
-    LAEFT
+    LAEUFT
 };
 void setNewFahrtState(FahrtSate neuerState);
 void berechneSessionDistanz();
