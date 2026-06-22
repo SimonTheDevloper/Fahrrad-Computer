@@ -40,7 +40,7 @@ void setup()
   }
   ladeStatistiken();
 
-  setNewScreen(SCREEN_SESSION);
+  setNewScreen(SCREEN_MAIN);
 }
 void loop()
 {

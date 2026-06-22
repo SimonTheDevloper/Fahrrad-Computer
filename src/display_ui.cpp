@@ -23,6 +23,12 @@ const int BTN_WEITER_BREITE = 175;
 const int BTN_STOPP_X = 220;
 const int BTN_STOPP_BREITE = 80;
 
+const int BTN_NAV_X = 5;
+const int BTN_NAV_Y = 2;
+const int BTN_NAV_BREITE = 85;
+const int BTN_NAV_HOEHE = 20;
+const int BTN_NAV_RADIUS = 4;
+
 extern double meterToKm(double meter);
 extern String formatTime(unsigned long sek);
 
@@ -54,17 +60,17 @@ void zeichneGrundLayout(void)
 {
     tft.fillScreen(FARBE_HINTERGRUND);
 
-    tft.setTextColor(FARBE_TEXT_WEISS);
+    tft.fillRoundRect(BTN_NAV_X, BTN_NAV_Y, BTN_NAV_BREITE, BTN_NAV_HOEHE, BTN_NAV_RADIUS, FARBE_EINHEITEN);
+    tft.setTextColor(FARBE_HINTERGRUND);
     tft.setFreeFont(NULL);
-    tft.setTextSize(2);
+    tft.setTextSize(1);
+    tft.drawString("SESSION >", BTN_NAV_X + 14, BTN_NAV_Y + 6);
 
     if (TEST_MODE)
     {
-        tft.drawString("TEST MODE", 5, 5);
-    }
-    else
-    {
-        tft.drawString("Bike Computer", 5, 5);
+        tft.setTextColor(TFT_RED);
+        tft.setTextSize(1);
+        tft.drawString("TEST", 100, 6);
     }
 
     tft.drawLine(1, 24, 319, 24, FARBE_LINIEN);
@@ -72,6 +78,7 @@ void zeichneGrundLayout(void)
     tft.drawLine(195, 95, 319, 95, FARBE_LINIEN);
     tft.drawLine(195, 166, 319, 166, FARBE_LINIEN);
 
+    tft.setTextColor(FARBE_TEXT_WEISS);
     tft.setFreeFont(&FreeSans9pt7b);
     tft.setTextSize(1);
     tft.drawString("Speed", 70, 34);
@@ -331,15 +338,16 @@ void zeigeZweiButtons()
 void zeichneSessionLayout()
 {
     tft.fillScreen(FARBE_HINTERGRUND);
-    tft.setTextColor(FARBE_TEXT_WEISS);
+
+    tft.fillRoundRect(BTN_NAV_X, BTN_NAV_Y, BTN_NAV_BREITE, BTN_NAV_HOEHE, BTN_NAV_RADIUS, FARBE_EINHEITEN);
+    tft.setTextColor(FARBE_HINTERGRUND);
+    tft.setFreeFont(NULL);
     tft.setTextSize(1);
-    tft.setFreeFont(&FreeSerif9pt7b);
-    tft.drawString("Session Record", 5, 3);
+    tft.drawString("< Zurueck", BTN_NAV_X + 14, BTN_NAV_Y + 6);
 
     if (TEST_MODE)
     {
         tft.fillRect(200, 0, 120, 20, FARBE_HINTERGRUND);
-
         tft.setTextColor(TFT_ORANGE, FARBE_HINTERGRUND);
         tft.setFreeFont(&FreeSansBold9pt7b);
         tft.setTextDatum(TR_DATUM);
@@ -348,14 +356,12 @@ void zeichneSessionLayout()
     }
     else
     {
-
         tft.fillRect(200, 0, 120, 20, FARBE_HINTERGRUND);
     }
 
     tft.drawLine(1, 20, 319, 20, FARBE_LINIEN);
 
     tft.setTextColor(FARBE_TEXT_WEISS);
-
     tft.setFreeFont(&FreeSerif9pt7b);
     tft.drawString("Session Dist", 20, 35);
 
@@ -385,13 +391,7 @@ void zeichneSessionLayout()
 
     tft.drawLine(1, 165, 319, 165, FARBE_LINIEN);
 
-    tft.fillRoundRect(
-        80,
-        BTN_Y,
-        160,
-        BTN_HOEHE,
-        BTN_RADIUS,
-        FARBE_WERTE);
+    tft.fillRoundRect(80, BTN_Y, 160, BTN_HOEHE, BTN_RADIUS, FARBE_WERTE);
 
     tft.setTextColor(FARBE_HINTERGRUND);
     tft.setFreeFont(&FreeSansBold9pt7b);
@@ -399,7 +399,6 @@ void zeichneSessionLayout()
     tft.drawString("START", 160, BTN_Y + BTN_HOEHE / 2);
     tft.setTextDatum(TL_DATUM);
 }
-
 void updateAktivenScreen()
 {
     switch (aktiverScreen)

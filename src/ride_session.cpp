@@ -5,10 +5,13 @@
 FahrtSate aktivFahrtState = GESTOPPT;
 
 double sessionStrecke = 0.0;
-unsigned long sessionFahrtZeit = 0.0;
+unsigned long sessionFahrtZeit = 0;
 float sessionAvgSpeed = 0.0;
 float sessionMaxSpeed = 0.0;
 float maxSpeed = 0.0;
+
+static float sessionSpeedSum = 0.0;
+static int sessionSpeedCount = 0;
 
 bool letzterTouch = false;
 
@@ -37,8 +40,6 @@ void berechneSessionAvgSpeed()
 {
     if (aktivFahrtState == LAEUFT)
     {
-        static float sessionSpeedSum = 0.0;
-        static int sessionSpeedCount = 0;
 
         if (currentSpeed > 1.5)
         {
@@ -121,4 +122,6 @@ void resetSessionWerte()
     sessionAvgSpeed = 0.0;
     sessionMaxSpeed = 0.0;
     maxSpeed = 0.0;
+    sessionSpeedSum = 0.0;
+    sessionSpeedCount = 0;
 }
