@@ -448,3 +448,9 @@ bool pruefeStoppButton(uint16_t x, uint16_t y)
             y >= BTN_Y &&
             y <= (BTN_Y + BTN_HOEHE));
 }
+
+bool pruefeNavigationButton(uint16_t x, uint16_t y)
+{
+    return (x >= 0 && x <= 110 &&
+            y >= 0 && y <= 40);
+}

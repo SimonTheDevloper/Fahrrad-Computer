@@ -49,8 +49,29 @@ void loop()
 
   if (touch)
   {
-    verarbeiteSessionTouchInput(x, y);
+    static unsigned long letzteNavPressZeit = 0;
+
+    if (pruefeNavigationButton(x, y))
+    {
+      if (millis() - letzteNavPressZeit > 500)
+      {
+        if (aktiverScreen == SCREEN_MAIN)
+        {
+          setNewScreen(SCREEN_SESSION);
+        }
+        else
+        {
+          setNewScreen(SCREEN_MAIN);
+        }
+        letzteNavPressZeit = millis();
+      }
+    }
+    else
+    {
+      verarbeiteSessionTouchInput(x, y);
+    }
   }
+
   if (!TEST_MODE)
   {
     verarbeiteGPS();
@@ -76,16 +97,13 @@ void loop()
     if (TEST_MODE)
     {
       currentSpeed = (distanzInMetern * 3.6);
-
       berechneDurschnittsSpeed(currentSpeed);
       berechneMaxSpeed();
     }
 
     berechneSessionAvgSpeed();
     berechneSessionMaxSpeed();
-
     verwalteSpeicherIntervall();
-
     berechneGesamtfahrzeit();
     berechneSessionFahrzeit();
   }
