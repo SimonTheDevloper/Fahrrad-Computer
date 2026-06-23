@@ -32,6 +32,8 @@ const int BTN_NAV_RADIUS = 4;
 extern double meterToKm(double meter);
 extern String formatTime(unsigned long sek);
 
+bool screenChanged = false;
+
 TFT_eSPI tft = TFT_eSPI();
 
 Screen aktiverScreen = SCREEN_SESSION;
@@ -118,6 +120,16 @@ void aktualisiereWerte()
     static String letzteGesamtFahrzeit = "";
     static String letztesMaxSpeed = "";
 
+    if (screenChanged) // damit sozusagen das Cashe zurüg gesetzt wird und werte korrekt beim Screen wechseln geupdated werden
+    {
+        letzteUhrzeit = "";
+        letztesSpeedInt = -1;
+        letzteGesamtStrecke = "";
+        letzteGesamtFahrzeit = "";
+        letztesMaxSpeed = "";
+        screenChanged = false;
+    }
+
     bekommeUhrzeit();
 
     tft.setFreeFont(NULL);
@@ -191,6 +203,15 @@ void aktualisiereSessionScreenWerte()
     static String letzterMaxSpeed = "";
     static FahrtSate letzterState = UNBEKANNT;
 
+    if (screenChanged)
+    {
+        letzteDistanz = "";
+        letzteZeit = "";
+        letzterAvgSpeed = "";
+        letzterMaxSpeed = "";
+        letzterState = UNBEKANNT;
+        screenChanged = false;
+    }
     String distanzText = String(meterToKm(sessionStrecke), 1);
 
     if (distanzText != letzteDistanz)
@@ -399,6 +420,7 @@ void zeichneSessionLayout()
     tft.drawString("START", 160, BTN_Y + BTN_HOEHE / 2);
     tft.setTextDatum(TL_DATUM);
 }
+
 void updateAktivenScreen()
 {
     switch (aktiverScreen)
@@ -416,6 +438,7 @@ void updateAktivenScreen()
 void setNewScreen(Screen neuerScreen) // hier auch wieder den extra Datentyp nehemn
 {
     aktiverScreen = neuerScreen;
+    screenChanged = true;
 
     if (aktiverScreen == SCREEN_MAIN)
     {
