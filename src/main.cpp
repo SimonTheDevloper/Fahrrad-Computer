@@ -1,91 +1,88 @@
 #include <Arduino.h>
-#include <SPI.h>
-#include <TFT_eSPI.h>
-#include <TinyGPS++.h>
+#include <Wire.h> // Bibliothek für I²C-Kommunikation
 
-HardwareSerial gpsSerial(2);
-TinyGPSPlus gps;
-TFT_eSPI tft = TFT_eSPI();
+#define SDA_PIN 25 // Datenleitung (Serial Data)
+#define SCL_PIN 26 // Taktleitung (Serial Clock)
 
-#define GPS_RX 32
-#define GPS_TX 33
+const uint8_t QMC_ADDR = 0x0D; // I²C-Adresse des QMC5883L
 
-double latitude = 0.0;
-double longitude = 0.0;
-double altitude = 0.0;
-double speed = 0.0;
-
-int satellites = 0;
-int day = 0;
-int month = 0;
-int year = 0;
-
-const int BTN_X = 50;
-const int BTN_Y = 100;
-const int BTN_BREITE = 88;
-const int BTN_HOEHE = 50;
-
-bool btnAktiv = false;
-bool letzterTouch = false;
-
-uint16_t BTN_FARBE = TFT_BLUE;
-
-void zeigeBtn();
-
-void zeigeBtn()
-{
-
-  tft.fillRoundRect(BTN_X, BTN_Y, BTN_BREITE, BTN_HOEHE, 8, BTN_FARBE);
-}
-bool gedruecktImBtn(uint16_t x, uint16_t y)
-{
-  return x >= BTN_X &&
-         x <= BTN_X + BTN_BREITE &&
-         y >= BTN_Y &&
-         y <= BTN_Y + BTN_HOEHE;
-}
 void setup()
 {
   Serial.begin(115200);
 
-  gpsSerial.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
-  tft.init();
-  tft.setRotation(3);
-  tft.fillScreen(TFT_BLACK);
+  Wire.begin(SDA_PIN, SCL_PIN); // I²C-Hardware im ESP32 starten
 
-  uint16_t calData[5] = {275, 3620, 264, 3532, 1}; // fürs kalibrieren
-  tft.setTouch(calData);
-  zeigeBtn();
+  Serial.println("I2C gestartet");
+
+  Wire.beginTransmission(QMC_ADDR);
+
+  Wire.write(0x09); // ein bestimmtes Register auswählen
+
+  Wire.write(0x1D);
+
+  Wire.endTransmission();
 }
 
 void loop()
 {
-  uint16_t x = 0, y = 0;             // kurzschreibweise wenn man mit , trennt
-  bool touch = tft.getTouch(&x, &y); // liest die Touch-Position und schreibt die X- und Y-Werte direkt in x und y
-  if (touch && !letzterTouch)
+
+  Wire.beginTransmission(QMC_ADDR);
+  Wire.write(0x00); // damit soll der Sensor bei dem nächten Register starten
+
+  Wire.endTransmission();
+
+  Wire.requestFrom(QMC_ADDR, 6);
+  // 6 Bytes vom Sensor anfordern
+  // X Low
+  // X High
+  // Y Low
+  // Y High
+  // Z Low
+  // Z High
+
+  uint8_t xLow = Wire.read();
+  uint8_t xHigh = Wire.read();
+
+  uint8_t yLow = Wire.read();
+  uint8_t yHigh = Wire.read();
+
+  uint8_t zLow = Wire.read();
+  uint8_t zHigh = Wire.read();
+
+  // Zwei 8-Bit-Werte zu einem 16-Bit-Wert zusammensetzen
+
+  int16_t x =
+      (xHigh << 8) | xLow;
+
+  int16_t y =
+      (yHigh << 8) | yLow;
+
+  int16_t z =
+      (zHigh << 8) | zLow;
+
+  Serial.print("X: ");
+  Serial.println(x);
+
+  Serial.print("Y: ");
+  Serial.println(y);
+
+  Serial.print("Z: ");
+  Serial.println(z);
+
+  float headingRadians = // Winkel des Magnetfeldvektors berechnen
+
+      atan2(y, x);
+
+  float headingDegrees = // und hier die Grad
+      headingRadians * 180.0 / PI;
+
+  if (headingDegrees < 0)
   {
-    Serial.println("Touch detected");
-    Serial.print("X: ");
-    Serial.print(x);
-
-    Serial.print(" Y: ");
-    Serial.println(y);
-
-    if (gedruecktImBtn(x, y))
-    {
-      Serial.println("Pressed on BTN!");
-      btnAktiv = !btnAktiv;
-
-      if (btnAktiv)
-      {
-        BTN_FARBE = TFT_YELLOW;
-      }
-      else
-      {
-        BTN_FARBE = TFT_BLUE;
-      }
-      zeigeBtn();
-    }
+    headingDegrees += 360;
   }
-  letzterTouch = touch;
+
+  Serial.print("Richtung: ");
+  Serial.println(headingDegrees);
+
+  delay(500);
 }
