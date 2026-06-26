@@ -137,7 +137,6 @@ void aktualisiereWerte()
     if (letzteUhrzeit != String(uhrzeit))
     {
         tft.drawString(uhrzeit, 260, 5);
-
         letzteUhrzeit = String(uhrzeit);
     }
 
@@ -171,7 +170,6 @@ void aktualisiereWerte()
     if (letzteGesamtStrecke != kmText)
     {
         tft.drawString(kmText, 205, 62);
-
         letzteGesamtStrecke = kmText;
     }
 
@@ -179,7 +177,6 @@ void aktualisiereWerte()
     if (letzteGesamtFahrzeit != zeitText)
     {
         tft.drawString(zeitText, 205, 133);
-
         letzteGesamtFahrzeit = zeitText;
     }
 
@@ -187,9 +184,7 @@ void aktualisiereWerte()
 
     if (letztesMaxSpeed != maxSpeedText)
     {
-
         tft.drawString(maxSpeedText, 205, 205);
-
         letztesMaxSpeed = maxSpeedText;
     }
 }
@@ -322,36 +317,14 @@ void aktualisiereSessionScreenWerte()
 
 void zeigeZweiButtons()
 {
-    tft.fillRoundRect(
-        BTN_WEITER_X,
-        BTN_Y,
-        BTN_WEITER_BREITE,
-        BTN_HOEHE,
-        BTN_RADIUS,
-        TFT_GREEN);
-
+    tft.fillRoundRect(BTN_WEITER_X, BTN_Y, BTN_WEITER_BREITE, BTN_HOEHE, BTN_RADIUS, TFT_GREEN);
     tft.setTextColor(FARBE_HINTERGRUND);
     tft.setFreeFont(&FreeSansBold9pt7b);
     tft.setTextDatum(MC_DATUM);
+    tft.drawString("Weiter", BTN_WEITER_X + BTN_WEITER_BREITE / 2, BTN_Y + BTN_HOEHE / 2);
 
-    tft.drawString(
-        "Weiter",
-        BTN_WEITER_X + BTN_WEITER_BREITE / 2,
-        BTN_Y + BTN_HOEHE / 2);
-
-    tft.fillRoundRect(
-        BTN_STOPP_X,
-        BTN_Y,
-        BTN_STOPP_BREITE,
-        BTN_HOEHE,
-        BTN_RADIUS,
-        TFT_RED);
-
-    tft.drawString(
-        "STOPP",
-        BTN_STOPP_X + BTN_STOPP_BREITE / 2,
-        BTN_Y + BTN_HOEHE / 2);
-
+    tft.fillRoundRect(BTN_STOPP_X, BTN_Y, BTN_STOPP_BREITE, BTN_HOEHE, BTN_RADIUS, TFT_RED);
+    tft.drawString("STOPP", BTN_STOPP_X + BTN_STOPP_BREITE / 2, BTN_Y + BTN_HOEHE / 2);
     tft.setTextDatum(TL_DATUM);
 }
 
@@ -416,6 +389,7 @@ void zeichneSessionLayout()
     tft.drawString("START", 160, BTN_Y + BTN_HOEHE / 2);
     tft.setTextDatum(TL_DATUM);
 }
+
 void zeichneMenuLayout()
 {
     tft.fillScreen(0x0);
@@ -479,6 +453,97 @@ void zeichneMenuLayout()
     tft.drawBitmap(130, 147, image_settings_bits, 57, 57, 0xFFFF);
     tft.drawBitmap(10, 8, image_bike_bits, 24, 24, 0xFFFF);
 }
+void zeichneMenuLayoutHighKontrast()
+{
+    tft.fillScreen(0x0000);
+
+    tft.drawLine(14, 40, 306, 40, 0x7BEF);
+
+    tft.fillRoundRect(14, 48, 92, 86, 4, 0xFFFF);
+    tft.drawRoundRect(114, 48, 92, 86, 4, 0xFFFF);
+    tft.drawRoundRect(214, 48, 92, 86, 4, 0xFFFF);
+    tft.fillRoundRect(16, 50, 88, 82, 4, 0x2104);
+
+    tft.drawRoundRect(14, 142, 92, 86, 4, 0xFFFF);
+    tft.drawLine(14, 40, 306, 40, 0x7BEF);
+    tft.drawRoundRect(114, 142, 92, 86, 4, 0xFFFF);
+    tft.drawRoundRect(214, 142, 92, 86, 4, 0xFFFF);
+
+    tft.setTextColor(0xFFFF);
+    tft.setTextSize(1);
+    tft.setFreeFont(&FreeMonoBold12pt7b);
+    tft.drawString("BIKE Computer", 42, 11);
+
+    tft.fillRoundRect(14, 48, 92, 86, 4, 0xFFFF);
+    tft.fillRoundRect(16, 50, 88, 82, 4, 0x2104);
+    tft.fillRoundRect(114, 48, 92, 86, 4, 0xFFFF);
+    tft.fillRoundRect(116, 50, 88, 82, 4, 0x2104);
+    tft.fillRoundRect(214, 48, 92, 86, 4, 0xFFFF);
+    tft.fillRoundRect(216, 50, 88, 82, 4, 0x2104);
+
+    tft.setTextColor(0xFFFF);
+    tft.setFreeFont(&Org_01);
+    tft.drawString("MENU 3", 237, 91);
+
+    tft.fillRoundRect(14, 142, 92, 86, 4, 0xFFFF);
+    tft.fillRoundRect(16, 144, 88, 82, 4, 0x2104);
+    tft.setFreeFont(&FreeSerif9pt7b);
+    tft.drawString("Navigation", 20, 208);
+
+    tft.fillRoundRect(114, 142, 92, 86, 4, 0xFFFF);
+    tft.fillRoundRect(116, 144, 88, 82, 4, 0x2104);
+    tft.fillRoundRect(214, 142, 92, 86, 4, 0xFFFF);
+    tft.fillRoundRect(216, 144, 88, 82, 4, 0x2104);
+
+    tft.setFreeFont(&Org_01);
+    tft.drawString("MENU 6", 234, 181);
+
+    tft.setFreeFont(&FreeSerif9pt7b);
+    tft.drawString("Session-", 24, 102);
+    tft.drawString("record", 53, 116);
+    tft.drawString("Live Data", 123, 115);
+    tft.drawString("Settings", 130, 208);
+
+    tft.drawBitmap(46, 60, image_paint_3_bits, 28, 28, 0xFFFF);
+    tft.drawBitmap(146, 60, image_paint_3_bits, 28, 28, 0xFFFF);
+    tft.drawBitmap(246, 60, image_paint_3_bits, 28, 28, 0xFFFF);
+    tft.drawBitmap(46, 154, image_paint_3_bits, 28, 28, 0xFFFF);
+    tft.drawBitmap(146, 154, image_paint_3_bits, 28, 28, 0xFFFF);
+    tft.drawBitmap(236, 150, image_paint_21_bits, 16, 16, 0xFFFF);
+    tft.drawBitmap(46, 154, image_paint_3_bits, 28, 28, 0xFFFF);
+    tft.drawBitmap(252, 154, image_paint_21_bits, 16, 16, 0xFFFF);
+
+    tft.drawBitmap(28, 148, image_paint_42_bits, 60, 60, 0xFFFF);
+    tft.drawBitmap(132, 52, image_speedometer_bits, 55, 55, 0xFFFF);
+    tft.drawBitmap(35, 50, image_paint_45_bits, 50, 50, 0xFFFF);
+    tft.drawBitmap(130, 147, image_settings_bits, 57, 57, 0xFFFF);
+    tft.drawBitmap(10, 8, image_bike_bits, 24, 24, 0xFFFF);
+}
+void aktualisiereMenuWerteHighKontrast()
+{
+    static String letzteUhrzeit = "";
+
+    if (screenChanged)
+    {
+        letzteUhrzeit = "";
+        screenChanged = false;
+    }
+
+    bekommeUhrzeit();
+
+    if (letzteUhrzeit != String(uhrzeit))
+    {
+        tft.fillRect(260, 5, 58, 25, 0x0000);
+
+        tft.setTextColor(0xFFFF);
+        tft.setTextSize(2);
+        tft.setFreeFont(&Org_01);
+        tft.drawString(uhrzeit, 264, 14);
+
+        letzteUhrzeit = String(uhrzeit);
+    }
+}
+
 void aktualisiereMenuWerte()
 {
     static String letzteUhrzeit = "";
@@ -493,6 +558,7 @@ void aktualisiereMenuWerte()
 
     if (letzteUhrzeit != String(uhrzeit))
     {
+        tft.fillRect(260, 5, 58, 25, 0x0000);
 
         tft.fillRect(260, 5, 58, 25, 0x0);
 
@@ -504,6 +570,7 @@ void aktualisiereMenuWerte()
         letzteUhrzeit = String(uhrzeit);
     }
 }
+
 void updateAktivenScreen()
 {
     switch (aktiverScreen)
@@ -568,6 +635,7 @@ bool pruefeNavigationButton(uint16_t x, uint16_t y)
     return (x >= 0 && x <= 110 &&
             y >= 0 && y <= 40);
 }
+
 void handleMenuTouch(uint16_t x, uint16_t y)
 {
     int buttonID = 0;
@@ -625,6 +693,7 @@ void handleMainTouch(uint16_t x, uint16_t y)
         setNewScreen(SCREEN_MENU);
     }
 }
+
 void handleSessionTouch(uint16_t x, uint16_t y)
 {
     verarbeiteSessionTouchInput(x, y);
@@ -636,6 +705,7 @@ void handleSessionTouch(uint16_t x, uint16_t y)
 
     verarbeiteSessionTouchInput(x, y);
 }
+
 bool darfTouchVerarbeitetWerden()
 {
     static unsigned long letzterTouch = 0;
@@ -646,6 +716,7 @@ bool darfTouchVerarbeitetWerden()
     letzterTouch = millis();
     return true;
 }
+
 void verarbeiteGesamtenTouch(uint16_t x, uint16_t y)
 {
     if (!darfTouchVerarbeitetWerden())
