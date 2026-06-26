@@ -45,31 +45,10 @@ void setup()
 void loop()
 {
     uint16_t x = 0, y = 0;
-    bool touch = tft.getTouch(&x, &y);
-
-    if (touch)
+    if (tft.getTouch(&x, &y))
     {
-        static unsigned long letzteNavPressZeit = 0;
-
-        if (pruefeNavigationButton(x, y))
-        {
-            if (millis() - letzteNavPressZeit > 500)
-            {
-                if (aktiverScreen == SCREEN_MAIN)
-                {
-                    setNewScreen(SCREEN_SESSION);
-                }
-                else
-                {
-                    setNewScreen(SCREEN_MAIN);
-                }
-                letzteNavPressZeit = millis();
-            }
-        }
-        else
-        {
-            verarbeiteSessionTouchInput(x, y);
-        }
+        verarbeiteGesamtenTouch(x, y);
+        delay(150);
     }
 
     if (!TEST_MODE)

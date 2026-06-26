@@ -68,7 +68,7 @@ void zeichneGrundLayout(void)
     tft.setTextColor(FARBE_HINTERGRUND);
     tft.setFreeFont(NULL);
     tft.setTextSize(1);
-    tft.drawString("SESSION >", BTN_NAV_X + 14, BTN_NAV_Y + 6);
+    tft.drawString("< Zurueck", BTN_NAV_X + 14, BTN_NAV_Y + 6);
 
     if (TEST_MODE)
     {
@@ -573,4 +573,105 @@ bool pruefeNavigationButton(uint16_t x, uint16_t y)
 {
     return (x >= 0 && x <= 110 &&
             y >= 0 && y <= 40);
+}
+void handleMenuTouch(uint16_t x, uint16_t y)
+{
+    int buttonID = 0;
+
+    if (y >= 48 && y <= 134)
+    {
+        if (x >= 14 && x <= 106)
+            buttonID = 1; // Session
+        else if (x >= 114 && x <= 206)
+            buttonID = 2; // Live Data
+        else if (x >= 214 && x <= 306)
+            buttonID = 3; // MENU 3
+    }
+    else if (y >= 142 && y <= 228)
+    {
+        if (x >= 14 && x <= 106)
+            buttonID = 4; // Navigation
+        else if (x >= 114 && x <= 206)
+            buttonID = 5; // Settings
+        else if (x >= 214 && x <= 306)
+            buttonID = 6; // MENU 6
+    }
+
+    switch (buttonID)
+    {
+    case 1:
+        setNewScreen(SCREEN_SESSION);
+        break;
+
+    case 2:
+        setNewScreen(SCREEN_MAIN);
+        break;
+
+    case 3:
+        break;
+
+    case 4:
+        break;
+
+    case 5:
+        break;
+
+    case 6:
+        break;
+
+    default:
+        break;
+    }
+}
+
+void handleMainTouch(uint16_t x, uint16_t y)
+{
+    if (pruefeNavigationButton(x, y))
+    {
+        setNewScreen(SCREEN_MENU);
+    }
+}
+void handleSessionTouch(uint16_t x, uint16_t y)
+{
+    verarbeiteSessionTouchInput(x, y);
+    if (pruefeNavigationButton(x, y))
+    {
+        setNewScreen(SCREEN_MENU);
+        return;
+    }
+
+    verarbeiteSessionTouchInput(x, y);
+}
+bool darfTouchVerarbeitetWerden()
+{
+    static unsigned long letzterTouch = 0;
+
+    if (millis() - letzterTouch < 500)
+        return false;
+
+    letzterTouch = millis();
+    return true;
+}
+void verarbeiteGesamtenTouch(uint16_t x, uint16_t y)
+{
+    if (!darfTouchVerarbeitetWerden())
+        return;
+
+    switch (aktiverScreen)
+    {
+    case SCREEN_MENU:
+        handleMenuTouch(x, y);
+        break;
+
+    case SCREEN_MAIN:
+        handleMainTouch(x, y);
+        break;
+
+    case SCREEN_SESSION:
+        handleSessionTouch(x, y);
+        break;
+
+    default:
+        break;
+    }
 }

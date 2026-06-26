@@ -26,7 +26,9 @@ bool pruefeStoppButton(uint16_t x, uint16_t y);
 bool pruefeNavigationButton(uint16_t x, uint16_t y);
 void zeigeZweiButtons();
 void zeichneMenuLayout();
-
+void handleMenuTouch(uint16_t x, uint16_t y);
+void verarbeiteGesamtenTouch(uint16_t x, uint16_t y);
+void handleMainTouch(uint16_t x, uint16_t y);
 uint16_t gpsColor();
 
 #endif
