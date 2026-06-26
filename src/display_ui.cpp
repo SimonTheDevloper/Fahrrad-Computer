@@ -64,11 +64,8 @@ void zeichneGrundLayout(void)
 {
     tft.fillScreen(FARBE_HINTERGRUND);
 
-    tft.fillRoundRect(BTN_NAV_X, BTN_NAV_Y, BTN_NAV_BREITE, BTN_NAV_HOEHE, BTN_NAV_RADIUS, FARBE_EINHEITEN);
-    tft.setTextColor(FARBE_HINTERGRUND);
-    tft.setFreeFont(NULL);
-    tft.setTextSize(1);
-    tft.drawString("< Zurueck", BTN_NAV_X + 14, BTN_NAV_Y + 6);
+    tft.fillRoundRect(5, 1, 23, 18, 3, 0xE300);
+    tft.drawBitmap(7, 3, image_Pin_arrow_left_bits, 18, 14, 0xFFFF);
 
     if (TEST_MODE)
     {
@@ -362,12 +359,9 @@ void zeichneSessionLayout()
 {
     tft.fillScreen(FARBE_HINTERGRUND);
 
-    tft.fillRoundRect(BTN_NAV_X, BTN_NAV_Y, BTN_NAV_BREITE, BTN_NAV_HOEHE, BTN_NAV_RADIUS, FARBE_EINHEITEN);
-    tft.setTextColor(FARBE_HINTERGRUND);
-    tft.setFreeFont(NULL);
+    tft.fillRoundRect(5, 1, 23, 18, 3, 0xE300);
+    tft.drawBitmap(7, 3, image_Pin_arrow_left_bits, 18, 14, 0xFFFF);
     tft.setTextSize(1);
-    tft.drawString("< Zurueck", BTN_NAV_X + 14, BTN_NAV_Y + 6);
-
     if (TEST_MODE)
     {
         tft.fillRect(200, 0, 120, 20, FARBE_HINTERGRUND);
