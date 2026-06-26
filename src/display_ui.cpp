@@ -3,6 +3,8 @@
 #include "gps_manager.h"
 #include "trip_computer.h"
 #include "ride_session.h"
+#include "bitmaps.h"
+#include "Org_01.h"
 
 const uint16_t FARBE_HINTERGRUND = 0x0000; // Schwarz
 const uint16_t FARBE_TEXT_WEISS = 0xFFFF;  // Weiß
@@ -420,7 +422,94 @@ void zeichneSessionLayout()
     tft.drawString("START", 160, BTN_Y + BTN_HOEHE / 2);
     tft.setTextDatum(TL_DATUM);
 }
+void zeichneMenuLayout()
+{
+    tft.fillScreen(0x0);
 
+    tft.drawLine(14, 40, 306, 40, 0x2104);
+    tft.fillRoundRect(14, 48, 92, 86, 4, 0x2924);
+    tft.drawRoundRect(114, 48, 92, 86, 4, 0x2104);
+    tft.drawRoundRect(214, 48, 92, 86, 4, 0x2104);
+    tft.fillRoundRect(16, 50, 88, 82, 4, 0x18A1);
+    tft.drawRoundRect(14, 142, 92, 86, 4, 0x2104);
+    tft.drawLine(14, 40, 306, 40, 0x2104);
+    tft.drawRoundRect(114, 142, 92, 86, 4, 0x2104);
+    tft.drawRoundRect(214, 142, 92, 86, 4, 0x2104);
+
+    tft.setTextColor(0xE300);
+    tft.setTextSize(1);
+    tft.setFreeFont(&FreeMonoBold12pt7b);
+    tft.drawString("BIKE Computer", 42, 11);
+
+    tft.fillRoundRect(14, 48, 92, 86, 4, 0x2924);
+    tft.fillRoundRect(16, 50, 88, 82, 4, 0x18A1);
+    tft.fillRoundRect(114, 48, 92, 86, 4, 0x2924);
+    tft.fillRoundRect(116, 50, 88, 82, 4, 0x18A1);
+    tft.fillRoundRect(214, 48, 92, 86, 4, 0x2924);
+    tft.fillRoundRect(216, 50, 88, 82, 4, 0x18A1);
+
+    tft.setTextColor(0xFFFF);
+    tft.setFreeFont(&Org_01);
+    tft.drawString("MENU 3", 237, 91);
+
+    tft.fillRoundRect(14, 142, 92, 86, 4, 0x2924);
+    tft.fillRoundRect(16, 144, 88, 82, 4, 0x18A1);
+    tft.setFreeFont(&FreeSerif9pt7b);
+    tft.drawString("Navigation", 20, 208);
+
+    tft.fillRoundRect(114, 142, 92, 86, 4, 0x2924);
+    tft.fillRoundRect(116, 144, 88, 82, 4, 0x18A1);
+    tft.fillRoundRect(214, 142, 92, 86, 4, 0x2924);
+    tft.fillRoundRect(216, 144, 88, 82, 4, 0x18A1);
+
+    tft.setFreeFont(&Org_01);
+    tft.drawString("MENU 6", 234, 181);
+
+    tft.setFreeFont(&FreeSerif9pt7b);
+    tft.drawString("Session-", 24, 102);
+    tft.drawString("record", 53, 116);
+    tft.drawString("Live Data", 123, 115);
+    tft.drawString("Settings", 130, 208);
+
+    tft.drawBitmap(46, 60, image_paint_3_bits, 28, 28, 0x7EA);
+    tft.drawBitmap(146, 60, image_paint_3_bits, 28, 28, 0x7EA);
+    tft.drawBitmap(246, 60, image_paint_3_bits, 28, 28, 0x7EA);
+    tft.drawBitmap(46, 154, image_paint_3_bits, 28, 28, 0x7EA);
+    tft.drawBitmap(146, 154, image_paint_3_bits, 28, 28, 0xAD55);
+    tft.drawBitmap(236, 150, image_paint_21_bits, 16, 16, 0xAD55);
+    tft.drawBitmap(46, 154, image_paint_3_bits, 28, 28, 0x7EA);
+    tft.drawBitmap(252, 154, image_paint_21_bits, 16, 16, 0xAD55);
+    tft.drawBitmap(28, 148, image_paint_42_bits, 60, 60, 0xFFFF);
+    tft.drawBitmap(132, 52, image_speedometer_bits, 55, 55, 0xFFFF);
+    tft.drawBitmap(35, 50, image_paint_45_bits, 50, 50, 0xFFFF);
+    tft.drawBitmap(130, 147, image_settings_bits, 57, 57, 0xFFFF);
+    tft.drawBitmap(10, 8, image_bike_bits, 24, 24, 0xFFFF);
+}
+void aktualisiereMenuWerte()
+{
+    static String letzteUhrzeit = "";
+
+    if (screenChanged)
+    {
+        letzteUhrzeit = "";
+        screenChanged = false;
+    }
+
+    bekommeUhrzeit();
+
+    if (letzteUhrzeit != String(uhrzeit))
+    {
+
+        tft.fillRect(260, 5, 58, 25, 0x0);
+
+        tft.setTextColor(0xFD09);
+        tft.setTextSize(2);
+        tft.setFreeFont(&Org_01);
+        tft.drawString(uhrzeit, 264, 14);
+
+        letzteUhrzeit = String(uhrzeit);
+    }
+}
 void updateAktivenScreen()
 {
     switch (aktiverScreen)
@@ -432,10 +521,14 @@ void updateAktivenScreen()
     case SCREEN_SESSION:
         aktualisiereSessionScreenWerte();
         break;
+
+    case SCREEN_MENU:
+        aktualisiereMenuWerte();
+        break;
     }
 }
 
-void setNewScreen(Screen neuerScreen) // hier auch wieder den extra Datentyp nehemn
+void setNewScreen(Screen neuerScreen)
 {
     aktiverScreen = neuerScreen;
     screenChanged = true;
@@ -447,6 +540,10 @@ void setNewScreen(Screen neuerScreen) // hier auch wieder den extra Datentyp neh
     else if (aktiverScreen == SCREEN_SESSION)
     {
         zeichneSessionLayout();
+    }
+    else if (aktiverScreen == SCREEN_MENU)
+    {
+        zeichneMenuLayout();
     }
 }
 

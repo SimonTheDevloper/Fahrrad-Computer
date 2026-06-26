@@ -18,93 +18,93 @@ int speicherZaeler = 0;
 
 void verwalteSpeicherIntervall()
 {
-  speicherZaeler++;
-  if (speicherZaeler >= 5)
-  {
-    speicherZaeler = 0;
-    speichereStatistiken();
-  }
+    speicherZaeler++;
+    if (speicherZaeler >= 5)
+    {
+        speicherZaeler = 0;
+        speichereStatistiken();
+    }
 }
 
 void setup()
 {
-  Serial.begin(115200);
-  gpsSerial.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
+    Serial.begin(115200);
+    gpsSerial.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
 
-  initDisplay();
+    initDisplay();
 
-  if (!LittleFS.begin(true))
-  {
-    Serial.println("LittleFS could not be started");
-    return;
-  }
-  ladeStatistiken();
+    if (!LittleFS.begin(true))
+    {
+        Serial.println("LittleFS could not be started");
+        return;
+    }
+    ladeStatistiken();
 
-  setNewScreen(SCREEN_MAIN);
+    setNewScreen(SCREEN_MENU);
 }
 void loop()
 {
-  uint16_t x = 0, y = 0;
-  bool touch = tft.getTouch(&x, &y);
+    uint16_t x = 0, y = 0;
+    bool touch = tft.getTouch(&x, &y);
 
-  if (touch)
-  {
-    static unsigned long letzteNavPressZeit = 0;
-
-    if (pruefeNavigationButton(x, y))
+    if (touch)
     {
-      if (millis() - letzteNavPressZeit > 500)
-      {
-        if (aktiverScreen == SCREEN_MAIN)
+        static unsigned long letzteNavPressZeit = 0;
+
+        if (pruefeNavigationButton(x, y))
         {
-          setNewScreen(SCREEN_SESSION);
+            if (millis() - letzteNavPressZeit > 500)
+            {
+                if (aktiverScreen == SCREEN_MAIN)
+                {
+                    setNewScreen(SCREEN_SESSION);
+                }
+                else
+                {
+                    setNewScreen(SCREEN_MAIN);
+                }
+                letzteNavPressZeit = millis();
+            }
         }
         else
         {
-          setNewScreen(SCREEN_MAIN);
+            verarbeiteSessionTouchInput(x, y);
         }
-        letzteNavPressZeit = millis();
-      }
     }
-    else
+
+    if (!TEST_MODE)
     {
-      verarbeiteSessionTouchInput(x, y);
+        verarbeiteGPS();
     }
-  }
 
-  if (!TEST_MODE)
-  {
-    verarbeiteGPS();
-  }
-
-  if (millis() - letzteDisplayUpdateZeit >= 200)
-  {
-    letzteDisplayUpdateZeit = millis();
-    updateAktivenScreen();
-  }
-
-  if (millis() - letztesSekunde >= 1000)
-  {
-    letztesSekunde = millis();
-    if (TEST_MODE)
+    if (millis() - letzteDisplayUpdateZeit >= 200)
     {
-      aendereTestGPSDaten();
+        letzteDisplayUpdateZeit = millis();
+        updateAktivenScreen();
     }
 
-    berechneGesamtDistanz();
-    berechneSessionDistanz();
-
-    if (TEST_MODE)
+    if (millis() - letztesSekunde >= 1000)
     {
-      currentSpeed = (distanzInMetern * 3.6);
-      berechneDurschnittsSpeed(currentSpeed);
-      berechneMaxSpeed();
-    }
+        letztesSekunde = millis();
+        if (TEST_MODE)
+        {
+            aendereTestGPSDaten();
+        }
 
-    berechneSessionAvgSpeed();
-    berechneSessionMaxSpeed();
-    verwalteSpeicherIntervall();
-    berechneGesamtfahrzeit();
-    berechneSessionFahrzeit();
-  }
+        berechneGesamtDistanz();
+        berechneSessionDistanz();
+
+        if (TEST_MODE)
+        {
+            currentSpeed = (distanzInMetern * 3.6);
+            berechneDurschnittsSpeed(currentSpeed);
+            berechneMaxSpeed();
+        }
+
+        berechneSessionAvgSpeed();
+        berechneSessionMaxSpeed();
+        verwalteSpeicherIntervall();
+        berechneGesamtfahrzeit();
+        berechneSessionFahrzeit();
+    }
 }

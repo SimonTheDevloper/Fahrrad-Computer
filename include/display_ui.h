@@ -8,7 +8,8 @@ extern TFT_eSPI tft;
 enum Screen // macht einen neuen Datentyp Screen wo man dann mehrer zustände definieren kann was Screen sein kann
 {
     SCREEN_MAIN, // so kann man mit Wörtern auch Zahlen machen. Intern würde hier 0 stehen
-    SCREEN_SESSION
+    SCREEN_SESSION,
+    SCREEN_MENU
 };
 extern Screen aktiverScreen;
 
@@ -24,6 +25,7 @@ bool pruefeWeiterButton(uint16_t x, uint16_t y);
 bool pruefeStoppButton(uint16_t x, uint16_t y);
 bool pruefeNavigationButton(uint16_t x, uint16_t y);
 void zeigeZweiButtons();
+void zeichneMenuLayout();
 
 uint16_t gpsColor();
 
