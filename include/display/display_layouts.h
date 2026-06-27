@@ -8,5 +8,6 @@ void zeichneGrundLayout();
 void zeichneSessionLayout();
 void zeichneMenuLayout();
 void zeichneMenuLayoutHighKontrast();
-
+void zeichneSettingsLayout();
+void zeichneToggleButton(int x, int y, bool aktiv);
 #endif

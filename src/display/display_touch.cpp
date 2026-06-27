@@ -83,6 +83,7 @@ void handleMenuTouch(uint16_t x, uint16_t y)
         break;
 
     case 5:
+        setNewScreen(SCREEN_SETTINGS);
         break;
 
     case 6:
@@ -113,6 +114,21 @@ void handleSessionTouch(uint16_t x, uint16_t y)
     verarbeiteSessionTouchInput(x, y);
 }
 
+void handeSettingsTouch(uint16_t x, uint16_t y)
+{
+    if (pruefeNavigationButton(x, y))
+    {
+        setNewScreen(SCREEN_MENU);
+        return;
+    }
+    if (x >= 240 && x <= 310 && y >= 28 && y <= 74)
+    {
+        highContrastAktiv = !highContrastAktiv;
+
+        screenChanged = true; // damit hier auch der Kontrast auch im menu screen beachtete wurd wird
+        zeichneSettingsLayout();
+    }
+}
 bool darfTouchVerarbeitetWerden()
 {
     static unsigned long letzterTouch = 0;
@@ -142,7 +158,9 @@ void verarbeiteGesamtenTouch(uint16_t x, uint16_t y)
     case SCREEN_SESSION:
         handleSessionTouch(x, y);
         break;
-
+    case SCREEN_SETTINGS:
+        handeSettingsTouch(x, y);
+        break;
     default:
         break;
     }

@@ -43,6 +43,10 @@ void updateAktivenScreen()
     case SCREEN_MENU:
         aktualisiereMenuWerte();
         break;
+
+    case SCREEN_SETTINGS:
+        aktualisiereSettingsWerte();
+        break;
     }
 }
 
@@ -62,5 +66,9 @@ void setNewScreen(Screen neuerScreen)
     else if (aktiverScreen == SCREEN_MENU)
     {
         zeichneMenuLayout();
+    }
+    else if (aktiverScreen == SCREEN_SETTINGS)
+    {
+        zeichneSettingsLayout();
     }
 }

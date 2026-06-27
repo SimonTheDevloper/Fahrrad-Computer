@@ -24,3 +24,5 @@ const int BTN_NAV_Y = 2;
 const int BTN_NAV_BREITE = 85;
 const int BTN_NAV_HOEHE = 20;
 const int BTN_NAV_RADIUS = 4;
+
+bool highContrastAktiv = false;

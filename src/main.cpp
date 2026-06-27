@@ -7,7 +7,6 @@
 #include "ride_session.h"
 
 extern const bool TEST_MODE = true;
-
 #define GPS_RX 32
 #define GPS_TX 33
 

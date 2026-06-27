@@ -8,5 +8,5 @@ void aktualisiereWerte();
 void aktualisiereSessionScreenWerte();
 void aktualisiereMenuWerteHighKontrast();
 void aktualisiereMenuWerte();
-
+void aktualisiereSettingsWerte();
 #endif

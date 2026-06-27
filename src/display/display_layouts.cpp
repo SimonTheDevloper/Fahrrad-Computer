@@ -246,3 +246,43 @@ void zeichneMenuLayoutHighKontrast()
     tft.drawBitmap(130, 147, image_settings_bits, 57, 57, 0xFFFF);
     tft.drawBitmap(10, 8, image_bike_bits, 24, 24, 0xFFFF);
 }
+void zeichneToggleButton(int x, int y, bool aktiv)
+{
+    const int trackBreite = 50;
+    const int trackHoehe = 26;
+    const int trackRadius = 13;
+    const int thumbDurchmesser = 22;
+
+    uint16_t trackFarbe = aktiv ? 0x07E0 : FARBE_LINIEN;
+    uint16_t thumbFarbe = 0xFFFF;
+
+    tft.fillRoundRect(x, y, trackBreite, trackHoehe, trackRadius, trackFarbe);
+
+    int thumbX = aktiv ? x + trackBreite - thumbDurchmesser - 2 : x + 2;
+    int thumbY = y + (trackHoehe - thumbDurchmesser) / 2;
+    tft.fillCircle(thumbX + thumbDurchmesser / 2, thumbY + thumbDurchmesser / 2,
+                   thumbDurchmesser / 2, thumbFarbe);
+}
+
+void zeichneSettingsLayout()
+{
+    tft.fillScreen(FARBE_HINTERGRUND);
+
+    tft.fillRoundRect(5, 1, 23, 18, 3, 0xE300);
+    tft.drawBitmap(7, 3, image_Pin_arrow_left_bits, 18, 14, 0xFFFF);
+
+    tft.setTextColor(FARBE_TEXT_WEISS);
+    tft.setFreeFont(&FreeSansBold9pt7b);
+    tft.setTextSize(1);
+    tft.setTextDatum(TC_DATUM);
+    tft.drawString("Settings", 160, 8);
+    tft.setTextDatum(TL_DATUM);
+
+    tft.drawLine(1, 24, 319, 24, FARBE_LINIEN);
+
+    tft.setTextColor(FARBE_TEXT_WEISS);
+    tft.setFreeFont(&FreeSans9pt7b);
+    tft.drawString("High Contrast", 20, 40);
+
+    tft.drawLine(10, 68, 310, 68, FARBE_LINIEN);
+}

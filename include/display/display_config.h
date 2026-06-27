@@ -29,4 +29,19 @@ extern const int BTN_NAV_BREITE;
 extern const int BTN_NAV_HOEHE;
 extern const int BTN_NAV_RADIUS;
 
+#define SETTINGS_ROW_H 48     // Höhe einer Settings-Zeile
+#define SETTINGS_ROW_START 35 // Y-Start erste Zeile (nach Header-Linie)
+#define SETTINGS_LABEL_X 18   // X-Position der Labels
+#define SETTINGS_TOGGLE_X 255 // X-Position der Toggle-Buttons (rechtsbündig)
+#define SETTINGS_TOGGLE_W 52  // Toggle-Breite
+#define SETTINGS_TOGGLE_H 26  // Toggle-Höhe
+#define SETTINGS_TOGGLE_R 13  // Toggle Border-Radius (= halbe Höhe → Pill-Form)
+
+// Toggle-Farben
+#define FARBE_TOGGLE_AN 0x07E0    // Grün  → AN
+#define FARBE_TOGGLE_AUS 0x4228   // Grau  → AUS
+#define FARBE_TOGGLE_KNOPF 0xFFFF // Weiß  → Schieber-Kreis
+
+extern bool highContrastAktiv;
+
 #endif

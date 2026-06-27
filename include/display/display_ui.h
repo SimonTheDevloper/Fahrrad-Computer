@@ -14,7 +14,8 @@ enum Screen
 {
     SCREEN_MAIN, // so kann man mit Wörtern auch Zahlen mache eigentlich würde hier 0 stehen
     SCREEN_SESSION,
-    SCREEN_MENU
+    SCREEN_MENU,
+    SCREEN_SETTINGS
 };
 
 extern Screen aktiverScreen;

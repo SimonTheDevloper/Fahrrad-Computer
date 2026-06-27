@@ -259,3 +259,32 @@ void aktualisiereMenuWerte()
         letzteUhrzeit = String(uhrzeit);
     }
 }
+void aktualisiereSettingsWerte()
+{
+    static bool letzterHighContrast = false;
+
+    // Cache zurücksetzen beim Screen-Wechsel
+    if (screenChanged)
+    {
+        letzterHighContrast = !highContrastAktiv; // Force redraw
+        screenChanged = false;
+    }
+
+    // High Contrast Toggle nur bei Änderung neu zeichnen
+    if (letzterHighContrast != highContrastAktiv)
+    {
+        zeichneToggleButton(250, 38, highContrastAktiv);
+        letzterHighContrast = highContrastAktiv;
+    }
+
+    // === Hier weitere Settings-Caching hinzufügen ===
+    // Beispiel:
+    /*
+    static bool letzterAutoSleep = false;
+    if (letzterAutoSleep != autoSleepAktiv)
+    {
+        zeichneToggleButton(250, 78, autoSleepAktiv);
+        letzterAutoSleep = autoSleepAktiv;
+    }
+    */
+}

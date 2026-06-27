@@ -12,6 +12,7 @@ void zeigeZweiButtons();
 void handleMenuTouch(uint16_t x, uint16_t y);
 void handleMainTouch(uint16_t x, uint16_t y);
 void handleSessionTouch(uint16_t x, uint16_t y);
+void handeSettingsTouch(uint16_t x, uint16_t y);
 bool darfTouchVerarbeitetWerden();
 void verarbeiteGesamtenTouch(uint16_t x, uint16_t y);
 
