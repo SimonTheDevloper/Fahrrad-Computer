@@ -18,6 +18,9 @@ void berechneMaxSpeed();
 
 void showLoadStaticsInfo();
 
+double meterToKm(double meter);
+String formatTime(unsigned long sek);
+
 extern double gesamtStrecke;
 extern double distanzInMetern;
 extern unsigned long gesamtFahrtZeit;

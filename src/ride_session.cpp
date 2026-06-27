@@ -1,7 +1,7 @@
 #include "ride_session.h"
 #include "trip_computer.h"
 #include "gps_manager.h"
-#include "display_ui.h"
+#include "display/display_ui.h"
 FahrtSate aktivFahrtState = GESTOPPT;
 
 double sessionStrecke = 0.0;

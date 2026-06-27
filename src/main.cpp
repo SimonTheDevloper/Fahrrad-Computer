@@ -3,7 +3,7 @@
 #include <LittleFS.h>
 #include "gps_manager.h"
 #include "trip_computer.h"
-#include "display_ui.h"
+#include "display/display_ui.h"
 #include "ride_session.h"
 
 extern const bool TEST_MODE = true;

@@ -1,6 +1,6 @@
 #include "gps_manager.h"
 #include "trip_computer.h"
-#include "display_ui.h"
+#include "display/display_ui.h"
 #include "mock_daten.h"
 #include "debug_helper.h"
 
