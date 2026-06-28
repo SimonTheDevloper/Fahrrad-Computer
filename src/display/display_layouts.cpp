@@ -155,8 +155,8 @@ void zeichneMenuLayout()
     tft.fillRoundRect(116, 144, 88, 82, 4, FARBE_KACHEL_INNEN);
     tft.fillRoundRect(214, 142, 92, 86, 4, FARBE_KACHEL_AUSSEN);
     tft.fillRoundRect(216, 144, 88, 82, 4, FARBE_KACHEL_INNEN);
-    qwewqewq
-        tft.setFreeFont(&Org_01);
+
+    tft.setFreeFont(&Org_01);
     tft.drawString("MENU 6", 234, 181);
 
     tft.setFreeFont(&FreeSerif9pt7b);
