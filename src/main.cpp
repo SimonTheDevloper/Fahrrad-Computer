@@ -37,6 +37,7 @@ void setup()
         Serial.println("LittleFS could not be started");
         return;
     }
+    ladeFarbTheme();
     ladeStatistiken();
 
     setNewScreen(SCREEN_MENU);

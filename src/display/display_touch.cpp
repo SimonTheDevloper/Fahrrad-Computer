@@ -123,8 +123,9 @@ void handeSettingsTouch(uint16_t x, uint16_t y)
     }
     if (x >= 240 && x <= 310 && y >= 28 && y <= 74)
     {
-        highContrastAktiv = !highContrastAktiv;
 
+        highContrastAktiv = !highContrastAktiv;
+        ladeFarbTheme();
         screenChanged = true; // damit hier auch der Kontrast auch im menu screen beachtete wurd wird
         zeichneSettingsLayout();
     }

@@ -27,7 +27,7 @@ void aktualisiereWerte()
 
     tft.setFreeFont(NULL);
     tft.setTextSize(2);
-    tft.setTextColor(FARBE_TEXT_WEISS, FARBE_HINTERGRUND);
+    tft.setTextColor(FARBE_TEXT, FARBE_HINTERGRUND);
     if (letzteUhrzeit != String(uhrzeit))
     {
         tft.drawString(uhrzeit, 260, 5);
@@ -262,29 +262,15 @@ void aktualisiereMenuWerte()
 void aktualisiereSettingsWerte()
 {
     static bool letzterHighContrast = false;
-
-    // Cache zurücksetzen beim Screen-Wechsel
     if (screenChanged)
     {
-        letzterHighContrast = !highContrastAktiv; // Force redraw
+        letzterHighContrast = !highContrastAktiv;
         screenChanged = false;
     }
 
-    // High Contrast Toggle nur bei Änderung neu zeichnen
     if (letzterHighContrast != highContrastAktiv)
     {
         zeichneToggleButton(250, 38, highContrastAktiv);
         letzterHighContrast = highContrastAktiv;
     }
-
-    // === Hier weitere Settings-Caching hinzufügen ===
-    // Beispiel:
-    /*
-    static bool letzterAutoSleep = false;
-    if (letzterAutoSleep != autoSleepAktiv)
-    {
-        zeichneToggleButton(250, 78, autoSleepAktiv);
-        letzterAutoSleep = autoSleepAktiv;
-    }
-    */
 }
