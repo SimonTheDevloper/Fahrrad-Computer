@@ -120,7 +120,6 @@ void zeichneMenuLayout()
 {
     tft.fillScreen(FARBE_HINTERGRUND);
 
-    tft.drawLine(14, 40, 306, 40, FARBE_LINIEN);
     tft.fillRoundRect(14, 48, 92, 86, 4, FARBE_KACHEL_AUSSEN);
     tft.drawRoundRect(114, 48, 92, 86, 4, FARBE_LINIEN);
     tft.drawRoundRect(214, 48, 92, 86, 4, FARBE_LINIEN);
@@ -257,6 +256,7 @@ void zeichneToggleButton(int x, int y, bool aktiv)
     uint16_t thumbFarbe = 0xFFFF;
 
     tft.fillRoundRect(x, y, trackBreite, trackHoehe, trackRadius, trackFarbe);
+    tft.drawRoundRect(x, y, trackBreite, trackHoehe, trackRadius, TFT_WHITE);
 
     int thumbX = aktiv ? x + trackBreite - thumbDurchmesser - 2 : x + 2;
     int thumbY = y + (trackHoehe - thumbDurchmesser) / 2;
