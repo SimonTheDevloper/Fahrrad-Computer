@@ -1,38 +1,20 @@
 #include <Arduino.h>
-#include <Wire.h>
+#include <WiFi.h>
 
 void setup()
 {
     Serial.begin(115200);
-    delay(2000);
+    delay(1000);
 
-    Wire.begin(21, 22); // ggf. auch 25,26 testen
-    Serial.println("I2C Scanner startet...");
+    Serial.println("Wlan wird gestartet");
+
+    WiFi.softAP("BikeComputer", "SimDev123"); // damit er den Acces Point startet mit Name, Passwort
+    Serial.println("Wlan erfolgreich gestartet.");
+
+    Serial.print("IP adresse vom ESP32: ");
+    Serial.println(WiFi.softAPIP()); // damit gibt er die IP
 }
 
 void loop()
 {
-
-    bool found = false;
-
-    for (byte addr = 1; addr < 127; addr++)
-    {
-        Wire.beginTransmission(addr);
-        byte error = Wire.endTransmission();
-
-        if (error == 0)
-        {
-            Serial.print("Gefunden: 0x");
-            Serial.println(addr, HEX);
-            found = true;
-        }
-    }
-
-    if (!found)
-    {
-        Serial.println("Kein Gerät gefunden");
-    }
-
-    Serial.println("----------------------");
-    delay(2000); // alle 2 Sekunden neu scannen
 }
