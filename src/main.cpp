@@ -14,8 +14,8 @@ void ladeWifiConfig()
 {
     preferences.begin("config", true); // damit öffnet es einen Namespace und nur im Lesemodus
 
-    String ssid = preferences.getString("ssid", ""); // warum leer?
-    String password = preferences.getString("password", "");
+    ssid = preferences.getString("ssid", "");
+    password = preferences.getString("password", "");
 
     preferences.end(); // damit es auch wieder schließt um ressourchen zu sparen
 }
@@ -35,6 +35,8 @@ void speicherWifiConfig(String newSsid, String newPassword)
 }
 void starteWifi()
 {
+    speicherWifiConfig(ssid, password);
+
     ladeWifiConfig();
     WiFi.mode(WIFI_AP_STA);                     // damiit wird dem Chip gesagt das er in beiden Modes mode sein soll
     WiFi.begin(ssid.c_str(), password.c_str()); // damit startet er dann fürs Heimnetzt
@@ -58,10 +60,10 @@ void setup()
     Serial.println(WiFi.softAPIP()); // damit gibt er seine IP raus
 
     server.on("/", []()
-              { server.send(200, "text/plain", "HELLO client! Ich bin im AP mdus!"); });
+              { server.send(200, "text/plain", "HELLO client! Ich bin im AP und STA modus!"); });
 
     server.begin(); // damit wird dann der Webserver gestartet
-    Serial.println("Webserver im AP-Modus gestartet!");
+    Serial.println("Webserver im AP und STA gestartet!");
 }
 
 void loop()
