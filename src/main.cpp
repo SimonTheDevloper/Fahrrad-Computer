@@ -3,6 +3,8 @@
 #include <WebServer.h>
 #include <Preferences.h>
 #include "secrets.h"
+#include <FS.h>
+#include <LittleFS.h>
 
 Preferences preferences;
 String ssid;
@@ -43,11 +45,31 @@ void starteWifi()
 
     WiFi.softAP("BikeComputer", "SimDev123");
 }
+void handleRoute()
+{
+    File datei = LittleFS.open("/index.html", "r");
+
+    if (!datei)
+    {
+        server.send(404, "text/plain", "Datei nicht gefunden");
+        return;
+    }
+
+    String inhalt = datei.readString();
+    datei.close();
+
+    server.send(200, "text/html", inhalt);
+}
 
 void setup()
 {
     Serial.begin(115200);
 
+    if (!LittleFS.begin(true))
+    {
+        Serial.println("LittleFS could not be started");
+        return;
+    }
     delay(1000);
 
     Serial.print("Acces mode wird gestartet");
@@ -59,8 +81,7 @@ void setup()
 
     Serial.println(WiFi.softAPIP()); // damit gibt er seine IP raus
 
-    server.on("/", []()
-              { server.send(200, "text/plain", "HELLO client! Ich bin im AP und STA modus!"); });
+    server.on("/", handleRoute);
 
     server.begin(); // damit wird dann der Webserver gestartet
     Serial.println("Webserver im AP und STA gestartet!");
