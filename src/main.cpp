@@ -49,12 +49,12 @@ void starteWifi()
 void handleLedOn()
 {
     digitalWrite(LED_PIN, HIGH);
-    server.send(200, "text/plain", "LED an");
+    server.send(200, "application/json", "{\"status\":\"on\"}");
 }
 void handleLedOff()
 {
     digitalWrite(LED_PIN, LOW);
-    server.send(200, "text/plain", "LED off");
+    server.send(200, "application/json", "{\"status\":\"off\"}");
 }
 void handleRoute()
 {
@@ -93,6 +93,7 @@ void setup()
     Serial.println(WiFi.softAPIP()); // damit gibt er seine IP raus
 
     server.on("/", handleRoute);
+    server.serveStatic("/script.js", LittleFS, "/script.js");
     server.on("/tests/ledon", handleLedOn);
     server.on("/tests/ledoff", handleLedOff);
 
