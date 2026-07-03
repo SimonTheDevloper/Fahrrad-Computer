@@ -80,6 +80,7 @@ void loop()
             berechneMaxSpeed();
         }
 
+        handleLogging();
         berechneSessionAvgSpeed();
         berechneSessionMaxSpeed();
         verwalteSpeicherIntervall();

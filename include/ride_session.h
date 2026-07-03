@@ -9,6 +9,14 @@ enum FahrtSate
     PAUSIERT,
     LAEUFT
 };
+struct LogData
+{
+    unsigned long time;
+
+    double latitude;
+    double longitude;
+    double altitude;
+};
 void setNewFahrtState(FahrtSate neuerState);
 void berechneSessionDistanz();
 void berechneSessionFahrzeit();
@@ -16,7 +24,9 @@ void berechneSessionAvgSpeed();
 void berechneSessionMaxSpeed();
 void verarbeiteSessionTouchInput(uint16_t x, uint16_t y);
 void resetSessionWerte();
-
+void handleLogging();
+void schreibeLogs();
+void saveLogs();
 extern FahrtSate aktivFahrtState;
 
 extern double sessionStrecke;

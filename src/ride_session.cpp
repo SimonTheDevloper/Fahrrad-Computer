@@ -4,6 +4,15 @@
 #include "display/display_ui.h"
 FahrtSate aktivFahrtState = GESTOPPT;
 
+LogData currentLog;
+LogData logPuffer[10];
+int logPufferIndex = 0;
+
+unsigned long letzteLogZeit = 0;
+bool darfLoggen = false;
+
+int logHaefigkeit = 1000;
+
 double sessionStrecke = 0.0;
 unsigned long sessionFahrtZeit = 0;
 float sessionAvgSpeed = 0.0;
@@ -81,6 +90,7 @@ void verarbeiteSessionTouchInput(uint16_t x, uint16_t y)
                 Serial.println("Pressed WEITER!");
                 setNewFahrtState(LAEUFT);
                 letztePressZeit = millis();
+                darfLoggen = true;
             }
             else if (pruefeStoppButton(x, y) && (millis() - letztePressZeit > 500))
             {
@@ -88,6 +98,7 @@ void verarbeiteSessionTouchInput(uint16_t x, uint16_t y)
                 setNewFahrtState(GESTOPPT);
                 resetSessionWerte();
                 letztePressZeit = millis();
+                darfLoggen = false;
             }
         }
         else
@@ -98,6 +109,7 @@ void verarbeiteSessionTouchInput(uint16_t x, uint16_t y)
                 if (aktivFahrtState == GESTOPPT)
                 {
                     setNewFahrtState(LAEUFT);
+                    darfLoggen = true;
                 }
                 else if (aktivFahrtState == LAEUFT)
                 {
@@ -124,4 +136,65 @@ void resetSessionWerte()
     maxSpeed = 0.0;
     sessionSpeedSum = 0.0;
     sessionSpeedCount = 0;
+}
+
+void handleLogging()
+{
+    if (!darfLoggen)
+        return;
+
+    if (millis() - letzteLogZeit >= logHaefigkeit)
+    {
+        bekommeUhrzeit();
+
+        currentLog.time = int(uhrzeit);
+        currentLog.altitude = altitude;
+        currentLog.latitude = latitude;
+        currentLog.longitude = longitude;
+
+        schreibeLogs();
+
+        letzteLogZeit = millis();
+    }
+}
+
+void schreibeLogs()
+{
+
+    String line = String(currentLog.time) + "," +
+                  String(currentLog.altitude) + "," +
+                  String(currentLog.latitude) + "," +
+                  String(currentLog.longitude);
+
+    Serial.println(line);
+    logPuffer[logPufferIndex++] = currentLog;
+
+    if (logPufferIndex >= 10)
+    {
+        saveLogs();
+        logPufferIndex = 0;
+    }
+}
+
+void saveLogs()
+{
+    File datei = LittleFS.open("/fahrten.csv", "a"); // das a ist für append das es nicht immer alles überschreibt also löscht
+    if (!datei)
+    {
+        Serial.println("Fehler beim Öffnen der Datei zum Schreiben");
+        return;
+    }
+    Serial.println("Der ganze Puffer an daten wird nun gespeichert");
+    for (int i = 0; i < logPufferIndex; i++)
+    {
+        datei.print(logPuffer[i].time);
+        datei.print(",");
+        datei.print(logPuffer[i].latitude, 6);
+        datei.print(",");
+        datei.print(logPuffer[i].longitude, 6);
+        datei.print(",");
+        datei.println(logPuffer[i].altitude);
+    }
+
+    datei.close();
 }
