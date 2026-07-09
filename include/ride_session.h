@@ -27,6 +27,7 @@ void resetSessionWerte();
 void handleLogging();
 void schreibeLogs();
 void saveLogs();
+void erstelleFilesOrdner();
 extern FahrtSate aktivFahrtState;
 
 extern double sessionStrecke;

@@ -1,7 +1,10 @@
+#include <vector>
+#include <LittleFS.h>
 #include "ride_session.h"
 #include "trip_computer.h"
 #include "gps_manager.h"
 #include "display/display_ui.h"
+
 FahrtSate aktivFahrtState = GESTOPPT;
 
 LogData currentLog;
@@ -22,7 +25,59 @@ float maxSpeed = 0.0;
 static float sessionSpeedSum = 0.0;
 static int sessionSpeedCount = 0;
 
+String aktuelleFahrtDatei = "";
+
 bool letzterTouch = false;
+
+void erstelleFilesOrdner()
+{
+    if (!LittleFS.mkdir("/fahrten"))
+    {
+        Serial.print("beim erstellen des Ordners: fahrten fehlgeschlagen");
+    }
+}
+
+String erstelleNeueFahrtDatei()
+{
+    std::vector<String> files;
+    File dir = LittleFS.open("/fahrten");
+    File file = dir.openNextFile();
+
+    while (file)
+    {
+        files.push_back(file.name());
+        file = dir.openNextFile();
+    }
+
+    int hoechsteNummer = 0;
+
+    for (const auto &name : files)
+    {
+        int start = name.indexOf("-") + 1;
+        int ende = name.indexOf(".");
+        int nummer = name.substring(start, ende).toInt();
+
+        if (nummer > hoechsteNummer)
+        {
+            hoechsteNummer = nummer;
+        }
+    }
+
+    hoechsteNummer++;
+    String neuerName = "fahrt-" + String(hoechsteNummer) + ".csv";
+    File datei = LittleFS.open("/fahrten/" + neuerName, "w");
+
+    if (datei)
+    {
+        Serial.println("Neue Datei erstellt: " + neuerName);
+        datei.close();
+    }
+    else
+    {
+        Serial.println("Datei konnte nicht erstellt werden.");
+    }
+    return neuerName;
+}
 
 void setNewFahrtState(FahrtSate neuerState)
 {
@@ -49,7 +104,6 @@ void berechneSessionAvgSpeed()
 {
     if (aktivFahrtState == LAEUFT)
     {
-
         if (currentSpeed > 1.5)
         {
             sessionSpeedSum += currentSpeed;
@@ -61,7 +115,6 @@ void berechneSessionAvgSpeed()
 
 void berechneSessionMaxSpeed()
 {
-
     if (aktivFahrtState == LAEUFT)
     {
         if (currentSpeed > sessionMaxSpeed)
@@ -73,16 +126,11 @@ void berechneSessionMaxSpeed()
 
 void verarbeiteSessionTouchInput(uint16_t x, uint16_t y)
 {
-
     if (!letzterTouch)
     {
         Serial.println("Touch detected");
-        Serial.print("X: ");
-        Serial.print(x);
-        Serial.print(" Y: ");
-        Serial.println(y);
-
         static unsigned long letztePressZeit = 0;
+
         if (aktivFahrtState == PAUSIERT)
         {
             if (pruefeWeiterButton(x, y) && (millis() - letztePressZeit > 500))
@@ -96,6 +144,11 @@ void verarbeiteSessionTouchInput(uint16_t x, uint16_t y)
             {
                 Serial.println("Pressed STOPPEN!");
                 setNewFahrtState(GESTOPPT);
+
+                saveLogs();
+                logPufferIndex = 0;
+                aktuelleFahrtDatei = "";
+
                 resetSessionWerte();
                 letztePressZeit = millis();
                 darfLoggen = false;
@@ -103,12 +156,13 @@ void verarbeiteSessionTouchInput(uint16_t x, uint16_t y)
         }
         else
         {
-            if (pruefeStartButton(x, y) && (millis() - letztePressZeit > 500)) // damit es entprellt wird
+            if (pruefeStartButton(x, y) && (millis() - letztePressZeit > 500))
             {
                 Serial.println("Pressed on BTN!");
                 if (aktivFahrtState == GESTOPPT)
                 {
                     setNewFahrtState(LAEUFT);
+                    aktuelleFahrtDatei = erstelleNeueFahrtDatei();
                     darfLoggen = true;
                 }
                 else if (aktivFahrtState == LAEUFT)
@@ -160,7 +214,6 @@ void handleLogging()
 
 void schreibeLogs()
 {
-
     String line = String(currentLog.time) + "," +
                   String(currentLog.altitude) + "," +
                   String(currentLog.latitude) + "," +
@@ -178,12 +231,20 @@ void schreibeLogs()
 
 void saveLogs()
 {
-    File datei = LittleFS.open("/fahrten.csv", "a"); // das a ist für append das es nicht immer alles überschreibt also löscht
+    if (aktuelleFahrtDatei == "")
+    {
+        aktuelleFahrtDatei = erstelleNeueFahrtDatei();
+    }
+
+    String ganzerPfad = "/fahrten/" + aktuelleFahrtDatei;
+    File datei = LittleFS.open(ganzerPfad, "a");
+
     if (!datei)
     {
-        Serial.println("Fehler beim Öffnen der Datei zum Schreiben");
+        Serial.println("Fehler beim Oeffnen der Datei zum Schreiben");
         return;
     }
+
     Serial.println("Der ganze Puffer an daten wird nun gespeichert");
     for (int i = 0; i < logPufferIndex; i++)
     {

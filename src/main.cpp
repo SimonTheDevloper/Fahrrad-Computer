@@ -5,6 +5,7 @@
 #include "trip_computer.h"
 #include "display/display_ui.h"
 #include "ride_session.h"
+#include "wifi_manager.h"
 
 extern const bool TEST_MODE = true;
 #define GPS_RX 32
@@ -37,6 +38,13 @@ void setup()
         Serial.println("LittleFS could not be started");
         return;
     }
+
+    void erstelleFilesOrdner();
+
+    starteWifi();
+    server.begin();
+    Serial.println("Webserver bereit!");
+
     ladeFarbTheme();
     ladeStatistiken();
 
@@ -44,14 +52,17 @@ void setup()
 }
 void loop()
 {
+
+    server.handleClient();
     uint16_t x = 0, y = 0;
     if (tft.getTouch(&x, &y))
     {
         verarbeiteGesamtenTouch(x, y);
         delay(150);
     }
+    qweqwewqewqewqewqqewqwe
 
-    if (!TEST_MODE)
+        if (!TEST_MODE)
     {
         verarbeiteGPS();
     }
