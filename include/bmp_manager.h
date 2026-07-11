@@ -11,4 +11,5 @@ void verarbeiteBmp();
 extern float currentTemperature;
 extern float currentLuftDruck;
 extern float currentHoeheBaro;
+extern bool bmpAktiv;
 #endif

@@ -8,7 +8,7 @@
 #include "wifi_manager.h"
 #include "bmp_manager.h"
 
-extern const bool TEST_MODE = true;
+extern const bool TEST_MODE = false;
 #define GPS_RX 32
 #define GPS_TX 33
 
@@ -33,6 +33,7 @@ void setup()
     gpsSerial.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
 
     initDisplay();
+    initBmp();
 
     if (!LittleFS.begin(true))
     {
@@ -42,14 +43,14 @@ void setup()
 
     void erstelleFilesOrdner();
 
-    starteWifi();
-    server.begin();
-    Serial.println("Webserver bereit!");
-
     ladeFarbTheme();
     ladeStatistiken();
 
     setNewScreen(SCREEN_MENU);
+
+    starteWifi();
+    server.begin();
+    Serial.println("Webserver bereit!");
 }
 void loop()
 {

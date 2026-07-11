@@ -7,9 +7,12 @@
 extern double gesamtStrecke;
 extern unsigned long gesamtFahrtZeit;
 extern float maxSpeed;
+unsigned long letztesPrintZeit = 0;
 
 void showAutoSaveInfo()
 {
+    if (millis() - letztesPrintZeit < 200)
+        return;
     Serial.println("\n=============================================================");
     Serial.print("[LittleFS saved that]:  ");
     Serial.print(gesamtStrecke);
@@ -19,9 +22,14 @@ void showAutoSaveInfo()
     Serial.print(maxSpeed);
     Serial.println(" km/h");
     Serial.println("=============================================================\n");
+
+    letztesPrintZeit = millis();
 }
 void showLoadStaticsInfo()
 {
+    if (millis() - letztesPrintZeit < 200)
+        return;
+
     Serial.println("\n====================================");
     Serial.println("LittleFS has the statistics loaded successfully:");
     Serial.print(" Total distance: ");
@@ -34,10 +42,15 @@ void showLoadStaticsInfo()
     Serial.print(maxSpeed);
     Serial.println(" km/h");
     Serial.println("====================================\n");
+
+    letztesPrintZeit = millis();
 }
 
 void showGPSDaten()
 {
+    if (millis() - letztesPrintZeit < 200)
+        return;
+
     Serial.print("Latitude: ");
     Serial.println(latitude, 6);
 
@@ -50,11 +63,16 @@ void showGPSDaten()
 
     Serial.print("Satalites: ");
     Serial.println(satellites);
+
+    letztesPrintZeit = millis();
 }
 void showBmpData()
 {
+    if (millis() - letztesPrintZeit < 200)
+        return;
+
     Serial.print("Temperature: ");
-    Serial.print(currentTemperature);
+    Serial.print(currentTemperature, 2);
     Serial.println("°C");
 
     Serial.print("Luftdruck: ");
@@ -64,4 +82,6 @@ void showBmpData()
     Serial.print("Baro-Hoehe: ");
     Serial.print(currentHoeheBaro);
     Serial.println("m");
+
+    letztesPrintZeit = millis();
 }
