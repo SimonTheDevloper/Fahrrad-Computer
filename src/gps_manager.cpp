@@ -43,7 +43,7 @@ void verarbeiteGPS()
         utcHour = gps.time.hour();
         minute = gps.time.minute();
         second = gps.time.second();
-        showGPSDaten();
+        // showGPSDaten();
     }
 }
 

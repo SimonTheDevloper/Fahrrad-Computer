@@ -4,14 +4,16 @@
 #include "trip_computer.h"
 #include "ride_session.h"
 #include "Org_01.h"
+#include "bmp_manager.h"
 
-void aktualisiereWerte()
+void aktualisiereLiveDataWerte()
 {
     static String letzteUhrzeit = ""; // Wie eine globale Variable, die aber sicher verpackt nur innerhalb dieser Funktion existiert
     static int letztesSpeedInt = -1;
     static String letzteGesamtStrecke = "";
     static String letzteGesamtFahrzeit = "";
     static String letztesMaxSpeed = "";
+    static int letzteTemperatur = -1515;
 
     if (screenChanged) // damit sozusagen das Cashe zurüg gesetzt wird und werte korrekt beim Screen wechseln geupdated werden
     {
@@ -21,6 +23,7 @@ void aktualisiereWerte()
         letzteGesamtFahrzeit = "";
         letztesMaxSpeed = "";
         screenChanged = false;
+        letzteTemperatur = -1515;
     }
 
     bekommeUhrzeit();
@@ -32,6 +35,19 @@ void aktualisiereWerte()
     {
         tft.drawString(uhrzeit, 260, 5);
         letzteUhrzeit = String(uhrzeit);
+    }
+
+    int tempInt = (int)currentTemperature;
+    if (letzteTemperatur != tempInt)
+    {
+        tft.fillRect(200, 2, 28, 20, FARBE_HINTERGRUND);
+
+        tft.setTextColor(FARBE_WERTE);
+        tft.setFreeFont(&FreeSans9pt7b);
+        tft.setTextSize(1);
+        tft.drawString(String(tempInt), 210, 2);
+
+        letzteTemperatur = tempInt;
     }
 
     tft.setTextColor(FARBE_SPEED);

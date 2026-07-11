@@ -6,5 +6,6 @@
 void showAutoSaveInfo();
 void showLoadStaticsInfo();
 void showGPSDaten();
+void showBmpData();
 
 #endif

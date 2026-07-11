@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 
-void aktualisiereWerte();
+void aktualisiereLiveDataWerte();
 void aktualisiereSessionScreenWerte();
 void aktualisiereMenuWerteHighKontrast();
 void aktualisiereMenuWerte();

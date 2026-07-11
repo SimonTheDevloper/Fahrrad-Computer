@@ -33,7 +33,7 @@ void updateAktivenScreen()
     switch (aktiverScreen)
     {
     case SCREEN_MAIN:
-        aktualisiereWerte();
+        aktualisiereLiveDataWerte();
         break;
 
     case SCREEN_SESSION:
@@ -57,7 +57,7 @@ void setNewScreen(Screen neuerScreen)
 
     if (aktiverScreen == SCREEN_MAIN)
     {
-        zeichneGrundLayout();
+        zeichneLiveDataLayout();
     }
     else if (aktiverScreen == SCREEN_SESSION)
     {

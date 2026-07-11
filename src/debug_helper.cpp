@@ -2,6 +2,7 @@
 #include "debug_helper.h"
 #include "trip_computer.h"
 #include "gps_manager.h"
+#include "bmp_manager.h"
 
 extern double gesamtStrecke;
 extern unsigned long gesamtFahrtZeit;
@@ -49,4 +50,18 @@ void showGPSDaten()
 
     Serial.print("Satalites: ");
     Serial.println(satellites);
+}
+void showBmpData()
+{
+    Serial.print("Temperature: ");
+    Serial.print(currentTemperature);
+    Serial.println("°C");
+
+    Serial.print("Luftdruck: ");
+    Serial.print(currentLuftDruck);
+    Serial.println("hPa");
+
+    Serial.print("Baro-Hoehe: ");
+    Serial.print(currentHoeheBaro);
+    Serial.println("m");
 }

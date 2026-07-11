@@ -6,6 +6,7 @@
 #include "display/display_ui.h"
 #include "ride_session.h"
 #include "wifi_manager.h"
+#include "bmp_manager.h"
 
 extern const bool TEST_MODE = true;
 #define GPS_RX 32
@@ -60,11 +61,11 @@ void loop()
         verarbeiteGesamtenTouch(x, y);
         delay(150);
     }
-    qweqwewqewqewqewqqewqwe
 
-        if (!TEST_MODE)
+    if (!TEST_MODE)
     {
         verarbeiteGPS();
+        verarbeiteBmp();
     }
 
     if (millis() - letzteDisplayUpdateZeit >= 200)

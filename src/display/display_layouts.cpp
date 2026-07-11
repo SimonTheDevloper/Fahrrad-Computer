@@ -3,7 +3,7 @@
 #include "bitmaps.h"
 #include "Org_01.h"
 
-void zeichneGrundLayout()
+void zeichneLiveDataLayout()
 {
     tft.fillScreen(FARBE_HINTERGRUND);
 
@@ -21,6 +21,8 @@ void zeichneGrundLayout()
     tft.drawLine(195, 1, 195, 239, FARBE_LINIEN);
     tft.drawLine(195, 95, 319, 95, FARBE_LINIEN);
     tft.drawLine(195, 166, 319, 166, FARBE_LINIEN);
+
+    tft.drawBitmap(230, 4, image_Celsius__Streamline_Micro_bits, 12, 12, FARBE_EINHEITEN);
 
     tft.setTextColor(FARBE_TEXT);
     tft.setFreeFont(&FreeSans9pt7b);

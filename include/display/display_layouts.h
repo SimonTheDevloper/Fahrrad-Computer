@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 
-void zeichneGrundLayout();
+void zeichneLiveDataLayout();
 void zeichneSessionLayout();
 void zeichneMenuLayout();
 void zeichneMenuLayoutHighKontrast();
