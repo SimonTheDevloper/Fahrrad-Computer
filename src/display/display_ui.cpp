@@ -8,7 +8,7 @@ TFT_eSPI tft = TFT_eSPI();
 Screen aktiverScreen = SCREEN_SESSION;
 bool screenChanged = false;
 
-extern const bool TEST_MODE;
+extern bool TEST_MODE;
 
 void initDisplay()
 {

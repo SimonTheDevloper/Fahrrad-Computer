@@ -20,7 +20,7 @@ enum Screen
 
 extern Screen aktiverScreen;
 extern bool screenChanged;
-extern const bool TEST_MODE;
+extern bool TEST_MODE;
 
 void initDisplay();
 void updateAktivenScreen();

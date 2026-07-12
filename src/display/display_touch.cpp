@@ -129,6 +129,11 @@ void handeSettingsTouch(uint16_t x, uint16_t y)
         screenChanged = true; // damit hier auch der Kontrast auch im menu screen beachtete wurd wird
         zeichneSettingsLayout();
     }
+    else if (x > 230 && x < 310 && y > 70 && y < 105)
+    {
+        TEST_MODE = !TEST_MODE;
+        setNewScreen(SCREEN_SETTINGS); // Aktualisiert den Screen sofort
+    }
 }
 bool darfTouchVerarbeitetWerden()
 {

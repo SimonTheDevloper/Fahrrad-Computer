@@ -8,7 +8,7 @@
 #include "wifi_manager.h"
 #include "bmp_manager.h"
 
-extern const bool TEST_MODE = false;
+bool TEST_MODE = false;
 #define GPS_RX 32
 #define GPS_TX 33
 
@@ -81,6 +81,7 @@ void loop()
         if (TEST_MODE)
         {
             aendereTestGPSDaten();
+            aendereTestBMPDaten();
         }
 
         berechneGesamtDistanz();

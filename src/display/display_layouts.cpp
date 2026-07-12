@@ -13,8 +13,9 @@ void zeichneLiveDataLayout()
     if (TEST_MODE)
     {
         tft.setTextColor(TFT_RED);
-        tft.setTextSize(1);
-        tft.drawString("TEST", 100, 6);
+        tft.setFreeFont(NULL);
+        tft.setTextSize(2);
+        tft.drawString("TEST", 110, 4);
     }
 
     tft.drawLine(1, 24, 319, 24, FARBE_LINIEN);
@@ -65,17 +66,17 @@ void zeichneSessionLayout()
     tft.setTextSize(1);
     if (TEST_MODE)
     {
-        tft.fillRect(200, 0, 120, 20, FARBE_HINTERGRUND);
-        tft.setTextColor(TFT_ORANGE, FARBE_HINTERGRUND);
-        tft.setFreeFont(&FreeSansBold9pt7b);
-        tft.setTextDatum(TR_DATUM);
-        tft.drawString("Testmode", 315, 3);
-        tft.setTextDatum(TL_DATUM);
+        tft.fillRect(100, 0, 80, 20, FARBE_HINTERGRUND);
+        tft.setTextColor(TFT_RED);
+        tft.setFreeFont(NULL);
+        tft.setTextSize(2);
+        tft.drawString("TEST", 110, 4);
     }
     else
     {
         tft.fillRect(200, 0, 120, 20, FARBE_HINTERGRUND);
     }
+    tft.setTextSize(1);
 
     tft.drawLine(1, 20, 319, 20, FARBE_LINIEN);
 
@@ -285,6 +286,8 @@ void zeichneSettingsLayout()
     tft.setTextColor(FARBE_TEXT);
     tft.setFreeFont(&FreeSans9pt7b);
     tft.drawString("High Contrast", 20, 40);
-
     tft.drawLine(10, 68, 310, 68, FARBE_LINIEN);
+
+    tft.drawString("Test Mode", 20, 80);
+    tft.drawLine(10, 108, 310, 108, FARBE_LINIEN);
 }

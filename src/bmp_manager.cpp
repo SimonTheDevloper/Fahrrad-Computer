@@ -36,3 +36,26 @@ void verarbeiteBmp()
 
     showBmpData();
 }
+void aendereTestBMPDaten()
+{
+    static float testTemp = 20.0;
+    static bool steigt = true;
+
+    if (steigt)
+    {
+        testTemp += 0.5;
+        if (testTemp >= 32.0)
+            steigt = false;
+    }
+    else
+    {
+        testTemp -= 0.5;
+        if (testTemp <= 12.0)
+            steigt = true;
+    }
+
+    currentTemperature = testTemp;
+    currentLuftDruck = 1013.25;
+    currentHoeheBaro = 150.0;
+    bmpAktiv = true;
+}

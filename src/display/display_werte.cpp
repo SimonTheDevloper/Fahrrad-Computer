@@ -278,6 +278,7 @@ void aktualisiereMenuWerte()
 void aktualisiereSettingsWerte()
 {
     static bool letzterHighContrast = false;
+    static bool letzterTestMode = false;
     if (screenChanged)
     {
         letzterHighContrast = !highContrastAktiv;
@@ -288,5 +289,10 @@ void aktualisiereSettingsWerte()
     {
         zeichneToggleButton(250, 38, highContrastAktiv);
         letzterHighContrast = highContrastAktiv;
+    }
+    if (letzterTestMode != TEST_MODE)
+    {
+        zeichneToggleButton(250, 78, TEST_MODE);
+        letzterTestMode = TEST_MODE;
     }
 }

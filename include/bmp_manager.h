@@ -7,6 +7,7 @@ extern Adafruit_BMP280 bmp;
 
 void initBmp();
 void verarbeiteBmp();
+void aendereTestBMPDaten();
 
 extern float currentTemperature;
 extern float currentLuftDruck;
