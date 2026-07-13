@@ -8,10 +8,11 @@ extern double gesamtStrecke;
 extern unsigned long gesamtFahrtZeit;
 extern float maxSpeed;
 unsigned long letztesPrintZeit = 0;
+int printIntervall = 200;
 
 void showAutoSaveInfo()
 {
-    if (millis() - letztesPrintZeit < 200)
+    if (millis() - letztesPrintZeit < printIntervall)
         return;
     Serial.println("\n=============================================================");
     Serial.print("[LittleFS saved that]:  ");
@@ -27,7 +28,7 @@ void showAutoSaveInfo()
 }
 void showLoadStaticsInfo()
 {
-    if (millis() - letztesPrintZeit < 200)
+    if (millis() - letztesPrintZeit < printIntervall)
         return;
 
     Serial.println("\n====================================");
@@ -48,7 +49,7 @@ void showLoadStaticsInfo()
 
 void showGPSDaten()
 {
-    if (millis() - letztesPrintZeit < 200)
+    if (millis() - letztesPrintZeit < printIntervall)
         return;
 
     Serial.print("Latitude: ");
@@ -68,7 +69,7 @@ void showGPSDaten()
 }
 void showBmpData()
 {
-    if (millis() - letztesPrintZeit < 200)
+    if (millis() - letztesPrintZeit < printIntervall)
         return;
 
     Serial.print("Temperature: ");

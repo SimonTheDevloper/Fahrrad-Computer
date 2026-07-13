@@ -24,20 +24,21 @@ void ladeWifiConfig()
 void speicherWifiConfig(String newSsid, String newPassword)
 {
     preferences.begin("config", false);
-    preferences.putString("ssid", newSsid);
-    preferences.putString("password", newPassword);
-    preferences.end();
+
+    if (!preferences.isKey("ssid")) // damit es nur einmal gespeichert wird
+    {
+        preferences.putString("ssid", newSsid);
+    }
+
+    if (!preferences.isKey("password"))
+    {
+        preferences.putString("password", newPassword);
+    }
 }
-
-void starteWifi()
+void verbindeMitHeimnetz()
 {
-    ladeWifiConfig();
-
-    WiFi.mode(WIFI_STA);
-    WiFi.disconnect();
-    delay(100);
     WiFi.begin(ssid.c_str(), password.c_str());
-    Serial.println("versuche mit Heimnetzt zu verbinde");
+    Serial.println("Versuche, mit dem Heimnetz zu verbinden...");
 
     while (WiFi.status() != WL_CONNECTED)
     {
@@ -45,13 +46,65 @@ void starteWifi()
         Serial.print(".");
     }
 
-    Serial.println("Erfolgreich mit Heimnetz verbunden!");
-    Serial.print("IP-Adresse: ");
+    Serial.println("Erfolgreich mit dem Heimnetz verbunden!");
+    Serial.print("IP-Adresse (Heimnetz): ");
     Serial.println(WiFi.localIP());
+}
+void starteAccesPoint()
+{
+    WiFi.softAP("BikeComputer", "SimDev123");
 
-    server.on("/", handleLetzteFahrt);
+    Serial.println("Access Point erfolgreich gestartet.");
+    Serial.print("IP-Adresse (AP): ");
+    Serial.println(WiFi.softAPIP());
+}
+void handleStartseite()
+{
+    sendeDatei("/index.html", "text/html");
+}
+void handleCSS()
+{
+    sendeDatei("/style.css", "text/css");
+}
+void registriereWebsitenRouten()
+{
+    server.on("/", handleStartseite);
+    server.on("/style.css", handleCSS);
+}
+void registriereServerRouten()
+{
+    registriereWebsitenRouten();
+    server.on("/letzteFahrt", handleLetzteFahrt);
 }
 
+void sendeDatei(String pfad, String typ)
+{
+    File datei = LittleFS.open(pfad, "r");
+
+    if (!datei)
+    {
+        server.send(404, "text/plain", "Datei nicht gefunden");
+        return;
+    }
+
+    server.streamFile(datei, typ); // dadurch wird  die datei direkt aus dem LittleFS geschickt
+
+    datei.close();
+}
+void starteWifi()
+{
+    speicherWifiConfig(ssid, password);
+    ladeWifiConfig();
+
+    WiFi.mode(WIFI_AP_STA);
+
+    verbindeMitHeimnetz();
+    starteAccesPoint();
+
+    registriereServerRouten();
+
+    server.begin();
+}
 void handleLetzteFahrt()
 {
     File dir = LittleFS.open("/fahrten");
