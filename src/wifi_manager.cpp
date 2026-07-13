@@ -13,6 +13,8 @@ String password;
 
 WebServer server(80);
 
+int versuche = 0;
+
 void ladeWifiConfig()
 {
     preferences.begin("config", true); // Öffnet den Speicher im Lesemodus
@@ -40,16 +42,24 @@ void verbindeMitHeimnetz()
     WiFi.begin(ssid.c_str(), password.c_str());
     Serial.println("Versuche, mit dem Heimnetz zu verbinden...");
 
-    while (WiFi.status() != WL_CONNECTED)
+    while (WiFi.status() != WL_CONNECTED && versuche < 20)
     {
         delay(500);
         Serial.print(".");
+        versuche++;
     }
-
-    Serial.println("Erfolgreich mit dem Heimnetz verbunden!");
-    Serial.print("IP-Adresse (Heimnetz): ");
-    Serial.println(WiFi.localIP());
+    if (WiFi.status() == WL_CONNECTED)
+    {
+        Serial.println("Erfolgreich mit dem Heimnetz verbunden!");
+        Serial.print("IP-Adresse (Heimnetz): ");
+        Serial.println(WiFi.localIP());
+    }
+    else
+    {
+        Serial.println("Verbinden mit dem Heimnetz fehlgeschlagen");
+    }
 }
+
 void starteAccesPoint()
 {
     WiFi.softAP("BikeComputer", "SimDev123");
@@ -91,6 +101,7 @@ void sendeDatei(String pfad, String typ)
 
     datei.close();
 }
+
 void starteWifi()
 {
     speicherWifiConfig(ssid, password);

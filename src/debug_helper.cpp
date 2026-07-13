@@ -8,7 +8,7 @@ extern double gesamtStrecke;
 extern unsigned long gesamtFahrtZeit;
 extern float maxSpeed;
 unsigned long letztesPrintZeit = 0;
-int printIntervall = 200;
+int printIntervall = 500;
 
 void showAutoSaveInfo()
 {
@@ -83,6 +83,23 @@ void showBmpData()
     Serial.print("Baro-Hoehe: ");
     Serial.print(currentHoeheBaro);
     Serial.println("m");
+
+    letztesPrintZeit = millis();
+}
+void showDistanceInfo()
+{
+    if (millis() - letztesPrintZeit < printIntervall)
+        return;
+
+    if (distanzInMetern > 1.5)
+    {
+        Serial.print("Total distance in km: ");
+        Serial.println(meterToKm(gesamtStrecke));
+    }
+    else
+    {
+        Serial.println("Distance too short. => Too slow. Probably stationary and GPS noise");
+    }
 
     letztesPrintZeit = millis();
 }

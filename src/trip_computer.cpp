@@ -39,13 +39,8 @@ void berechneGesamtDistanz()
     if (distanzInMetern > 1.5)
     {
         gesamtStrecke += distanzInMetern;
-        Serial.print("Total distance in km: ");
-        Serial.println(meterToKm(gesamtStrecke));
     }
-    else
-    {
-        Serial.println("Distance too short. => Too slow. Probably stationary and GPS noise");
-    }
+    // showDistanceInfo();
 }
 void berechneGesamtfahrzeit()
 {

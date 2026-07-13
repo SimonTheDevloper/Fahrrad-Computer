@@ -34,7 +34,7 @@ void verarbeiteBmp()
     currentLuftDruck = (bmp.readPressure() / 100.0);
     currentHoeheBaro = bmp.readAltitude(1013.25);
 
-    showBmpData();
+    // showBmpData();
 }
 void aendereTestBMPDaten()
 {
