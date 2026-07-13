@@ -277,19 +277,25 @@ void aktualisiereMenuWerte()
 }
 void aktualisiereSettingsWerte()
 {
-    static bool letzterHighContrast = false;
-    static bool letzterTestMode = false;
+    static bool letzterHighContrast = !highContrastAktiv;
+    static bool letzterTestMode = !TEST_MODE;
+
     if (screenChanged)
     {
-        letzterHighContrast = !highContrastAktiv;
+        zeichneToggleButton(250, 38, highContrastAktiv);
+        zeichneToggleButton(250, 78, TEST_MODE);
+
+        letzterHighContrast = highContrastAktiv;
+        letzterTestMode = TEST_MODE;
+
         screenChanged = false;
     }
-
     if (letzterHighContrast != highContrastAktiv)
     {
         zeichneToggleButton(250, 38, highContrastAktiv);
         letzterHighContrast = highContrastAktiv;
     }
+
     if (letzterTestMode != TEST_MODE)
     {
         zeichneToggleButton(250, 78, TEST_MODE);

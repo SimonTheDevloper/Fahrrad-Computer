@@ -255,16 +255,34 @@ void zeichneToggleButton(int x, int y, bool aktiv)
     const int trackRadius = 13;
     const int thumbDurchmesser = 22;
 
-    uint16_t trackFarbe = aktiv ? 0x07E0 : FARBE_LINIEN;
-    uint16_t thumbFarbe = 0xFFFF;
+    uint16_t trackFarbe;
+    uint16_t rahmenFarbe;
+    uint16_t thumbFarbe;
+
+    if (highContrastAktiv)
+    {
+        trackFarbe = aktiv ? 0x07E0 : 0x7BEF;
+        rahmenFarbe = 0xFFFF;
+        thumbFarbe = 0xFFFF;
+    }
+    else
+    {
+        trackFarbe = aktiv ? 0x07E0 : FARBE_LINIEN;
+        rahmenFarbe = TFT_WHITE;
+        thumbFarbe = 0xFFFF;
+    }
 
     tft.fillRoundRect(x, y, trackBreite, trackHoehe, trackRadius, trackFarbe);
-    tft.drawRoundRect(x, y, trackBreite, trackHoehe, trackRadius, TFT_WHITE);
+    tft.drawRoundRect(x, y, trackBreite, trackHoehe, trackRadius, rahmenFarbe);
 
     int thumbX = aktiv ? x + trackBreite - thumbDurchmesser - 2 : x + 2;
     int thumbY = y + (trackHoehe - thumbDurchmesser) / 2;
-    tft.fillCircle(thumbX + thumbDurchmesser / 2, thumbY + thumbDurchmesser / 2,
-                   thumbDurchmesser / 2, thumbFarbe);
+
+    tft.fillCircle(
+        thumbX + thumbDurchmesser / 2,
+        thumbY + thumbDurchmesser / 2,
+        thumbDurchmesser / 2,
+        thumbFarbe);
 }
 
 void zeichneSettingsLayout()
@@ -290,4 +308,7 @@ void zeichneSettingsLayout()
 
     tft.drawString("Test Mode", 20, 80);
     tft.drawLine(10, 108, 310, 108, FARBE_LINIEN);
+
+    zeichneToggleButton(250, 38, highContrastAktiv);
+    zeichneToggleButton(250, 78, TEST_MODE);
 }
