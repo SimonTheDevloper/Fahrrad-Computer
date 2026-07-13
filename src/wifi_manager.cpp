@@ -76,10 +76,15 @@ void handleCSS()
 {
     sendeDatei("/style.css", "text/css");
 }
+void handleJS()
+{
+    sendeDatei("/script.js", "text/javascript");
+}
 void registriereWebsitenRouten()
 {
     server.on("/", handleStartseite);
     server.on("/style.css", handleCSS);
+    server.on("/script.js", handleJS);
 }
 void registriereServerRouten()
 {
