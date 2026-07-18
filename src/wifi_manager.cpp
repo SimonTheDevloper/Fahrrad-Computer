@@ -156,6 +156,60 @@ void handleLetzteFahrt()
         return;
     }
 
-    server.streamFile(fahrtDatei, "text/csv"); // das checke ich nicht für was bracuche ich das und brauche ich es wirklich 100% und wie funktioniert es
+    server.streamFile(fahrtDatei, "text/csv");
     fahrtDatei.close();
+}
+
+void handleAlleFahrten()
+{
+    File dir = LittleFS.open("/fahrten");
+    File file = dir.openNextFile();
+
+    String json = "["; // für was danze ab hier und kann man es nicht  für mein nivoe einfacher coden ider zumindestens besser erklären?
+    bool first = true;
+
+    while (file)
+    {
+        if (!first)
+        {
+            json += ",";
+        }
+        json += "\"" + String(file.name()) + "\"";
+        first = false;
+        file = dir.openNextFile();
+    }
+    json += "]";
+
+    server.send(200, "application/json", json);
+}
+
+void handleDownloadFahrt()
+{
+    if (!server.hasArg("file")) // so wie query
+    {
+        server.send(400, "text/plain", "Keine Datei angegeben");
+        return;
+    }
+
+    String dateiName = server.arg("file");
+    String pfad = "/fahrten/" + dateiName;
+
+    if (!LittleFS.exists(pfad))
+    {
+        server.send(404, "text/plain", "Datei nicht gefunden");
+        return;
+    }
+
+    File fahrtDatei = LittleFS.open(pfad, "r");
+    server.sendHeader("Content-Disposition", "attachment; filename=\"" + dateiName + "\""); // das checke ich auch noch nicht ganz
+    server.streamFile(fahrtDatei, "text/csv");
+    fahrtDatei.close();
+}
+
+void registriereServerRouten()
+{
+    registriereWebsitenRouten();
+    server.on("/letzteFahrt", handleLetzteFahrt);
+    server.on("/alleFahrten", handleAlleFahrten);
+    server.on("/download", handleDownloadFahrt);
 }
