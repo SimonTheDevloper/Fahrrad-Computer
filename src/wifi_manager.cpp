@@ -86,11 +86,6 @@ void registriereWebsitenRouten()
     server.on("/style.css", handleCSS);
     server.on("/script.js", handleJS);
 }
-void registriereServerRouten()
-{
-    registriereWebsitenRouten();
-    server.on("/letzteFahrt", handleLetzteFahrt);
-}
 
 void sendeDatei(String pfad, String typ)
 {

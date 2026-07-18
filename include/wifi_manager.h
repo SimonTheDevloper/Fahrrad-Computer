@@ -16,5 +16,6 @@ void sendeDatei(String pfad, String typ);
 void registriereWebsitenRouten();
 void handleCSS();
 void handleJS();
+void registriereServerRouten();
 
 #endif
