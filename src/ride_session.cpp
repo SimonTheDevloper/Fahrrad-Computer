@@ -4,6 +4,7 @@
 #include "trip_computer.h"
 #include "gps_manager.h"
 #include "display/display_ui.h"
+#include "debug_helper.h"
 
 FahrtSate aktivFahrtState = GESTOPPT;
 
@@ -219,14 +220,13 @@ void schreibeLogs()
                   String(currentLog.latitude) + "," +
                   String(currentLog.longitude);
 
-    Serial.println(line);
     logPuffer[logPufferIndex++] = currentLog;
-
     if (logPufferIndex >= 10)
     {
         saveLogs();
         logPufferIndex = 0;
     }
+    showLogStand(line, logPufferIndex);
 }
 
 void saveLogs()

@@ -3,6 +3,7 @@
 #include "trip_computer.h"
 #include "gps_manager.h"
 #include "bmp_manager.h"
+#include "ride_session.h"
 
 extern double gesamtStrecke;
 extern unsigned long gesamtFahrtZeit;
@@ -102,4 +103,11 @@ void showDistanceInfo()
     }
 
     letztesPrintZeit = millis();
+}
+void showLogStand(String line, int logPufferIndex)
+{
+    Serial.println(line);
+    Serial.print("-> Pufferstand: ");
+    Serial.print(logPufferIndex);
+    Serial.println(" von 10");
 }

@@ -160,7 +160,7 @@ void handleAlleFahrten()
     File dir = LittleFS.open("/fahrten");
     File file = dir.openNextFile();
 
-    String json = "["; // für was danze ab hier und kann man es nicht  für mein nivoe einfacher coden ider zumindestens besser erklären?
+    String json = "[";
     bool first = true;
 
     while (file)

@@ -8,5 +8,6 @@ void showLoadStaticsInfo();
 void showGPSDaten();
 void showBmpData();
 void showDistanceInfo();
+void showLogStand(String line, int logPufferIndex);
 
 #endif
