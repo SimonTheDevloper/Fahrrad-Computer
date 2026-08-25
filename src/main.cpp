@@ -1,104 +1,56 @@
 #include <Arduino.h>
-#include <FS.h>
-#include <LittleFS.h>
-#include "gps_manager.h"
-#include "trip_computer.h"
-#include "display/display_ui.h"
-#include "ride_session.h"
-#include "wifi_manager.h"
-#include "bmp_manager.h"
+#include <TFT_eSPI.h>
 
-bool TEST_MODE = false;
-#define GPS_RX 32
-#define GPS_TX 33
-
-unsigned long letztesSekunde = 0;
-unsigned long letzteDisplayUpdateZeit = 0;
-
-int speicherZaeler = 0;
-
-void verwalteSpeicherIntervall()
-{
-    speicherZaeler++;
-    if (speicherZaeler >= 5)
-    {
-        speicherZaeler = 0;
-        speichereStatistiken();
-    }
-}
+TFT_eSPI tft = TFT_eSPI();
 
 void setup()
 {
+    disableCore0WDT();
+    disableCore1WDT();
+    
     Serial.begin(115200);
-    gpsSerial.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
+    delay(3000);
 
-    initDisplay();
-    initBmp();
+    Serial.println("\n==================================");
+    Serial.println("   ESP32-S3 DISPLAY TEST START");
+    Serial.println("==================================");
 
-    if (!LittleFS.begin(true))
-    {
-        Serial.println("LittleFS could not be started");
-        return;
-    }
+    Serial.println("Starte tft.init()...");
+    tft.init();
+    Serial.println("Display erfolgreich gestartet!");
 
-    void erstelleFilesOrdner();
+    tft.setRotation(1);
+    tft.fillScreen(TFT_BLACK);
 
-    ladeFarbTheme();
-    ladeStatistiken();
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.setTextSize(2);
+    tft.setCursor(10, 10);
+    tft.println("ESP32-S3 Nano");
 
-    setNewScreen(SCREEN_MENU);
+    tft.setTextColor(TFT_GREEN);
+    tft.setTextSize(3);
+    tft.setCursor(10, 50);
+    tft.println("ES LEBT!!!");
 
-    starteWifi();
-    server.begin();
-    Serial.println("Webserver bereit!");
+    Serial.println("Setup abgeschlossen!");
 }
+
+int counter = 0;
+
 void loop()
 {
+    Serial.print("Sekunden seit Start: ");
+    Serial.println(counter);
 
-    server.handleClient();
-    uint16_t x = 0, y = 0;
-    if (tft.getTouch(&x, &y))
-    {
-        verarbeiteGesamtenTouch(x, y);
-        delay(150);
-    }
+    tft.fillRect(10, 120, 200, 40, TFT_BLACK);
 
-    if (!TEST_MODE)
-    {
-        verarbeiteGPS();
-        verarbeiteBmp();
-    }
+    tft.setTextColor(TFT_YELLOW);
+    tft.setTextSize(3);
+    tft.setCursor(10, 120);
+    tft.print("Zeit: ");
+    tft.print(counter);
+    tft.print(" s");
 
-    if (millis() - letzteDisplayUpdateZeit >= 200)
-    {
-        letzteDisplayUpdateZeit = millis();
-        updateAktivenScreen();
-    }
-
-    if (millis() - letztesSekunde >= 1000)
-    {
-        letztesSekunde = millis();
-        if (TEST_MODE)
-        {
-            aendereTestGPSDaten();
-            aendereTestBMPDaten();
-        }
-
-        berechneGesamtDistanz();
-        berechneSessionDistanz();
-
-        if (TEST_MODE)
-        {
-            currentSpeed = (distanzInMetern * 3.6);
-            berechneDurschnittsSpeed(currentSpeed);
-            berechneMaxSpeed();
-        }
-
-        handleLogging();
-        berechneSessionAvgSpeed();
-        berechneSessionMaxSpeed();
-        verwalteSpeicherIntervall();
-        berechneGesamtfahrzeit();
-        berechneSessionFahrzeit();
-    }
+    counter++;
+    delay(1000);
 }
