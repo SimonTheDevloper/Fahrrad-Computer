@@ -5,7 +5,8 @@
 #include "debug_helper.h"
 
 TinyGPSPlus gps;
-HardwareSerial gpsSerial(2); // Nutzt Serial 2 des ESP32
+
+extern HardwareSerial gpsSerial;
 
 double latitude = 0.0;
 double longitude = 0.0;

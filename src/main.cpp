@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <FS.h>
 #include <LittleFS.h>
+#include <HardwareSerial.h>
 #include "gps_manager.h"
 #include "trip_computer.h"
 #include "display/display_ui.h"
@@ -8,9 +9,11 @@
 #include "wifi_manager.h"
 #include "bmp_manager.h"
 
+HardwareSerial gpsSerial(2); // damitr das mit dem Serial MOnitor nicht kollidiert
+
 bool TEST_MODE = false;
-#define GPS_RX 32
-#define GPS_TX 33
+#define GPS_RX 43
+#define GPS_TX 44
 
 unsigned long letztesSekunde = 0;
 unsigned long letzteDisplayUpdateZeit = 0;
@@ -30,7 +33,9 @@ void verwalteSpeicherIntervall()
 void setup()
 {
     Serial.begin(115200);
-    //gpsSerial.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
+
+    
+    gpsSerial.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
 
     initDisplay();
     initBmp();
@@ -41,7 +46,7 @@ void setup()
         return;
     }
 
-    void erstelleFilesOrdner();
+    erstelleFilesOrdner();
 
     ladeFarbTheme();
     ladeStatistiken();
@@ -52,9 +57,9 @@ void setup()
     server.begin();
     Serial.println("Webserver bereit!");
 }
+
 void loop()
 {
-
     server.handleClient();
     uint16_t x = 0, y = 0;
     if (tft.getTouch(&x, &y))
