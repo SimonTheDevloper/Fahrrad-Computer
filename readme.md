@@ -6,7 +6,7 @@
 [![Framework: PlatformIO](https://img.shields.io/badge/Framework-PlatformIO-orange.svg)](https://platformio.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../issues)
 
-![banner](assets\banner.png)
+![banner](assets/banner.png)
 
 A smart, standalone ESP32-based bike computer with touch interface, offline session recording, and integrated web server.
 
@@ -28,15 +28,15 @@ Realtime display of current speed, average speed, and top speed (per session and
 
 ## Touch Interface / Screens
 
-![screens](assets\screens.png)
+![screens](assets/screens.png)
 
 ## Hardware / Components
 
 Here you can see the assembly on the breadboard and the finished soldering:
 
-![front-Preboard](assets\prefboard-componets.png)
+![front-Preboard](assets/prefboard-componets.png)
 
-![back-Prefboard](assets\soldered-prefboard-back.png)
+![back-Prefboard](assets/soldered-prefboard-back.png)
 
 | Component | Model|
 |---|---|
