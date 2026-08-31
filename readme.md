@@ -6,12 +6,16 @@
 [![Framework: PlatformIO](https://img.shields.io/badge/Framework-PlatformIO-orange.svg)](https://platformio.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](../../issues)
 
+![banner](assets\banner.png)
+
 A smart, standalone ESP32-based bike computer with touch interface, offline session recording, and integrated web server.
+
+
 
 ---
 
 ## Key Features
-Real-time display of current speed, average speed, and top speed (per session and overall)
+Realtime display of current speed, average speed, and top speed (per session and overall)
 - Accurate measurement of trip distance and total elapsed time (per session and overall)
 - Live monitoring and display of outdoor temperature
 - Recording Individual Trip Sessions
@@ -22,7 +26,17 @@ Real-time display of current speed, average speed, and top speed (per session an
 -Various screens (main menu, live display, sessions screen, settings)
 ---
 
-## Hardware Components
+## Touch Interface / Screens
+
+![screens](assets\screens.png)
+
+## Hardware / Components
+
+Here you can see the assembly on the breadboard and the finished soldering:
+
+![front-Preboard](assets\prefboard-componets.png)
+
+![back-Prefboard](assets\soldered-prefboard-back.png)
 
 | Component | Model|
 |---|---|
@@ -32,6 +46,7 @@ Real-time display of current speed, average speed, and top speed (per session an
 | **Compass / Magnetometer** | GY-271 QMC5883L (I²C) |
 | **GPS Module** | GY-GPS6MV2 Neo-M8M (with external antenna) |
 | **Storage** | 5V SD Card Module Open-Smart |
+
 
 ---
 ## Wiring
