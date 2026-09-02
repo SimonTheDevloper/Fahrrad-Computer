@@ -1,1 +1,8 @@
-I actually have that in the README
+component,amount,Source,,prize 
+Waveshare ESP32-S3-Nano,1,https://www.berrybase.de/waveshare-esp32-s3-nano-entwicklungsboard-wifi-bluetooth-8mb-psram-16mb-flash-mit-header,,"11,90 €"
+2.8 inch SPI TFT Display ILI9341 ,1,https://de.aliexpress.com/item/1005012047320022.html,,"9,89 €"
+GY-NEO6MV2 NEO-6M ,1,https://de.aliexpress.com/item/1005011549633384.html,,"9,49 €"
+GY-271 QMC5883L  ,1,https://funduinoshop.com/elektronische-module/sensoren/bewegungs-und-distanzsensoren/gy-271-qmc5883-magnetometer-digitaler-kompass,,"4,52 €"
+BMP280,1,https://funduinoshop.com/elektronische-module/sensoren/druck-und-gewichtssensoren/luftdrucksensor-gy-bmp280/bmp280,,"1,80 €"
+Micro SD-Kartenmodul ,1,https://de.aliexpress.com/item/32787679017.html,,"1,49 €"
+total,6,,,"39,09 €"
